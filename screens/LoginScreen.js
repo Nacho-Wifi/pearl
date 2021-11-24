@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import {
   StyleSheet,
   TextInput,
@@ -8,12 +9,13 @@ import {
   TouchableOpacity,
   TouchableOpacityBase,
 } from 'react-native';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
+import { doc, addDoc, setDoc, collection } from 'firebase/firestore';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +26,7 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace('Home');
+        navigation.replace('JournalEntry');
       }
     });
     return unsubscribe;
@@ -32,9 +34,13 @@ const LoginScreen = () => {
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
         console.log('Registered: ', user.email);
+        const data = {
+          email: user.email,
+        };
+        await setDoc(doc(db, 'Users', user.email), data);
       })
       .catch((error) => alert(error.message));
   };
