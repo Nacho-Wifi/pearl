@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
-import { doc, addDoc, getDocs, collection } from 'firebase/firestore';
+import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
 const JournalEntry = () => {
   const navigation = useNavigation();
@@ -17,12 +17,23 @@ const JournalEntry = () => {
     getMoods();
   }, []);
 
+  const setJournal = (mood) => {
+    // 'new-journal-id' is temporary
+    setDoc(doc(db, "/Journals", "new-journal-id"), {
+      mood: mood,
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Text> Mood:</Text>
       {moods.map((mood) => {
+        // Add key
         return (
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          // make it so that when a user clicks on the smiley face image 
+          // our Journal collection adds a document noting the mood
+          // added & the date (& other details)
+          < TouchableOpacity style={styles.button} onPress={() => { setJournal(mood) }}>
             {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
             <Image
               source={require('../assets/Cute-face-with-smile-emoji-vectors.png')}
@@ -31,7 +42,7 @@ const JournalEntry = () => {
           </TouchableOpacity>
         );
       })}
-    </View>
+    </View >
   );
 };
 
