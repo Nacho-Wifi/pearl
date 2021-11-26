@@ -4,8 +4,10 @@ import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
-const JournalEntry = () => {
+const JournalEntry = ({ route }) => {
   const navigation = useNavigation();
+  //this route.params gives us access to the props passed down by our Activities component using react navigation
+  const { activities } = route.params;
   const [moods, setMoods] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
   useEffect(() => {
@@ -21,14 +23,14 @@ const JournalEntry = () => {
     // 'new-journal-id' is temporary
     setDoc(doc(db, '/Journals', 'new-journal-id'), {
       mood: mood,
+      activities,
     });
+    navigation.replace('Home');
   };
-
   return (
     <View style={styles.container}>
       <Text> Mood:</Text>
       {moods.map((mood) => {
-        // Add key
         return (
           // make it so that when a user clicks on the smiley face image
           // our Journal collection adds a document noting the mood

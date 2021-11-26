@@ -18,7 +18,10 @@ const Activities = () => {
     getActivities();
   }, []);
   const handleNext = () => {
-    navigation.navigate('JournalEntry');
+    navigation.navigate('JournalEntry', {
+      //pass down selected Activities as props to the moods/journal entry component
+      activities: selectedActivities,
+    });
   };
   const handleActivitySelect = (activityId) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
@@ -26,22 +29,12 @@ const Activities = () => {
       setSelectedActivities((oldState) => [...oldState, activityId]);
     }
   };
-  //somehow we need to navigate to Journal Entries and pass down the id of the activities selected
-  // const setJournal = (mood) => {
-  //   // 'new-journal-id' is temporary
-  //   setDoc(doc(db, "/Journals", "new-journal-id"), {
-  //     mood: mood,
-  //   });
-  // }
+
   return (
     <View style={styles.container}>
       <Text> Activities:</Text>
       {activities.map((activity) => {
-        // Add key
         return (
-          // make it so that when a user clicks on the smiley face image
-          // our Journal collection adds a document noting the mood
-          // added & the date (& other details)
           <TouchableOpacity
             key={activity.id}
             style={styles.button}
