@@ -5,6 +5,7 @@ import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
 const JournalEntry = () => {
+  // const [mood, setMood] = useState({});
   const navigation = useNavigation();
   const [moods, setMoods] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
@@ -18,9 +19,11 @@ const JournalEntry = () => {
   }, []);
 
   const setJournal = (mood) => {
-    // 'new-journal-id' is temporary
-    setDoc(doc(db, "/Journals", "new-journal-id"), {
-      mood: mood,
+    // setMood(mood); // set local state
+    // Using mood.id temporarily here
+    setDoc(doc(db, "/Journals", `${mood.id}`), {
+      mood,
+      // timestamp: db.FieldValue.serverTimestamp()
     });
   }
 
@@ -28,6 +31,7 @@ const JournalEntry = () => {
     <View style={styles.container}>
       <Text> Mood:</Text>
       {moods.map((mood) => {
+        // console.log(moods)
         // Add key
         return (
           // make it so that when a user clicks on the smiley face image 
