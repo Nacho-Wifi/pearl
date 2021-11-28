@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
-import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
+import {
+  doc,
+  addDoc,
+  getDocs,
+  collection,
+  setDoc,
+  Timestamp,
+} from 'firebase/firestore';
 
 const JournalEntry = ({ route }) => {
   const navigation = useNavigation();
@@ -24,6 +31,7 @@ const JournalEntry = ({ route }) => {
     setDoc(doc(db, '/Journals', 'new-journal-id'), {
       mood: mood,
       activities,
+      createdAt: new Timestamp.now(),
     });
     navigation.replace('Home');
   };
@@ -44,7 +52,7 @@ const JournalEntry = ({ route }) => {
           >
             {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
             <Image
-              source={require('../assets/Cute-face-with-smile-emoji-vectors.png')}
+              source={{ uri: mood.imageUrl }}
               style={{ width: 40, height: 40 }}
             />
           </TouchableOpacity>
