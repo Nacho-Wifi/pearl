@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
-import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
+import { doc, addDoc, getDocs, collection, serverTimestamp } from 'firebase/firestore';
 
 const JournalEntry = () => {
-  // const [mood, setMood] = useState({});
   const navigation = useNavigation();
   const [moods, setMoods] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
@@ -19,11 +18,9 @@ const JournalEntry = () => {
   }, []);
 
   const setJournal = (mood) => {
-    // setMood(mood); // set local state
-    // Using mood.id temporarily here
-    setDoc(doc(db, "/Journals", `${mood.id}`), {
+    addDoc(collection(db, "Journals"), {
       mood,
-      // timestamp: db.FieldValue.serverTimestamp()
+      createdAt: serverTimestamp(),
     });
   }
 
@@ -34,9 +31,6 @@ const JournalEntry = () => {
         // console.log(moods)
         // Add key
         return (
-          // make it so that when a user clicks on the smiley face image 
-          // our Journal collection adds a document noting the mood
-          // added & the date (& other details)
           < TouchableOpacity style={styles.button} onPress={() => { setJournal(mood) }}>
             {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
             <Image
