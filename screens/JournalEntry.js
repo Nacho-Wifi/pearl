@@ -32,6 +32,7 @@ const JournalEntry = ({ route }) => {
       mood: mood,
       activities,
       createdAt: new Timestamp.now(),
+      userId: auth.currentUser.email,
     });
     navigation.replace('Home');
   };
