@@ -2,12 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
-import { doc, addDoc, getDocs, collection } from 'firebase/firestore';
+import {
+  doc,
+  addDoc,
+  getDocs,
+  collection,
+  serverTimestamp,
+} from 'firebase/firestore';
 
-const JournalEntry = () => {
+const JournalEntry = ({ route }) => {
   const navigation = useNavigation();
+  //this route.params gives us access to the props passed down by our Activities component using react navigation
+  const { activities } = route.params;
   const [moods, setMoods] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
+  const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
     const getMoods = async () => {
@@ -17,15 +26,32 @@ const JournalEntry = () => {
     getMoods();
   }, []);
 
+  const setJournal = async (mood) => {
+    // pass only moodId?
+    await addDoc(journalsCollectionRef, {
+      mood,
+      activities,
+      createdAt: serverTimestamp(),
+      userId: auth.currentUser.email,
+    });
+    navigation.replace('Home');
+  };
+
   return (
     <View style={styles.container}>
       <Text> Mood:</Text>
       {moods.map((mood) => {
         return (
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity
+            key={mood.id}
+            style={styles.button}
+            onPress={() => {
+              setJournal(mood);
+            }}
+          >
             {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
             <Image
-              source={require('../assets/Cute-face-with-smile-emoji-vectors.png')}
+              source={{ uri: mood.imageUrl }}
               style={{ width: 40, height: 40 }}
             />
           </TouchableOpacity>
