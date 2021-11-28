@@ -8,6 +8,7 @@ const JournalEntry = () => {
   const navigation = useNavigation();
   const [moods, setMoods] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
+  const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
     const getMoods = async () => {
@@ -17,21 +18,20 @@ const JournalEntry = () => {
     getMoods();
   }, []);
 
-  const setJournal = (mood) => {
-    addDoc(collection(db, "Journals"), {
+  const setJournal = async (mood) => {
+    // pass only moodId? 
+    await addDoc(journalsCollectionRef, {
       mood,
       createdAt: serverTimestamp(),
     });
-  }
+  };
 
   return (
     <View style={styles.container}>
       <Text> Mood:</Text>
       {moods.map((mood) => {
-        // console.log(moods)
-        // Add key
         return (
-          < TouchableOpacity style={styles.button} onPress={() => { setJournal(mood) }}>
+          < TouchableOpacity key={mood.id} style={styles.button} onPress={() => { setJournal(mood) }}>
             {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
             <Image
               source={require('../assets/Cute-face-with-smile-emoji-vectors.png')}
