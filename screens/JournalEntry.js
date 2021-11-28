@@ -7,8 +7,7 @@ import {
   addDoc,
   getDocs,
   collection,
-  setDoc,
-  Timestamp,
+  serverTimestamp,
 } from 'firebase/firestore';
 
 const JournalEntry = ({ route }) => {
@@ -17,6 +16,7 @@ const JournalEntry = ({ route }) => {
   const { activities } = route.params;
   const [moods, setMoods] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
+  const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
     const getMoods = async () => {
@@ -26,24 +26,22 @@ const JournalEntry = ({ route }) => {
     getMoods();
   }, []);
 
-  const setJournal = (mood) => {
-    // 'new-journal-id' is temporary
-    setDoc(doc(db, '/Journals', 'new-journal-id'), {
-      mood: mood,
+  const setJournal = async (mood) => {
+    // pass only moodId?
+    await addDoc(journalsCollectionRef, {
+      mood,
       activities,
-      createdAt: new Timestamp.now(),
+      createdAt: serverTimestamp(),
       userId: auth.currentUser.email,
     });
     navigation.replace('Home');
   };
+
   return (
     <View style={styles.container}>
       <Text> Mood:</Text>
       {moods.map((mood) => {
         return (
-          // make it so that when a user clicks on the smiley face image
-          // our Journal collection adds a document noting the mood
-          // added & the date (& other details)
           <TouchableOpacity
             key={mood.id}
             style={styles.button}
