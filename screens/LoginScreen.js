@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { loginUser, signupUser } from '../store/user';
+import React, { useState } from 'react';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import {
   StyleSheet,
   TextInput,
@@ -17,7 +17,15 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch();
+  const handleLogin = (email, password) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('logged in with: ', user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View>
@@ -45,7 +53,7 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() => dispatch(loginUser(email, password))}
+          onPress={() => handleLogin(email, password)}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
