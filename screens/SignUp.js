@@ -10,14 +10,7 @@ import {
   TouchableOpacity,
   TouchableOpacityBase,
 } from 'react-native';
-// import { auth, db } from '../firebase';
-// import {
-//   createUserWithEmailAndPassword,
-//   signInWithEmailAndPassword,
-// } from 'firebase/auth';
-// import { useNavigation } from '@react-navigation/core';
-// import { doc, addDoc, setDoc, collection } from 'firebase/firestore';
-
+import { Link } from '@react-navigation/native';
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,6 +21,13 @@ const SignUp = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <View>
+        <LottieView
+          style={styles.lottieMindful}
+          source={require('../assets/lottie/mindfulness.json')}
+          autoPlay
+        />
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -57,12 +57,6 @@ const SignUp = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        {/* <TouchableOpacity
-          onPress={() => dispatch(loginUser(email, password))}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() =>
             dispatch(signupUser(email, password, firstName, lastName))
@@ -71,6 +65,16 @@ const SignUp = () => {
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
+        <Text>
+          Already have an account? Log in{' '}
+          <Link
+            to={{ screen: 'Login' }}
+            style={{ color: 'blue', textDecorationLine: 'underline' }}
+          >
+            here
+          </Link>
+          !
+        </Text>
       </View>
     </KeyboardAvoidingView>
   );
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
   buttonOutline: {
     backgroundColor: 'white',
     marginTop: 5,
-    borderColor: '#0782F9',
+    borderColor: '#FBD1B7',
     borderWidth: 2,
   },
   buttonText: {
@@ -118,8 +122,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#0782F9',
+    color: '#FBD1B7',
     fontWeight: '700',
     fontSize: 16,
+    textAlign: 'center',
+  },
+  lottieMindful: {
+    width: 150,
+    height: 150,
   },
 });
