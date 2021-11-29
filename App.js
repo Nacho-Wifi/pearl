@@ -72,10 +72,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Provider store={store}>
-        <Stack.Navigator initialRouteName="Activities">
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Activities" component={Activities} />
           <Stack.Screen name="JournalEntry" component={JournalEntry} />
-          <Stack.Screen name="Home" component={HomeScreen} />
         </Stack.Navigator>
       </Provider>
     </NavigationContainer>
