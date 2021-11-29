@@ -11,6 +11,7 @@ import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import JournalEntry from './screens/JournalEntry';
 import Activities from './screens/Activities';
+import SignUp from './screens/SignUp';
 import { registerRootComponent } from 'expo';
 
 //store
@@ -51,11 +52,16 @@ export default function App() {
     return (
       <NavigationContainer>
         <Provider store={store}>
-          <Stack.Navigator>
+          <Stack.Navigator initialRouteName="Login">
             <Stack.Screen
               options={{ headerShown: false }}
               name="Login"
               component={LoginScreen}
+            />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="SignUp"
+              component={SignUp}
             />
           </Stack.Navigator>
         </Provider>

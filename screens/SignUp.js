@@ -7,25 +7,23 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
-  Button,
   TouchableOpacity,
   TouchableOpacityBase,
 } from 'react-native';
-import { Link } from '@react-navigation/native';
 // import { auth, db } from '../firebase';
 // import {
 //   createUserWithEmailAndPassword,
 //   signInWithEmailAndPassword,
 // } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/core';
+// import { useNavigation } from '@react-navigation/core';
 // import { doc, addDoc, setDoc, collection } from 'firebase/firestore';
 
-const LoginScreen = () => {
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.inputContainer}>
@@ -51,32 +49,18 @@ const LoginScreen = () => {
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <Text>
-          Don't have an account? Sign up{' '}
-          <Link
-            to={{ screen: 'SignUp' }}
-            style={{ color: 'blue', textDecorationLine: 'underline' }}
-          >
-            here
-          </Link>
-          !
-        </Text>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           onPress={() => dispatch(signupUser(email, password))}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
-        </TouchableOpacity> */}
-        {/* <Button
-          title="Go to SignUp"
-          onPress={() => navigation.navigate('SignUp')}
-        /> */}
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
 
-export default LoginScreen;
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
