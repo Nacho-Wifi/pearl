@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser, signupUser } from '../store/user';
+import { signupUser } from '../store/user';
 import {
   StyleSheet,
   TextInput,
@@ -10,21 +10,22 @@ import {
   TouchableOpacity,
   TouchableOpacityBase,
 } from 'react-native';
-import { Link } from '@react-navigation/native';
 // import { auth, db } from '../firebase';
 // import {
 //   createUserWithEmailAndPassword,
 //   signInWithEmailAndPassword,
 // } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/core';
+// import { useNavigation } from '@react-navigation/core';
 // import { doc, addDoc, setDoc, collection } from 'firebase/firestore';
 
-const LoginScreen = () => {
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.inputContainer}>
@@ -41,31 +42,41 @@ const LoginScreen = () => {
           style={styles.input}
           secureTextEntry
         />
+        <TextInput
+          placeholder="FirstName"
+          value={firstName}
+          onChangeText={(text) => setFirstName(text)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="LastName"
+          value={lastName}
+          onChangeText={(text) => setLastName(text)}
+          style={styles.input}
+        />
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => dispatch(loginUser(email, password))}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          onPress={() =>
+            dispatch(signupUser(email, password, firstName, lastName))
+          }
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
-        <Text>
-          Don't have an account? Sign up{' '}
-          <Link
-            to={{ screen: 'SignUp' }}
-            style={{ color: 'blue', textDecorationLine: 'underline' }}
-          >
-            here
-          </Link>
-          !
-        </Text>
       </View>
     </KeyboardAvoidingView>
   );
 };
 
-export default LoginScreen;
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
