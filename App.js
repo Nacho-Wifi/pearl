@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 //navigation
@@ -17,21 +17,59 @@ import { registerRootComponent } from 'expo';
 import { store } from './store';
 import { Provider } from 'react-redux';
 
+//auth
+import { auth } from './firebase';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setLoggedIn(true);
+        setLoaded(true);
+      } else {
+        setLoggedIn(false);
+        setLoaded(true);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  if (!loaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (!loggedIn) {
+    return (
+      <NavigationContainer>
+        <Provider store={store}>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Login"
+              component={LoginScreen}
+            />
+          </Stack.Navigator>
+        </Provider>
+      </NavigationContainer>
+    );
+  }
+
   return (
     <NavigationContainer>
       <Provider store={store}>
-        <Stack.Navigator>
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Login"
-            component={LoginScreen}
-          />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="JournalEntry" component={JournalEntry} />
+        <Stack.Navigator initialRouteName="Activities">
           <Stack.Screen name="Activities" component={Activities} />
+          <Stack.Screen name="JournalEntry" component={JournalEntry} />
+          <Stack.Screen name="Home" component={HomeScreen} />
         </Stack.Navigator>
       </Provider>
     </NavigationContainer>

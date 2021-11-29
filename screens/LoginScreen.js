@@ -22,16 +22,16 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const dispatch = useDispatch();
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        navigation.replace('Activities');
-      }
-    });
-    return unsubscribe;
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged((user) => {
+  //     if (user) {
+  //       navigation.replace('Activities');
+  //     }
+  //   });
+  //   return unsubscribe;
+  // }, []);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
