@@ -11,22 +11,22 @@ import {
   TouchableOpacityBase,
 } from 'react-native';
 import { Link } from '@react-navigation/native';
-// import { auth, db } from '../firebase';
-// import {
-//   createUserWithEmailAndPassword,
-//   signInWithEmailAndPassword,
-// } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/core';
-// import { doc, addDoc, setDoc, collection } from 'firebase/firestore';
+import LottieView from 'lottie-react-native';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <View>
+        <LottieView
+          style={styles.lottieMindful}
+          source={require('../assets/lottie/mindfulness.json')}
+          autoPlay
+        />
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -90,25 +90,30 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: '#FBD1B7',
     width: '100%',
     padding: 15,
     borderRadius: 10,
   },
-  buttonOutline: {
-    backgroundColor: 'white',
-    marginTop: 5,
-    borderColor: '#0782F9',
-    borderWidth: 2,
-  },
+  // buttonOutline: {
+  //   backgroundColor: 'white',
+  //   marginTop: 5,
+  //   borderColor: '#0782F9',
+  //   borderWidth: 2,
+  // },
   buttonText: {
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+    textAlign: 'center',
   },
-  buttonOutlineText: {
-    color: '#0782F9',
-    fontWeight: '700',
-    fontSize: 16,
+  // buttonOutlineText: {
+  //   color: '#0782F9',
+  //   fontWeight: '700',
+  //   fontSize: 16,
+  // },
+  lottieMindful: {
+    width: 150,
+    height: 150,
   },
 });
