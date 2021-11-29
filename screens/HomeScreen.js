@@ -3,22 +3,24 @@ import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { auth } from '../firebase';
+import LottieView from 'lottie-react-native';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        navigation.replace('Login');
-      })
-      .catch((error) => alert(error.message));
+  const leaveHomePage = () => {
+    navigation.replace('Activities');
   };
 
   return (
     <View style={styles.container}>
-      <Text>Email: {auth.currentUser?.email} </Text>
-      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-        <Text style={styles.buttonText}>Sign Out</Text>
+      <LottieView
+        source={require('../assets/21254-clamshell-opening-with-pearl/data.json')}
+        autoPlay
+        loop
+        style={styles.lottiePearl}
+      />
+      <TouchableOpacity style={styles.button} onPress={leaveHomePage}>
+        <Text style={styles.buttonText}>Enter Journal</Text>
       </TouchableOpacity>
     </View>
   );
@@ -45,5 +47,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  },
+  lottiePearl: {
+    width: 200,
+    height: 200,
   },
 });
