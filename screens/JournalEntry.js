@@ -11,6 +11,13 @@ import {
 } from 'firebase/firestore';
 
 const JournalEntry = ({ route }) => {
+  const emojiMapping = {
+    "U+1F622": "😢",
+    "U+1F614": "😔",
+    "U+1F610": "😐",
+    "U+1F60C": "😌",
+    "U+1F601": "😁",
+  }
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
   const { activities } = route.params;
@@ -49,11 +56,11 @@ const JournalEntry = ({ route }) => {
               setJournal(mood);
             }}
           >
+            <Text>{emojiMapping[mood.imageUrl]}</Text>
+
             {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
-            <Image
-              source={{ uri: mood.imageUrl }}
-              style={{ width: 40, height: 40 }}
-            />
+            {/* <Image source={{ content: emojiMapping[mood.imageUrl] }} /> */}
+            {/* style={{ width: 40, height: 40 }} */}
           </TouchableOpacity>
         );
       })}
