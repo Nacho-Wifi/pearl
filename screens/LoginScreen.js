@@ -95,23 +95,23 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
   },
-  buttonOutline: {
-    backgroundColor: 'white',
-    marginTop: 5,
-    borderColor: '#0782F9',
-    borderWidth: 2,
-  },
+  // buttonOutline: {
+  //   backgroundColor: 'white',
+  //   marginTop: 5,
+  //   borderColor: '#0782F9',
+  //   borderWidth: 2,
+  // },
   buttonText: {
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
     textAlign: 'center',
   },
-  buttonOutlineText: {
-    color: '#0782F9',
-    fontWeight: '700',
-    fontSize: 16,
-  },
+  // buttonOutlineText: {
+  //   color: '#0782F9',
+  //   fontWeight: '700',
+  //   fontSize: 16,
+  // },
   lottieMindful: {
     width: 150,
     height: 150,

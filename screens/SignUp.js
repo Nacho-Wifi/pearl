@@ -11,6 +11,7 @@ import {
   TouchableOpacityBase,
 } from 'react-native';
 import { Link } from '@react-navigation/native';
+import LottieView from 'lottie-react-native';
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -116,11 +117,11 @@ const styles = StyleSheet.create({
     borderColor: '#FBD1B7',
     borderWidth: 2,
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-  },
+  // buttonText: {
+  //   color: 'white',
+  //   fontWeight: '700',
+  //   fontSize: 16,
+  // },
   buttonOutlineText: {
     color: '#FBD1B7',
     fontWeight: '700',
