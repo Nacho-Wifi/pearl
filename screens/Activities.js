@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
 const Activities = () => {
+  const emojiMapping = {
+    "U+1F6C0": "🛀",
+    "U+1F3A8": "🎨",
+    "U+1F4D6": "📖",
+    "U+1F9D8": "🧘",
+    "U+1F6B6": "🚶",
+    "U+1F3A7": "🎧",
+    "U+1F372": "🍲",
+    "U+1F465": "👥",
+    "U+1F6B2": "🚲",
+  }
   const navigation = useNavigation();
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
@@ -23,32 +34,33 @@ const Activities = () => {
       activities: selectedActivities,
     });
   };
-  const handleActivitySelect = (activityId) => {
+  const handleActivitySelect = (activity) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
-    if (!selectedActivities.includes(activityId)) {
-      setSelectedActivities((oldState) => [...oldState, activityId]);
+    if (!selectedActivities.includes(activity)) {
+      setSelectedActivities((oldState) => [...oldState, activity]);
     }
   };
-
   return (
     <View style={styles.container}>
-      <Text> Activities:</Text>
-      {activities.map((activity) => {
-        return (
-          <TouchableOpacity
-            key={activity.id}
-            style={styles.button}
-            onPress={() => {
-              handleActivitySelect(activity.id);
-            }}
-          >
-            <Text style={styles.buttonText}>{activity.activityName}</Text>
-          </TouchableOpacity>
-        );
-      })}
-      <TouchableOpacity style={styles.button} onPress={handleNext}>
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <Text> Activities:</Text>
+        {activities.map((activity) => {
+          return (
+            <TouchableOpacity
+              key={activity.id}
+              style={styles.button}
+              onPress={() => {
+                handleActivitySelect(activity);
+              }}
+            >
+              <Text style={styles.buttonText}>{activity.activityName} {emojiMapping[activity.emojiUnicode]}</Text>
+            </TouchableOpacity>
+          );
+        })}
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -57,9 +69,9 @@ export default Activities;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   button: {
     backgroundColor: '#0782F9',
@@ -74,5 +86,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  },
+  scrollView: {
+    backgroundColor: 'pink',
+    marginHorizontal: 0,
   },
 });
