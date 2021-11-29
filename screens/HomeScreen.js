@@ -10,6 +10,13 @@ const HomeScreen = () => {
   const leaveHomePage = () => {
     navigation.replace('Activities');
   };
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigation.replace('Login');
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <View style={styles.container}>
@@ -21,6 +28,9 @@ const HomeScreen = () => {
       />
       <TouchableOpacity style={styles.button} onPress={leaveHomePage}>
         <Text style={styles.buttonText}>Enter Journal</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+        <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
     </View>
   );
