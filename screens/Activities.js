@@ -34,16 +34,15 @@ const Activities = () => {
       activities: selectedActivities,
     });
   };
-  const handleActivitySelect = (activityId) => {
+  const handleActivitySelect = (activity) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
-    if (!selectedActivities.includes(activityId)) {
-      setSelectedActivities((oldState) => [...oldState, activityId]);
+    if (!selectedActivities.includes(activity)) {
+      setSelectedActivities((oldState) => [...oldState, activity]);
     }
   };
-
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Text> Activities:</Text>
         {activities.map((activity) => {
           return (
@@ -51,7 +50,7 @@ const Activities = () => {
               key={activity.id}
               style={styles.button}
               onPress={() => {
-                handleActivitySelect(activity.id);
+                handleActivitySelect(activity);
               }}
             >
               <Text style={styles.buttonText}>{activity.activityName} {emojiMapping[activity.emojiUnicode]}</Text>
@@ -70,9 +69,9 @@ export default Activities;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   button: {
     backgroundColor: '#0782F9',
@@ -87,5 +86,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  },
+  scrollView: {
+    backgroundColor: 'pink',
+    marginHorizontal: 0,
   },
 });

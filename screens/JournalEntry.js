@@ -48,7 +48,6 @@ const JournalEntry = ({ route }) => {
     <View style={styles.container}>
       <Text> Mood:</Text>
       {moods.map((mood) => {
-        console.log(emojiMapping[mood.imageUrl])
         return (
           <TouchableOpacity
             key={mood.id}
