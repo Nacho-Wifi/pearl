@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
+import { useDispatch } from 'react-redux';
+import { loginUser, signupUser } from '../store/user';
 import {
   StyleSheet,
   TextInput,
@@ -22,7 +23,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -31,28 +32,6 @@ const LoginScreen = () => {
     });
     return unsubscribe;
   }, []);
-
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-        console.log('Registered: ', user.email);
-        const data = {
-          email: user.email,
-        };
-        await setDoc(doc(db, 'Users', user.email), data);
-      })
-      .catch((error) => alert(error.message));
-  };
-
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('logged in with: ', user.email);
-      })
-      .catch((error) => alert(error.message));
-  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -73,11 +52,14 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => dispatch(loginUser(email, password))}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleSignUp}
+          onPress={() => dispatch(signupUser(email, password))}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
