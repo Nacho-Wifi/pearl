@@ -23,7 +23,6 @@ export const loginUser = (email, password) => {
         const userObject = await getDoc(userCollectionRef);
         if (userObject.exists()) {
           const user = userObject.data();
-          console.log('i am the user object', user);
           dispatch(setUser(user));
         } else {
           console.error('No user found');
@@ -33,7 +32,7 @@ export const loginUser = (email, password) => {
   };
 };
 
-export const signupUser = (email, password) => {
+export const signupUser = (email, password, firstName, lastName) => {
   return (dispatch) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
@@ -41,6 +40,8 @@ export const signupUser = (email, password) => {
         console.log('Registered: ', user.email);
         const data = {
           email: user.email,
+          firstName,
+          lastName,
         };
         await setDoc(doc(db, 'Users', user.email), data);
         const userEmail = userCredential.user.email;
@@ -48,7 +49,6 @@ export const signupUser = (email, password) => {
         const userObject = await getDoc(userCollectionRef);
         if (userObject.exists()) {
           const user = userObject.data();
-          console.log('i am the user data', user);
           dispatch(setUser(user));
         } else {
           console.error('No user found');

@@ -7,7 +7,6 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
-  Button,
   TouchableOpacity,
   TouchableOpacityBase,
 } from 'react-native';
@@ -61,16 +60,6 @@ const LoginScreen = () => {
           </Link>
           !
         </Text>
-        {/* <TouchableOpacity
-          onPress={() => dispatch(signupUser(email, password))}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>Register</Text>
-        </TouchableOpacity> */}
-        {/* <Button
-          title="Go to SignUp"
-          onPress={() => navigation.navigate('SignUp')}
-        /> */}
       </View>
     </KeyboardAvoidingView>
   );

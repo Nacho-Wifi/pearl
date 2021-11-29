@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser, signupUser } from '../store/user';
+import { signupUser } from '../store/user';
 import {
   StyleSheet,
   TextInput,
@@ -21,6 +21,8 @@ import {
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const dispatch = useDispatch();
 
@@ -40,17 +42,31 @@ const SignUp = () => {
           style={styles.input}
           secureTextEntry
         />
+        <TextInput
+          placeholder="FirstName"
+          value={firstName}
+          onChangeText={(text) => setFirstName(text)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="LastName"
+          value={lastName}
+          onChangeText={(text) => setLastName(text)}
+          style={styles.input}
+        />
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => dispatch(loginUser(email, password))}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
-          onPress={() => dispatch(signupUser(email, password))}
+          onPress={() =>
+            dispatch(signupUser(email, password, firstName, lastName))
+          }
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
