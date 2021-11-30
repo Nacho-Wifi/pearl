@@ -14,10 +14,6 @@ import Activities from './screens/Activities';
 import SignUp from './screens/SignUp';
 import { registerRootComponent } from 'expo';
 
-//store
-import { store } from './store';
-import { Provider } from 'react-redux';
-
 //auth
 import { auth } from './firebase';
 
@@ -51,33 +47,29 @@ export default function App() {
   if (!loggedIn) {
     return (
       <NavigationContainer>
-        <Provider store={store}>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="Login"
-              component={LoginScreen}
-            />
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="SignUp"
-              component={SignUp}
-            />
-          </Stack.Navigator>
-        </Provider>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Login"
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="SignUp"
+            component={SignUp}
+          />
+        </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   return (
     <NavigationContainer>
-      <Provider store={store}>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Activities" component={Activities} />
-          <Stack.Screen name="JournalEntry" component={JournalEntry} />
-        </Stack.Navigator>
-      </Provider>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Activities" component={Activities} />
+        <Stack.Screen name="JournalEntry" component={JournalEntry} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

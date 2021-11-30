@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { signupUser } from '../store/user';
+import React, { useState } from 'react';
+import { auth, db } from '../firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
 import {
   StyleSheet,
   TextInput,
@@ -18,8 +19,20 @@ const SignUp = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
-  const dispatch = useDispatch();
-
+  const handleSignUp = (email, password, firstName, lastName) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        console.log('Registered: ', user.email);
+        const data = {
+          email: user.email,
+          firstName,
+          lastName,
+        };
+        await setDoc(doc(db, 'Users', user.email), data);
+      })
+      .catch((error) => alert(error.message));
+  };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View>
@@ -59,9 +72,7 @@ const SignUp = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() =>
-            dispatch(signupUser(email, password, firstName, lastName))
-          }
+          onPress={() => handleSignUp(email, password, firstName, lastName)}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
