@@ -29,10 +29,16 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
     "react-native-uuid": "^2.0.1",
+    "react-native-svg": "^12.1.1",
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
     "redux-devtools-extension": "^2.13.9",
-    "rn-nodeify": "^10.3.0"
+    "rn-nodeify": "^10.3.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.4.1",
+    "rn-nodeify": "^10.3.0",
+    "victory-axis": "^36.2.0",
+    "victory-native": "^36.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

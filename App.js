@@ -13,6 +13,8 @@ import JournalEntry from './screens/JournalEntry';
 import Activities from './screens/Activities';
 import SignUp from './screens/SignUp';
 import ImageEntries from './screens/ImageEntries';
+import MoodChart from  './screens/MoodChart';
+import ActivityTracker from './screens/ActivityTracker';
 import { registerRootComponent } from 'expo';
 
 //auth
@@ -75,6 +77,8 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Activities" component={Activities} />
         <Stack.Screen name="JournalEntry" component={JournalEntry} />
+        <Stack.Screen name="MoodChart" component={MoodChart} />
+          <Stack.Screen name="ActivityTracker" component={ActivityTracker} />
       </Stack.Navigator>
     </NavigationContainer>
   );
