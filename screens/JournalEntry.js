@@ -41,7 +41,7 @@ const JournalEntry = ({ route }) => {
       createdAt: serverTimestamp(),
       userId: auth.currentUser.email,
     });
-    navigation.replace('Home');
+    navigation.replace('MoodChart');
   };
 
   return (

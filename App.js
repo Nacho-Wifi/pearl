@@ -12,6 +12,7 @@ import HomeScreen from './screens/HomeScreen';
 import JournalEntry from './screens/JournalEntry';
 import Activities from './screens/Activities';
 import SignUp from './screens/SignUp';
+import MoodChart from  './screens/MoodChart'
 import { registerRootComponent } from 'expo';
 
 //store
@@ -76,6 +77,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Activities" component={Activities} />
           <Stack.Screen name="JournalEntry" component={JournalEntry} />
+          <Stack.Screen name="MoodChart" component={MoodChart} />
         </Stack.Navigator>
       </Provider>
     </NavigationContainer>
