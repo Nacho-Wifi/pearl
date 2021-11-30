@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
@@ -41,9 +41,11 @@ const Activities = () => {
     }
   };
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <Text> Activities:</Text>
+    <SafeAreaView style={styles.container}>
+      {/* Do we even need this text here? */}
+      <Text> Activities:</Text>
+      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
           return (
             <TouchableOpacity
@@ -52,8 +54,8 @@ const Activities = () => {
               onPress={() => {
                 handleActivitySelect(activity);
               }}
-            >
-              <Text style={styles.buttonText}>{activity.activityName} {emojiMapping[activity.emojiUnicode]}</Text>
+            ><Text style={styles.buttonText}> {emojiMapping[activity.emojiUnicode]}</Text>
+              <Text style={styles.buttonText}>{activity.activityName} </Text>
             </TouchableOpacity>
           );
         })}
@@ -61,7 +63,7 @@ const Activities = () => {
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView >
   );
 };
 
@@ -71,24 +73,24 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
   },
-  button: {
-    backgroundColor: '#0782F9',
+  buttonContainer: {
     width: '60%',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 40,
+  },
+  button: {
+    backgroundColor: '#BDD8F1',
+    width: '40%',
+    padding: 15,
+    margin: 16,
+    alignItems: 'center',
+    borderRadius: 10,
   },
   buttonText: {
     color: 'white',
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 16,
-  },
-  scrollView: {
-    backgroundColor: 'pink',
-    marginHorizontal: 0,
   },
 });
