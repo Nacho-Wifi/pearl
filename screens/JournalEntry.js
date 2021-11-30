@@ -34,7 +34,6 @@ const JournalEntry = ({ route }) => {
   }, []);
 
   const setJournal = async (mood) => {
-    // pass only moodId?
     await addDoc(journalsCollectionRef, {
       mood,
       activities,
@@ -57,10 +56,6 @@ const JournalEntry = ({ route }) => {
             }}
           >
             <Text>{emojiMapping[mood.imageUrl]}</Text>
-
-            {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
-            {/* <Image source={{ content: emojiMapping[mood.imageUrl] }} /> */}
-            {/* style={{ width: 40, height: 40 }} */}
           </TouchableOpacity>
         );
       })}
@@ -77,17 +72,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#0782F9',
-    width: '60%',
+    backgroundColor: '#BDD8F1',
+    width: '24%',
     padding: 15,
     borderRadius: 10,
-    marginTop: 40,
+    margin: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-  },
+  // buttonText: {
+  //   color: 'white',
+  //   fontWeight: '700',
+  //   fontSize: 16,
+  // },
 });
