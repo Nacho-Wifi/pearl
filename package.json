@@ -36,7 +36,6 @@
     "rn-nodeify": "^10.3.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
-    "rn-nodeify": "^10.3.0",
     "victory-axis": "^36.2.0",
     "victory-native": "^36.2.0"
   },
