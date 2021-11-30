@@ -16,10 +16,6 @@ import MoodChart from  './screens/MoodChart';
 import ActivityTracker from './screens/ActivityTracker';
 import { registerRootComponent } from 'expo';
 
-//store
-import { store } from './store';
-import { Provider } from 'react-redux';
-
 //auth
 import { auth } from './firebase';
 
@@ -53,27 +49,24 @@ export default function App() {
   if (!loggedIn) {
     return (
       <NavigationContainer>
-        <Provider store={store}>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="Login"
-              component={LoginScreen}
-            />
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="SignUp"
-              component={SignUp}
-            />
-          </Stack.Navigator>
-        </Provider>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Login"
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="SignUp"
+            component={SignUp}
+          />
+        </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   return (
     <NavigationContainer>
-      <Provider store={store}>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Activities" component={Activities} />
@@ -81,7 +74,6 @@ export default function App() {
           <Stack.Screen name="MoodChart" component={MoodChart} />
           <Stack.Screen name="ActivityTracker" component={ActivityTracker} />
         </Stack.Navigator>
-      </Provider>
     </NavigationContainer>
   );
 }
