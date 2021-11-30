@@ -27,17 +27,20 @@ import {
 const { width, height } = Dimensions.get("screen");
 
 const MoodChart = () => {
-  // const { user } = useSelector((state) => state.user);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     // do something with user
-  //   }
-  // }, [user])
 
   const [entries, setEntries] = useState([]);
   const journalCollectionRef = collection(db, 'Journals');
+  let userId;
 
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) userId = user.email;
+    else {
+      console.log('no logged in user')
+    }
+  })
+
+  console.log('userId:', userId)
   useEffect(() => {
     // const getEntries = async () => {
     //   const data = await getDocs(journalCollectionRef);
@@ -48,7 +51,7 @@ const MoodChart = () => {
     // getEntries();
 
     const getUserEntries = async () => {
-      const userQuery = query(journalCollectionRef, where ("userId", "==", "margaret@margaret.com"))
+      const userQuery = query(journalCollectionRef, where ("userId", "==", userId))
       const querySnapshot = await getDocs(userQuery);
       querySnapshot.forEach((doc) => {
         console.log(doc.id, "=> ", doc.data());
@@ -67,23 +70,27 @@ const MoodChart = () => {
       "date": entry.createdAt.toDate() || "",
       "scale": entry.mood.scale || 0,
       "mood": entry.mood.name || "",
-      "activities": entry.activities|| []
+      "activity": entry.activities[0].activityName|| "",
+      "activity-emoticon": entry.activities[0].image || ""
     }
   })
 
+  let activitySelection = [...new Set(mappedEntries.map(entry => entry["activity-emoticon"]))]
+  console.log('activitySelection:', activitySelection);
   return (
     <View style={styles.container}>
           <VictoryPie
             theme={VictoryTheme.material}
-            data={mappedEntries.slice(0,5)}
+            data = {mappedEntries}
+            // data={mappedEntries.slice(0,5)}
             width={width/1.1}
             height={300}
-            x="mood"
+            x="activity-emoticon"
             y="scale"
-            innerRadius={80}
+            innerRadius={70}
             style={{ labels: {
-              fontSize: 12,
-              fill: "blue",
+              fontSize: 24,
+              //fill: "blue",
               }}}
             />
           <VictoryChart
