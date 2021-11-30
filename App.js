@@ -12,7 +12,7 @@ import HomeScreen from './screens/HomeScreen';
 import JournalEntry from './screens/JournalEntry';
 import Activities from './screens/Activities';
 import SignUp from './screens/SignUp';
-import MoodChart from  './screens/MoodChart';
+import MoodChart from './screens/MoodChart';
 import ActivityTracker from './screens/ActivityTracker';
 import { registerRootComponent } from 'expo';
 
@@ -67,13 +67,6 @@ export default function App() {
 
   return (
     <NavigationContainer>
-<<<<<<< HEAD
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Activities" component={Activities} />
-        <Stack.Screen name="JournalEntry" component={JournalEntry} />
-      </Stack.Navigator>
-=======
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Activities" component={Activities} />
@@ -81,7 +74,6 @@ export default function App() {
         <Stack.Screen name="MoodChart" component={MoodChart} />
         <Stack.Screen name="ActivityTracker" component={ActivityTracker} />
       </Stack.Navigator>
->>>>>>> 34e637db3548df4bb51fa98414da34d6e1952839
     </NavigationContainer>
   );
 }

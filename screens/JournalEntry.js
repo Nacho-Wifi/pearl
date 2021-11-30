@@ -34,12 +34,7 @@ const JournalEntry = ({ route }) => {
   }, []);
 
   const setJournal = async (mood) => {
-<<<<<<< HEAD
-    // pass only moodId?
-    let newJournal = await addDoc(journalsCollectionRef, {
-=======
     await addDoc(journalsCollectionRef, {
->>>>>>> 34e637db3548df4bb51fa98414da34d6e1952839
       mood,
       activities,
       createdAt: new Date().toDateString(),
