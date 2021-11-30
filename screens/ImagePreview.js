@@ -12,9 +12,7 @@ const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
     <View
       style={{
         backgroundColor: 'transparent',
-        flex: 1,
-        width: '100%',
-        height: '100%',
+        flex: 0.5,
       }}
     >
       <ImageBackground

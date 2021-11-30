@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import ImagePreview from './ImagePreview';
+import { ref, getDownloadURL, uploadBytes, getStorage } from 'firebase/storage';
+import { auth } from '../firebase';
+import uuid from 'react-native-uuid';
 
 const ImageEntries = () => {
   let cameraRef = useRef(null);
@@ -29,8 +32,61 @@ const ImageEntries = () => {
     const photo = await cameraRef.current.takePictureAsync();
     setPreview(true);
     setCapturedImage(photo);
+    console.log('i am the photo', photo);
   };
-  const savePhoto = () => {};
+
+  const savePhoto = async () => {
+    const imageUri = capturedImage.uri;
+    //fetch image from the uri
+    const response = await fetch(imageUri);
+    //create a blob of the image which we will then pass on to firestore and will then upload the image
+    const blob = await response.blob();
+    // var ref = firebase.storage().ref().child('my-image');
+
+    const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
+    console.log('i am the path', path);
+    const storage = getStorage();
+    const storageRef = ref(storage, path);
+    const uploadTask = uploadBytes(storageRef, blob).then((snapshot) =>
+      console.log('Upload completed!')
+    );
+
+    // const taskProgress = (snapshot) => {
+    //   console.log(`transferred: ${snapshot.bytesTransferred}`);
+    // };
+
+    // const taskCompleted = () => {
+    //   task.snapshot.ref.getDownloadURL().then((snapshot) => {
+    //     savePostData(snapshot);
+    //     console.log(snapshot);
+    //   });
+    // };
+
+    // const taskError = (snapshot) => {
+    //   console.log(snapshot);
+    // };
+    // uploadTask.on(
+    //   'state_changed',
+    //   taskProgress,
+    //   taskError,
+    //   taskCompleted
+    //   // (snapshot) => {
+    //   //   // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+    //   //   const progress =
+    //   //     (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //   //   console.log('Upload is ' + progress + '% done');
+    //   // },
+    //   // (error) => {
+    //   //   console.log(error);
+    //   // },
+    //   // () => {
+    //   //   // Upload completed successfully, now we can get the download URL
+    //   //   getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    //   //     console.log('File available at', downloadURL);
+    //   //   });
+    //   // }
+    // );
+  };
 
   const retakePhoto = () => {
     setCapturedImage(null);
@@ -112,9 +168,12 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   button: {
-    flex: 0.1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    // flex: 0.1,
+    // alignSelf: 'flex-end',
+    // alignItems: 'center',
+    marginTop: 25,
+    height: 25,
+    width: 35,
   },
   text: {
     fontSize: 18,
