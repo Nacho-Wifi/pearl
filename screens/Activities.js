@@ -74,15 +74,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
   },
-  buttonContainer: {
-    width: '60%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-  },
   button: {
     backgroundColor: '#BDD8F1',
-    width: '40%',
+    width: '60%',
     padding: 15,
     margin: 16,
     alignItems: 'center',
@@ -92,5 +86,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '600',
     fontSize: 16,
+    textAlign: 'center'
   },
 });

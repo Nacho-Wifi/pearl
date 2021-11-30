@@ -34,7 +34,6 @@ const JournalEntry = ({ route }) => {
   }, []);
 
   const setJournal = async (mood) => {
-    // pass only moodId?
     await addDoc(journalsCollectionRef, {
       mood,
       activities,
@@ -57,9 +56,6 @@ const JournalEntry = ({ route }) => {
             }}
           >
             <Text>{emojiMapping[mood.imageUrl]}</Text>
-
-            {/* <Text style={styles.buttonText}>{mood.name}</Text> */}
-            {/* style={{ width: 40, height: 40 }} */}
           </TouchableOpacity>
         );
       })}
