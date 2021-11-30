@@ -43,27 +43,23 @@ const HomeScreen = () => {
 
       const querySnapshot = await getDocs(entryQuery);
       querySnapshot.forEach((doc) => {
+        //we're setting journal entries to include an array that lists moods and activities in the user's journal entry for today
+        //then, we're setting our journalId state to the Id of today's journal entry. we need to pass both of these to the JournalEntry component if/when our user wants to update their entry
         setEntries(doc.data());
         setJournalId(doc.id);
-        // docId = doc.id;
-        // docData = doc.data();
-        // console.log(docId);
-        // console.log(docData);
       });
-      // setEntries(docData);
-      // console.log('DOCID', docId);
-      // setJournalId(docId);
-      // console.log(journalId);
-      console.log(journalEntries);
     };
     getEntries();
   }, []);
 
   const navigation = useNavigation();
 
-  const leaveHomePage = () => {
+  const makeNewEntry = () => {
     navigation.replace('Activities');
   };
+
+  const updateEntry = () => {};
+
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -83,11 +79,11 @@ const HomeScreen = () => {
       <Text>How are you feeling today?</Text>
       <>
         {journalEntries.length === 0 ? (
-          <TouchableOpacity style={styles.button} onPress={leaveHomePage}>
+          <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
             <Text style={styles.buttonText}>Enter Journal</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.button} onPress={leaveHomePage}>
+          <TouchableOpacity style={styles.button} onPress={updateEntry}>
             <Text style={styles.buttonText}>Edit Journal</Text>
           </TouchableOpacity>
         )}
