@@ -44,27 +44,25 @@ const ImageEntries = () => {
     // var ref = firebase.storage().ref().child('my-image');
 
     const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
-    console.log('i am the path', path);
     const storage = getStorage();
     const storageRef = ref(storage, path);
-    const uploadTask = uploadBytes(storageRef, blob).then((snapshot) =>
-      console.log('Upload completed!')
-    );
+    const uploadTask = uploadBytes(storageRef, blob);
+    console.log('i am uploadTask', uploadTask);
+    const taskProgress = (snapshot) => {
+      console.log(`transferred: ${snapshot.bytesTransferred}`);
+    };
 
-    // const taskProgress = (snapshot) => {
-    //   console.log(`transferred: ${snapshot.bytesTransferred}`);
-    // };
+    const taskError = (error) => {
+      console.log('Error found', error);
+    };
 
-    // const taskCompleted = () => {
-    //   task.snapshot.ref.getDownloadURL().then((snapshot) => {
-    //     savePostData(snapshot);
-    //     console.log(snapshot);
-    //   });
-    // };
+    const taskCompleted = () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        console.log('File available at', downloadURL);
+      });
+    };
 
-    // const taskError = (snapshot) => {
-    //   console.log(snapshot);
-    // };
+    uploadTask.on('state_changed', taskProgress, taskError, taskCompleted);
     // uploadTask.on(
     //   'state_changed',
     //   taskProgress,
