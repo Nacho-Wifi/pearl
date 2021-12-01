@@ -51,7 +51,7 @@ const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
                   fontSize: 20,
                 }}
               >
-                Re-take
+                Try Again
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

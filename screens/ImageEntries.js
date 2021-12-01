@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Button,
+  Platform,
+} from 'react-native';
 import { Camera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 import ImagePreview from './ImagePreview';
 import {
   ref,
@@ -15,15 +23,20 @@ import uuid from 'react-native-uuid';
 const ImageEntries = () => {
   let cameraRef = useRef(null);
   const [hasPermission, setHasPermission] = useState(null);
+  const [hasCameraRollPermission, setHasCameraRollPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [preview, setPreview] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
+    const getPermission = async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(cameraStatus.status === 'granted');
+      const cameraRollStatus =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setHasCameraRollPermission(cameraRollStatus.status === 'granted');
+    };
+    getPermission();
   }, []);
 
   if (hasPermission === null) {
@@ -75,15 +88,29 @@ const ImageEntries = () => {
     setCapturedImage(null);
     setPreview(false);
   };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    setPreview(true);
+    setCapturedImage(result);
+  };
+
   return (
     <View style={styles.container}>
-      {preview && capturedImage ? (
+      {preview && capturedImage && (
         <ImagePreview
           photo={capturedImage}
           savePhoto={savePhoto}
           retakePhoto={retakePhoto}
         />
-      ) : (
+      )}
+      {hasPermission && !preview && (
         <Camera style={styles.camera} type={type} ref={cameraRef}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -130,6 +157,12 @@ const ImageEntries = () => {
             </View>
           </View>
         </Camera>
+      )}
+      {hasCameraRollPermission && !preview && (
+        <Button
+          title="Or pick an image from camera roll!"
+          onPress={pickImage}
+        />
       )}
     </View>
   );
