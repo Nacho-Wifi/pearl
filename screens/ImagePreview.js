@@ -70,7 +70,7 @@ const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
                   fontSize: 20,
                 }}
               >
-                save photo
+                Save Photo!
               </Text>
             </TouchableOpacity>
           </View>

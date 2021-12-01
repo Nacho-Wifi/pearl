@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
-
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { StyleSheet, View, Dimensions } from 'react-native';
@@ -19,7 +18,7 @@ import {
   VictoryPie,
   VictoryArea,
   VictoryAxis,
-  // VictoryLabel
+  VictoryLabel,
 } from 'victory-native';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
 

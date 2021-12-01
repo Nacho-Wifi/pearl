@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 
-const Activities = () => {
+const Activities = ({ route }) => {
   const emojiMapping = {
     "U+1F6C0": "🛀",
     "U+1F3A8": "🎨",
@@ -17,6 +17,7 @@ const Activities = () => {
     "U+1F6B2": "🚲",
   }
   const navigation = useNavigation();
+  const journalId = route.params;
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
   const activitiesCollectionRef = collection(db, 'Activities');
@@ -32,6 +33,7 @@ const Activities = () => {
     navigation.navigate('JournalEntry', {
       //pass down selected Activities as props to the moods/journal entry component
       activities: selectedActivities,
+      journalId: journalId,
     });
   };
   const handleActivitySelect = (activity) => {
