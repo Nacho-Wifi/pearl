@@ -38,7 +38,6 @@ const ImageEntries = () => {
     const photo = await cameraRef.current.takePictureAsync();
     setPreview(true);
     setCapturedImage(photo);
-    console.log('i am the photo', photo);
   };
 
   const savePhoto = async () => {
