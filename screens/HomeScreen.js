@@ -12,7 +12,6 @@ import {
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
 import { doc, collection, query, where, getDocs } from 'firebase/firestore';
-import Icon from 'react-native-ico-material-design';
 import { StatusBar } from 'expo-status-bar';
 
 const HomeScreen = () => {
@@ -20,8 +19,6 @@ const HomeScreen = () => {
   const [journalId, setJournalId] = useState('');
   const journalEntriesCollectionRef = collection(db, 'Journals');
   let userId;
-  let docId;
-  let docData;
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
@@ -93,14 +90,7 @@ const HomeScreen = () => {
       </TouchableOpacity>
       <View style={styles.NavContainer}>
         <View style={styles.NavBar}>
-          <Pressable style={styles.IconBehave} onPress={() => {}}>
-            <Icon
-              name="favorite-heart-button"
-              height={40}
-              width={40}
-              color={'white'}
-            />
-          </Pressable>
+          <Pressable style={styles.IconBehave} onPress={() => {}}></Pressable>
         </View>
       </View>
     </View>

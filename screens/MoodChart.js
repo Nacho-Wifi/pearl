@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/core";
-import { useSelector } from "react-redux";
-import { auth, db } from "../firebase";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { StyleSheet, View, Dimensions } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/core';
+import { useSelector } from 'react-redux';
+import { auth, db } from '../firebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import {
   doc,
   addDoc,
@@ -12,29 +12,29 @@ import {
   collection,
   where,
   query,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 import {
   VictoryChart,
   VictoryTheme,
   VictoryPie,
   VictoryArea,
   VictoryAxis,
-  // VictoryLabel
-} from "victory-native";
-import { Defs, LinearGradient, Stop } from "react-native-svg";
+  VictoryLabel,
+} from 'victory-native';
+import { Defs, LinearGradient, Stop } from 'react-native-svg';
 
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get('screen');
 
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
-  const journalCollectionRef = collection(db, "Journals");
+  const journalCollectionRef = collection(db, 'Journals');
   let userId;
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     if (user) userId = user.email;
     else {
-      console.log("no logged in user");
+      console.log('no logged in user');
     }
   });
 
@@ -42,7 +42,7 @@ const MoodChart = () => {
     const getUserEntries = async () => {
       const userQuery = query(
         journalCollectionRef,
-        where("userId", "==", userId)
+        where('userId', '==', userId)
       );
       const querySnapshot = await getDocs(userQuery);
       setEntries(
@@ -54,16 +54,16 @@ const MoodChart = () => {
 
   let mappedEntries = entries.map((entry) => {
     return {
-      date: entry.createdAt.toDate() || "",
+      date: entry.createdAt.toDate() || '',
       scale: entry.mood.scale || 0,
-      mood: entry.mood.name || "",
+      mood: entry.mood.name || '',
       activities: entry.activities || [],
     };
   });
 
   return (
     <View style={styles.container}>
-      <VictoryChart theme={VictoryTheme.material} scale={{ x: "time" }}>
+      <VictoryChart theme={VictoryTheme.material} scale={{ x: 'time' }}>
         <Defs>
           <LinearGradient id="gradientStroke">
             <Stop offset="25%" stopColor="orange" />
@@ -73,7 +73,7 @@ const MoodChart = () => {
           </LinearGradient>
         </Defs>
         <VictoryArea
-          style={{ data: { fill: "url(#gradientStroke)" } }}
+          style={{ data: { fill: 'url(#gradientStroke)' } }}
           data={mappedEntries}
           x="date"
           y="scale"
@@ -85,9 +85,9 @@ const MoodChart = () => {
 
         <VictoryAxis
           style={{
-            axis: { stroke: "none" },
+            axis: { stroke: 'none' },
             tickLabels: {
-              fill: "grey",
+              fill: 'grey',
             },
           }}
           //label="Date"
@@ -95,8 +95,8 @@ const MoodChart = () => {
         <VictoryAxis
           dependentAxis
           style={{
-            axis: { stroke: "none" },
-            tickLabels: { fill: "none" },
+            axis: { stroke: 'none' },
+            tickLabels: { fill: 'none' },
           }}
           label="Mood"
         />
@@ -109,7 +109,7 @@ export default MoodChart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
