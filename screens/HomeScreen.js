@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
   Pressable,
+  Image,
+  Icon,
 } from 'react-native';
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
@@ -15,8 +17,8 @@ import { doc, collection, query, where, getDocs } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 
 const HomeScreen = () => {
-  const [journalEntries, setEntries] = useState([]);
-  const [journalId, setJournalId] = useState('');
+  const [journalEntries, setEntries] = useState();
+  const [journalId, setJournalId] = useState();
   const journalEntriesCollectionRef = collection(db, 'Journals');
   let userId;
 
@@ -29,24 +31,32 @@ const HomeScreen = () => {
   });
 
   useEffect(() => {
-    const getEntries = async () => {
-      let today = new Date().toDateString();
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userId = user.email;
+        const getEntries = async () => {
+          let today = new Date().toDateString();
 
-      const entryQuery = query(
-        journalEntriesCollectionRef,
-        where('userId', '==', userId),
-        where('createdAt', '==', today)
-      );
+          const entryQuery = query(
+            journalEntriesCollectionRef,
+            where('userId', '==', userId),
+            where('createdAt', '==', today)
+          );
 
-      const querySnapshot = await getDocs(entryQuery);
-      querySnapshot.forEach((doc) => {
-        //we're setting journal entries to include an array that lists moods and activities in the user's journal entry for today
-        //then, we're setting our journalId state to the Id of today's journal entry. we need to pass both of these to the JournalEntry component if/when our user wants to update their entry
-        setEntries(doc.data());
-        setJournalId(doc.id);
-      });
-    };
-    getEntries();
+          const querySnapshot = await getDocs(entryQuery);
+          querySnapshot.forEach((doc) => {
+            //we're setting journal entries to include an array that lists moods and activities in the user's journal entry for today
+            //then, we're setting our journalId state to the Id of today's journal entry. we need to pass both of these to the JournalEntry component if/when our user wants to update their entry
+            setEntries(doc.data());
+            setJournalId(doc.id);
+          });
+        };
+        getEntries();
+      } else {
+        console.log('no logged in user');
+      }
+    });
   }, []);
 
   const navigation = useNavigation();
@@ -55,7 +65,12 @@ const HomeScreen = () => {
     navigation.replace('Activities');
   };
 
-  const updateEntry = () => {};
+  const updateEntry = () => {
+    navigation.navigate('Activities', {
+      journalEntries,
+      journalId,
+    });
+  };
 
   const handleSignOut = () => {
     signOut(auth)
@@ -67,6 +82,16 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../assets/icons/user.png')}
+        style={{
+          position: 'absolute',
+          left: 5,
+          top: 5,
+          height: 40,
+          width: 40,
+        }}
+      />
       <LottieView
         source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
         autoPlay
@@ -75,7 +100,7 @@ const HomeScreen = () => {
       />
       <Text>How are you feeling today?</Text>
       <>
-        {journalEntries.length === 0 ? (
+        {!journalEntries ? (
           <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
             <Text style={styles.buttonText}>Enter Journal</Text>
           </TouchableOpacity>
@@ -88,11 +113,11 @@ const HomeScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handleSignOut}>
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
-      <View style={styles.NavContainer}>
+      {/* <View style={styles.NavContainer}>
         <View style={styles.NavBar}>
           <Pressable style={styles.IconBehave} onPress={() => {}}></Pressable>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

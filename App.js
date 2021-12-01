@@ -15,6 +15,8 @@ import SignUp from './screens/SignUp';
 import MoodChart from './screens/MoodChart';
 import ActivityTracker from './screens/ActivityTracker';
 import { registerRootComponent } from 'expo';
+import Tabs from './navigation/tabs';
+import { MainStackNavigator } from './navigation/stacks';
 
 //auth
 import { auth } from './firebase';
@@ -66,14 +68,18 @@ export default function App() {
   }
 
   return (
+    /* <NavigationContainer>
+        <MainStackNavigator /> */
+    /* <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Activities" component={Activities} />
+          <Stack.Screen name="JournalEntry" component={JournalEntry} />
+          <Stack.Screen name="MoodChart" component={MoodChart} />
+          <Stack.Screen name="ActivityTracker" component={ActivityTracker} />
+        </Stack.Navigator> */
+    /* </NavigationContainer> */
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Activities" component={Activities} />
-        <Stack.Screen name="JournalEntry" component={JournalEntry} />
-        <Stack.Screen name="MoodChart" component={MoodChart} />
-        <Stack.Screen name="ActivityTracker" component={ActivityTracker} />
-      </Stack.Navigator>
+      <Tabs />
     </NavigationContainer>
   );
 }
