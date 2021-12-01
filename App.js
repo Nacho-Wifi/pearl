@@ -6,15 +6,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//screens
+//screens (many are held in a component rendered by tabs - please see tabs.js under navigation)
 import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
-import JournalEntry from './screens/JournalEntry';
-import Activities from './screens/Activities';
 import SignUp from './screens/SignUp';
-import MoodChart from  './screens/MoodChart';
-import ActivityTracker from './screens/ActivityTracker';
 import { registerRootComponent } from 'expo';
+import Tabs from './navigation/tabs';
 
 //auth
 import { auth } from './firebase';
@@ -67,13 +63,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Activities" component={Activities} />
-          <Stack.Screen name="JournalEntry" component={JournalEntry} />
-          <Stack.Screen name="MoodChart" component={MoodChart} />
-          <Stack.Screen name="ActivityTracker" component={ActivityTracker} />
-        </Stack.Navigator>
+      <Tabs />
     </NavigationContainer>
   );
 }

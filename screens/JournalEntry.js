@@ -13,12 +13,12 @@ import {
 
 const JournalEntry = ({ route }) => {
   const emojiMapping = {
-    "U+1F622": "😢",
-    "U+1F614": "😔",
-    "U+1F610": "😐",
-    "U+1F60C": "😌",
-    "U+1F601": "😁",
-  }
+    'U+1F622': '😢',
+    'U+1F614': '😔',
+    'U+1F610': '😐',
+    'U+1F60C': '😌',
+    'U+1F601': '😁',
+  };
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
   const { activities, journalId } = route.params;

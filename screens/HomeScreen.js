@@ -8,6 +8,11 @@ import {
   TouchableOpacity,
   View,
   Pressable,
+<<<<<<< HEAD
+=======
+  Image,
+  Icon,
+>>>>>>> 9c078a053a3559c978a0c74b41a727afd8330b32
 } from 'react-native';
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
@@ -15,40 +20,41 @@ import { doc, collection, query, where, getDocs } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 
 const HomeScreen = () => {
-  const [journalEntries, setEntries] = useState([]);
-  const [journalId, setJournalId] = useState('');
+  const [journalEntries, setEntries] = useState();
+  const [journalId, setJournalId] = useState();
   const journalEntriesCollectionRef = collection(db, 'Journals');
   let userId;
-  let docId;
-  let docData;
-
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) userId = user.email;
-    else {
-      console.log('no logged in user');
-    }
-  });
 
   useEffect(() => {
-    const getEntries = async () => {
-      let today = new Date().toDateString();
+    //this is all inside useEffect because we DON'T want the edit or enter journal button to load until we have data on the user
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userId = user.email;
 
-      const entryQuery = query(
-        journalEntriesCollectionRef,
-        where('userId', '==', userId),
-        where('createdAt', '==', today)
-      );
+        //once we have the user info, check if that user has an entry for today ... date is set to string to make it comparable to what we have placed in firebase
+        const getEntries = async () => {
+          let today = new Date().toDateString();
 
-      const querySnapshot = await getDocs(entryQuery);
-      querySnapshot.forEach((doc) => {
-        //we're setting journal entries to include an array that lists moods and activities in the user's journal entry for today
-        //then, we're setting our journalId state to the Id of today's journal entry. we need to pass both of these to the JournalEntry component if/when our user wants to update their entry
-        setEntries(doc.data());
-        setJournalId(doc.id);
-      });
-    };
-    getEntries();
+          const entryQuery = query(
+            journalEntriesCollectionRef,
+            where('userId', '==', userId),
+            where('createdAt', '==', today)
+          );
+
+          const querySnapshot = await getDocs(entryQuery);
+          querySnapshot.forEach((doc) => {
+            //we're setting journal entries to include an array that lists moods and activities in the user's journal entry for today
+            //then, we're setting our journalId state to the Id of today's journal entry. we need to pass both of these to the JournalEntry component if/when our user wants to update their entry
+            setEntries(doc.data());
+            setJournalId(doc.id);
+          });
+        };
+        getEntries();
+      } else {
+        console.log('no logged in user');
+      }
+    });
   }, []);
 
   const navigation = useNavigation();
@@ -59,8 +65,13 @@ const HomeScreen = () => {
 
   const updateEntry = () => {
     navigation.navigate('Activities', {
+<<<<<<< HEAD
       //pass down journalId as props to the Activities component
       journalId: journalId,
+=======
+      journalEntries,
+      journalId,
+>>>>>>> 9c078a053a3559c978a0c74b41a727afd8330b32
     });
   };
 
@@ -74,15 +85,25 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../assets/icons/user.png')}
+        style={{
+          position: 'absolute',
+          left: 5,
+          top: 5,
+          height: 40,
+          width: 40,
+        }}
+      />
       <LottieView
-        // source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
+        source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
         autoPlay
         loop
         style={styles.lottiePearl}
       />
       <Text>How are you feeling today?</Text>
       <>
-        {journalEntries.length === 0 ? (
+        {!journalEntries ? (
           <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
             <Text style={styles.buttonText}>Enter Journal</Text>
           </TouchableOpacity>
