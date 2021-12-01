@@ -8,11 +8,8 @@ import {
   TouchableOpacity,
   View,
   Pressable,
-<<<<<<< HEAD
-=======
   Image,
   Icon,
->>>>>>> 9c078a053a3559c978a0c74b41a727afd8330b32
 } from 'react-native';
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
@@ -65,13 +62,8 @@ const HomeScreen = () => {
 
   const updateEntry = () => {
     navigation.navigate('Activities', {
-<<<<<<< HEAD
-      //pass down journalId as props to the Activities component
-      journalId: journalId,
-=======
       journalEntries,
       journalId,
->>>>>>> 9c078a053a3559c978a0c74b41a727afd8330b32
     });
   };
 
@@ -116,11 +108,6 @@ const HomeScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handleSignOut}>
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
-      <View style={styles.NavContainer}>
-        <View style={styles.NavBar}>
-          <Pressable style={styles.IconBehave} onPress={() => { }}></Pressable>
-        </View>
-      </View>
     </View>
   );
 };

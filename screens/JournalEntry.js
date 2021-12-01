@@ -35,10 +35,7 @@ const JournalEntry = ({ route }) => {
   }, []);
 
   const setJournal = async (mood) => {
-    // Find doc by journalId
-    // console.log("JOURNALID: ", journalId)
     // If journalId is undefined, create a new journal entry
-    // console.log(journalId === undefined)
     if (!journalId) {
       await addDoc(journalsCollectionRef, {
         mood,
@@ -48,7 +45,7 @@ const JournalEntry = ({ route }) => {
       });
       // Otherwise, update the exisiting journal entry
     } else {
-      console.log('JOURNAL ALREADY EXISTS, JOURNALID: ', journalId.journalId)
+      // console.log('JOURNAL ALREADY EXISTS, JOURNALID: ', journalId.journalId)
       await setDoc(doc(db, "Journals", journalId.journalId), {
         mood,
         activities,
@@ -56,32 +53,7 @@ const JournalEntry = ({ route }) => {
         userId: auth.currentUser.email,
       });
     }
-
-
-    // const docRef = doc(db, "Journals", journalId.journalId);
-    // const docSnap = await getDoc(docRef);
-
-    // console.log(docSnap.exists())
-    // if (docSnap.exists()) {
-    //   // If doc exists, update doc
-    //   const updatedDoc = await setDoc(doc(db, "Journals", journalId.journalId), {
-    //     mood,
-    //     activities,
-    //     createdAt: new Date().toDateString(),
-    //     userId: auth.currentUser.email,
-    //   });
-    //   // console.log(updatedDoc)
-    //   // console.log("Document data:", docSnap.data());
-    //   // Otherwise, create new doc
-    // } else {
-    //   await addDoc(journalsCollectionRef, {
-    //     mood,
-    //     activities,
-    //     createdAt: new Date().toDateString(),
-    //     userId: auth.currentUser.email,
-    //   });
-    //   // }
-    navigation.replace('Home');
+    navigation.replace('HomeScreen');
   };
 
   return (
