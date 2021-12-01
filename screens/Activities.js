@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaVi
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
+import { color } from 'react-native-reanimated';
 
 const Activities = ({ route }) => {
   const emojiMapping = {
@@ -21,8 +22,6 @@ const Activities = ({ route }) => {
   // State
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
-  const [isActivitySelected, setIsActivitySelected] = useState(false);
-  const [selectedActivityId, setSelectedActivityId] = useState('');
 
   const activitiesCollectionRef = collection(db, 'Activities');
   useEffect(() => {
@@ -45,31 +44,25 @@ const Activities = ({ route }) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
     if (!selectedActivities.includes(activity)) {
       setSelectedActivities((oldState) => [...oldState, activity]);
+    } else {
+      // If user selects the activity again, it will remove it from the selectedActivities state array
+      setSelectedActivities(selectedActivities.filter(current => activity !== current))
     }
   };
-  //
-  // function selectedBtn(id) {
-  //   const newData = [...data];
-  //   newData[index].isSelected = newData[index].isSelected ? false : true;
-  //   setData(newData);
-  // }
-  //
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Do we even need this text here? */}
-      <Text> Activities:</Text>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
-          console.log(selectedActivityId)
+          // console.log('CURRENT ACTIVITIES: ', selectedActivities)
           return (
             <TouchableOpacity
               key={activity.id}
-              style={selectedActivityId === activity.id ? styles.selectedButton : styles.button}
+              // Check if activity is in selectedActivities array - if it is make it darker
+              style={selectedActivities.includes(activity) ? [styles.selectedButton, styles.selectedButtonText] : styles.button}
               onPress={() => {
                 handleActivitySelect(activity);
-                setSelectedActivityId(activity.id);
-                setIsActivitySelected(true); // this indicates that an activity button has been selected so it can change color
               }}
             ><Text style={styles.buttonText}> {emojiMapping[activity.emojiUnicode]}</Text>
               <Text style={styles.buttonText}>{activity.activityName} </Text>
@@ -106,11 +99,13 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   selectedButton: {
-    backgroundColor: 'pink',
+    backgroundColor: '#7bb6ed', // Temporary!
     width: '60%',
-    padding: 15,
     margin: 16,
+    padding: 15,
     alignItems: 'center',
+    borderColor: '#BDD8F1',
+    borderWidth: 2,
     borderRadius: 10,
-  }
+  },
 });
