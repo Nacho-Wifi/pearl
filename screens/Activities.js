@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     margin: 16,
     padding: 15,
     alignItems: 'center',
-    borderColor: '#BDD8F1',
-    borderWidth: 2,
+    // borderColor: '#BDD8F1',
+    // borderWidth: 2,
     borderRadius: 10,
   },
 });
