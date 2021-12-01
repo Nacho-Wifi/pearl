@@ -54,12 +54,38 @@ const MoodChart = () => {
       );
     };
     getUserEntries();
+
   }, []);
 
+  // const monthToNum =  {
+  //   "Jan": "01",
+  //   "Feb": "02",
+  //   "Mar": "03",
+  //   "Apr": "04",
+  //   "May": "05",
+  //   "Jun": "06",
+  //   "Jul": "07",
+  //   "Aug": "08",
+  //   "Sep": "09",
+  //   "Oct": "10",
+  //   "Nov": "11",
+  //   "Dec": "12"
+  // }
+
+  // function convertToDate(string) {
+  //   let year = string.slice(-4);
+  //   let day = string.slice(8, 10);
+  //   let monthToConvert = string.slice(4,7);
+  //   let month = monthToNum[monthToConvert];
+  //   let newStringDate = `${year}-${month}-${day}`;
+  //   let date = new Date(newStringDate);
+  //   return date;
+  // }
+
   let mappedEntries = entries.map((entry) => {
-    // console.log('created at:', entry.createdAt)
+    console.log('entry', entry)
     return {
-      date: entry.createdAt.toDate() || '',
+      date: new Date(entry.createdAt) || '',
       scale: entry.mood.scale || 0,
       mood: entry.mood.name || '',
       activities: entry.activities || [],
@@ -98,8 +124,8 @@ const MoodChart = () => {
             },
           }}
           //label="Date"
-        />
-        <VictoryAxis
+        /> */}
+        {/* <VictoryAxis
           dependentAxis
           style={{
             axis: { stroke: 'none' },
