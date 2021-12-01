@@ -23,8 +23,6 @@ const MainStackNavigator = () => {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="Activities" component={Activities} />
       <Stack.Screen name="JournalEntry" component={JournalEntry} />
-      {/* <Stack.Screen name="MoodChart" component={MoodChart} />
-      <Stack.Screen name="ActivityTracker" component={ActivityTracker} /> */}
     </Stack.Navigator>
   );
 };

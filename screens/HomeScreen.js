@@ -15,10 +15,12 @@ import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
 import { doc, collection, query, where, getDocs } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
+import { set } from 'react-native-reanimated';
 
 const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
   const [journalId, setJournalId] = useState();
+  const [loading, setLoading] = useState(false);
   const journalEntriesCollectionRef = collection(db, 'Journals');
   let userId;
 
@@ -26,6 +28,7 @@ const HomeScreen = () => {
     //this is all inside useEffect because we DON'T want the edit or enter journal button to load until we have data on the user
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
+      setLoading(true);
       if (user) {
         userId = user.email;
 
@@ -46,6 +49,7 @@ const HomeScreen = () => {
             setEntries(doc.data());
             setJournalId(doc.id);
           });
+          setLoading(false);
         };
         getEntries();
       } else {
@@ -60,6 +64,7 @@ const HomeScreen = () => {
     navigation.replace('Activities');
   };
 
+  //updateEntry passes the data we got here on journalEntries and journalId so activities has that info when it loads; then it can easily access the user's open journal & show what the user has already submitted for the day
   const updateEntry = () => {
     navigation.navigate('Activities', {
       journalEntries,
@@ -75,41 +80,48 @@ const HomeScreen = () => {
       .catch((error) => alert(error.message));
   };
 
-  return (
-    <View style={styles.container}>
-      <Image
-        source={require('../assets/icons/user.png')}
-        style={{
-          position: 'absolute',
-          left: 5,
-          top: 5,
-          height: 40,
-          width: 40,
-        }}
-      />
-      <LottieView
-        source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
-        autoPlay
-        loop
-        style={styles.lottiePearl}
-      />
-      <Text>How are you feeling today?</Text>
-      <>
-        {!journalEntries ? (
-          <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
-            <Text style={styles.buttonText}>Enter Journal</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button} onPress={updateEntry}>
-            <Text style={styles.buttonText}>Edit Journal</Text>
-          </TouchableOpacity>
-        )}
-      </>
-      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-        <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  console.log('THIS IS LOADING', loading),
+    'THIS IS JOURNAL ENTRIES',
+    journalEntries;
+  if (!loading) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={require('../assets/icons/user.png')}
+          style={{
+            position: 'absolute',
+            left: 5,
+            top: 5,
+            height: 40,
+            width: 40,
+          }}
+        />
+        <LottieView
+          source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
+          autoPlay
+          loop
+          style={styles.lottiePearl}
+        />
+        <Text>How are you feeling today?</Text>
+        <>
+          {!journalEntries ? (
+            <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
+              <Text style={styles.buttonText}>Enter Journal</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.button} onPress={updateEntry}>
+              <Text style={styles.buttonText}>Edit Journal</Text>
+            </TouchableOpacity>
+          )}
+        </>
+        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+          <Text style={styles.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  } else {
+    return <View></View>;
+  }
 };
 
 export default HomeScreen;
