@@ -4,6 +4,7 @@ import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import JournalEntry from '../screens/JournalEntry';
 import Activities from '../screens/Activities';
+import ImageEntries from '../screens/ImageEntries';
 import SignUp from '../screens/SignUp';
 import MoodChart from '../screens/MoodChart';
 import ActivityTracker from '../screens/ActivityTracker';
@@ -15,11 +16,12 @@ const Stack = createNativeStackNavigator();
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="ImageEntries" //was HomeScreen
       screenOptions={{
         headerShown: false,
       }}
     >
+      <Stack.Screen name="ImageEntries" component={ImageEntries} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="Activities" component={Activities} />
       <Stack.Screen name="JournalEntry" component={JournalEntry} />
