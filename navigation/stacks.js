@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import JournalEntry from '../screens/JournalEntry';
 import Activities from '../screens/Activities';
 import ImageEntries from '../screens/ImageEntries';
+import TextEntry from '../screens/TextEntry';
 import SignUp from '../screens/SignUp';
 import MoodChart from '../screens/MoodChart';
 import ActivityTracker from '../screens/ActivityTracker';
@@ -25,6 +26,7 @@ const MainStackNavigator = () => {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="Activities" component={Activities} />
       <Stack.Screen name="JournalEntry" component={JournalEntry} />
+      <Stack.Screen name="TextEntry" component={TextEntry} />
       {/* <Stack.Screen name="MoodChart" component={MoodChart} />
       <Stack.Screen name="ActivityTracker" component={ActivityTracker} /> */}
     </Stack.Navigator>

@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   ImageBackground,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
-
+import { useNavigation } from '@react-navigation/core';
 const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
+  const navigation = useNavigation();
+  const handleUsePhoto = () => {
+    navigation.navigate('TextEntry', {
+      photo,
+    });
+  };
+
   return (
-    <View
+    <SafeAreaView
       style={{
         backgroundColor: 'transparent',
         flex: 0.5,
@@ -55,7 +63,7 @@ const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={savePhoto}
+              onPress={handleUsePhoto}
               style={{
                 width: 130,
                 height: 40,
@@ -70,13 +78,13 @@ const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
                   fontSize: 20,
                 }}
               >
-                Save Photo!
+                Use Photo!
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 };
 

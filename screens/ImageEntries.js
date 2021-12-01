@@ -90,14 +90,13 @@ const ImageEntries = () => {
   };
 
   const pickImage = async () => {
+    setPreview(true);
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
-    setPreview(true);
     setCapturedImage(result);
   };
 
@@ -110,7 +109,7 @@ const ImageEntries = () => {
           retakePhoto={retakePhoto}
         />
       )}
-      {hasPermission && !preview && (
+      {hasPermission && !preview && !capturedImage && (
         <Camera style={styles.camera} type={type} ref={cameraRef}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -158,7 +157,7 @@ const ImageEntries = () => {
           </View>
         </Camera>
       )}
-      {hasCameraRollPermission && !preview && (
+      {hasCameraRollPermission && !preview && !capturedImage && (
         <Button
           title="Or pick an image from camera roll!"
           onPress={pickImage}
@@ -173,7 +172,6 @@ export default ImageEntries;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     justifyContent: 'center',
   },
   camera: {
