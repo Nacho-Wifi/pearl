@@ -23,6 +23,7 @@ const JournalEntry = ({ route }) => {
   //this route.params gives us access to the props passed down by our Activities component using react navigation
   const { activities, journalId } = route.params;
   const [moods, setMoods] = useState([]);
+  const [photoEntry, setPhotoEntry] = useState(null);
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
@@ -33,7 +34,11 @@ const JournalEntry = ({ route }) => {
     };
     getMoods();
   }, []);
-
+  const handleOptionalEntry = () => {
+    navigation.navigate('TextEntry', {
+      photo: photoEntry,
+    });
+  };
   const setJournal = async (mood) => {
     // If journalId is undefined, create a new journal entry
     if (!journalId) {
@@ -45,8 +50,8 @@ const JournalEntry = ({ route }) => {
       });
       // Otherwise, update the exisiting journal entry
     } else {
-      console.log('ACTIVITIES: ', activities)
-      await setDoc(doc(db, "Journals", journalId.journalId), {
+      console.log('ACTIVITIES: ', activities);
+      await setDoc(doc(db, 'Journals', journalId.journalId), {
         mood,
         activities, // an array of objects of the activities
         createdAt: new Date().toDateString(),
@@ -72,6 +77,9 @@ const JournalEntry = ({ route }) => {
           </TouchableOpacity>
         );
       })}
+      <TouchableOpacity style={styles.button} onPress={handleOptionalEntry}>
+        <Text>Optional Text Entry</Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -12,22 +12,26 @@ import {
   Button,
 } from 'react-native';
 import { Link } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/core';
 
 const TextEntry = ({ route }) => {
   const [inputText, setInputText] = useState('');
   // const [currentImage, setCurrentImage] = useState('');
   const { photo } = route.params;
-
-  //using currentImage to keep track of whether or not there is a photo object,
-  //by having this state, we allow users to delete their image in the TextEntry page with the option of just
-  //writing a text entry without having to leave the component
-  // useEffect(() => {
-  //   setCurrentImage(photo.uri);
-  // }, []);
+  const navigation = useNavigation();
   const handleCancel = () => {
+    //navigates back to JournalEntry with the photo.uri and text input set to null
     console.log(
       'Maybe if the user does not want to make a text post, nagivate back to journalEntry component'
     );
+  };
+
+  const handleSubmit = () => {
+    //navigates back to JournalEntry with the photo.uri and text input as params
+    navigation.navigate('JournalEntry', {
+      photoURI: photo.uri,
+      inputText,
+    });
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -72,7 +76,7 @@ const TextEntry = ({ route }) => {
                   }}
                 >
                   <Button title="Cancel" onPress={handleCancel} />
-                  <Button title="Submit" onPress={() => null} />
+                  <Button title="Submit" onPress={handleSubmit} />
                 </View>
                 <View style={{ alignItems: 'center' }}>
                   <Image

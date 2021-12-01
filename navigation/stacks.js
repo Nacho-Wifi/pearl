@@ -17,13 +17,13 @@ const Stack = createNativeStackNavigator();
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="ImageEntries" //was HomeScreen
+      initialRouteName="HomeScreen" //was HomeScreen
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="ImageEntries" component={ImageEntries} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="ImageEntries" component={ImageEntries} />
       <Stack.Screen name="Activities" component={Activities} />
       <Stack.Screen name="JournalEntry" component={JournalEntry} />
       <Stack.Screen name="TextEntry" component={TextEntry} />
