@@ -40,7 +40,7 @@ const JournalEntry = ({ route }) => {
       createdAt: new Date().toDateString(),
       userId: auth.currentUser.email,
     });
-    navigation.replace('Home');
+    navigation.replace('HomeScreen');
   };
 
   return (

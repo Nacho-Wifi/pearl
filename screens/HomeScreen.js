@@ -22,19 +22,14 @@ const HomeScreen = () => {
   const journalEntriesCollectionRef = collection(db, 'Journals');
   let userId;
 
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) userId = user.email;
-    else {
-      console.log('no logged in user');
-    }
-  });
-
   useEffect(() => {
+    //this is all inside useEffect because we DON'T want the edit or enter journal button to load until we have data on the user
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         userId = user.email;
+
+        //once we have the user info, check if that user has an entry for today ... date is set to string to make it comparable to what we have placed in firebase
         const getEntries = async () => {
           let today = new Date().toDateString();
 
@@ -113,11 +108,6 @@ const HomeScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handleSignOut}>
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
-      {/* <View style={styles.NavContainer}>
-        <View style={styles.NavBar}>
-          <Pressable style={styles.IconBehave} onPress={() => {}}></Pressable>
-        </View>
-      </View> */}
     </View>
   );
 };
@@ -148,19 +138,5 @@ const styles = StyleSheet.create({
   lottiePearl: {
     width: 200,
     height: 200,
-  },
-  NavContainer: {
-    position: 'absolute',
-    alignItems: 'center',
-    bottom: 20,
-  },
-  NavBar: {
-    flexDirection: 'row',
-    backgroundColor: '#FBD1B7',
-    width: '100%',
-    justifyContent: 'space-evenly',
-  },
-  IconBehave: {
-    padding: 14,
   },
 });

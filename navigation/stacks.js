@@ -15,12 +15,12 @@ const Stack = createNativeStackNavigator();
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeScreen"
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="Activities" component={Activities} />
       <Stack.Screen name="JournalEntry" component={JournalEntry} />
       {/* <Stack.Screen name="MoodChart" component={MoodChart} />
