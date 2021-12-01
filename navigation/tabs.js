@@ -49,7 +49,7 @@ const Tabs = () => {
       ></Tab.Screen>
       <Tab.Screen
         name="DataViz"
-        component={ActivityTracker}
+        component={MoodChart}
         options={{
           tabBarLabel: 'My Data',
           tabBarIcon: ({ focused, color, size }) => (
