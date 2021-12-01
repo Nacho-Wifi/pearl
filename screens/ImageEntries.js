@@ -46,23 +46,23 @@ const ImageEntries = () => {
     const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
     const storage = getStorage();
     const storageRef = ref(storage, path);
-    const uploadTask = uploadBytes(storageRef, blob);
+    const uploadTask = await uploadBytes(storageRef, blob);
     console.log('i am uploadTask', uploadTask);
-    const taskProgress = (snapshot) => {
-      console.log(`transferred: ${snapshot.bytesTransferred}`);
-    };
+    // const taskProgress = (snapshot) => {
+    //   console.log(`transferred: ${snapshot.bytesTransferred}`);
+    // };
 
-    const taskError = (error) => {
-      console.log('Error found', error);
-    };
+    // const taskError = (error) => {
+    //   console.log('Error found', error);
+    // };
 
-    const taskCompleted = () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        console.log('File available at', downloadURL);
-      });
-    };
+    // const taskCompleted = () => {
+    //   getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    //     console.log('File available at', downloadURL);
+    //   });
+    // };
 
-    uploadTask.on('state_changed', taskProgress, taskError, taskCompleted);
+    // uploadTask.on('state_changed', taskProgress, taskError, taskCompleted);
     // uploadTask.on(
     //   'state_changed',
     //   taskProgress,
