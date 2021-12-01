@@ -18,8 +18,12 @@ const Activities = ({ route }) => {
   }
   const navigation = useNavigation();
   const journalId = route.params;
+  // State
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const [isActivitySelected, setIsActivitySelected] = useState(false);
+  const [selectedActivityId, setSelectedActivityId] = useState('');
+
   const activitiesCollectionRef = collection(db, 'Activities');
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
@@ -30,6 +34,7 @@ const Activities = ({ route }) => {
     getActivities();
   }, []);
   const handleNext = () => {
+    // activities are being added onto state array here - if we want to remove one we need to remove it from state
     navigation.navigate('JournalEntry', {
       //pass down selected Activities as props to the moods/journal entry component
       activities: selectedActivities,
@@ -42,6 +47,13 @@ const Activities = ({ route }) => {
       setSelectedActivities((oldState) => [...oldState, activity]);
     }
   };
+  //
+  // function selectedBtn(id) {
+  //   const newData = [...data];
+  //   newData[index].isSelected = newData[index].isSelected ? false : true;
+  //   setData(newData);
+  // }
+  //
   return (
     <SafeAreaView style={styles.container}>
       {/* Do we even need this text here? */}
@@ -49,12 +61,15 @@ const Activities = ({ route }) => {
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
+          console.log(selectedActivityId)
           return (
             <TouchableOpacity
               key={activity.id}
-              style={styles.button}
+              style={selectedActivityId === activity.id ? styles.selectedButton : styles.button}
               onPress={() => {
                 handleActivitySelect(activity);
+                setSelectedActivityId(activity.id);
+                setIsActivitySelected(true); // this indicates that an activity button has been selected so it can change color
               }}
             ><Text style={styles.buttonText}> {emojiMapping[activity.emojiUnicode]}</Text>
               <Text style={styles.buttonText}>{activity.activityName} </Text>
@@ -90,4 +105,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center'
   },
+  selectedButton: {
+    backgroundColor: 'pink',
+    width: '60%',
+    padding: 15,
+    margin: 16,
+    alignItems: 'center',
+    borderRadius: 10,
+  }
 });

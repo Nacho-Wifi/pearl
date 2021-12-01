@@ -45,10 +45,10 @@ const JournalEntry = ({ route }) => {
       });
       // Otherwise, update the exisiting journal entry
     } else {
-      // console.log('JOURNAL ALREADY EXISTS, JOURNALID: ', journalId.journalId)
+      console.log('ACTIVITIES: ', activities)
       await setDoc(doc(db, "Journals", journalId.journalId), {
         mood,
-        activities,
+        activities, // an array of objects of the activities
         createdAt: new Date().toDateString(),
         userId: auth.currentUser.email,
       });
