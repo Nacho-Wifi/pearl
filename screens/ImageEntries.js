@@ -47,30 +47,12 @@ const ImageEntries = () => {
     const response = await fetch(imageUri);
     //create a blob of the image which we will then pass on to firestore and will then upload the image
     const blob = await response.blob();
-    // var ref = firebase.storage().ref().child('my-image');
-
+    //uuid generates a string of random characters
     const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
     const storage = getStorage();
     const storageRef = ref(storage, path);
     const uploadTask = uploadBytesResumable(storageRef, blob);
 
-    // const taskProgress = (snapshot) => {
-    //   // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-    //   const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //   console.log('Upload is ' + progress + '% done');
-    // };
-
-    // const taskError = (error) => {
-    //   console.log('Error found', error);
-    // };
-
-    // const taskCompleted = () => {
-    //   getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-    //     console.log('File available at', downloadURL);
-    //   });
-    // };
-
-    // uploadTask.on('state_changed', taskProgress, taskError, taskCompleted);
     uploadTask.on(
       'state_changed',
       (snapshot) => {
