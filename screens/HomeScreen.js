@@ -139,4 +139,18 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
+  NavContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    bottom: 20,
+  },
+  NavBar: {
+    flexDirection: 'row',
+    backgroundColor: '#FBD1B7',
+    width: '100%',
+    justifyContent: 'space-evenly',
+  },
+  IconBehave: {
+    padding: 14,
+  },
 });

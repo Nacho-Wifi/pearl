@@ -5,9 +5,10 @@ import { auth, db } from '../firebase';
 import {
   doc,
   addDoc,
+  getDoc,
   getDocs,
   collection,
-  serverTimestamp,
+  setDoc,
 } from 'firebase/firestore';
 
 const JournalEntry = ({ route }) => {
@@ -20,7 +21,7 @@ const JournalEntry = ({ route }) => {
   };
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
-  const { activities } = route.params;
+  const { activities, journalId } = route.params;
   const [moods, setMoods] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
@@ -34,12 +35,24 @@ const JournalEntry = ({ route }) => {
   }, []);
 
   const setJournal = async (mood) => {
-    await addDoc(journalsCollectionRef, {
-      mood,
-      activities,
-      createdAt: new Date().toDateString(),
-      userId: auth.currentUser.email,
-    });
+    // If journalId is undefined, create a new journal entry
+    if (!journalId) {
+      await addDoc(journalsCollectionRef, {
+        mood,
+        activities,
+        createdAt: new Date().toDateString(),
+        userId: auth.currentUser.email,
+      });
+      // Otherwise, update the exisiting journal entry
+    } else {
+      // console.log('JOURNAL ALREADY EXISTS, JOURNALID: ', journalId.journalId)
+      await setDoc(doc(db, "Journals", journalId.journalId), {
+        mood,
+        activities,
+        createdAt: new Date().toDateString(),
+        userId: auth.currentUser.email,
+      });
+    }
     navigation.replace('HomeScreen');
   };
 
