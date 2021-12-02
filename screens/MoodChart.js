@@ -70,7 +70,7 @@ const MoodChart = () => {
         </Defs> */}
         <VictoryArea
           // style={{ data: { fill: 'url(#gradientStroke)' } }}
-          style={{ data: { fill: 'orange'}}}
+          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 3}}}
           data={mappedEntries}
           x="date"
           y="scale"

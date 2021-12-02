@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/core';
+import { CurrentRenderContext, useNavigation } from '@react-navigation/core';
 import { useSelector } from 'react-redux';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -69,13 +69,20 @@ const ActivityTracker = () => {
         theme={VictoryTheme.material}
         // data={activityTracker.slice(0,7)}
         data={activityTracker}
-        labelRadius={({ innerRadius }) => innerRadius + 60}
-        innerRadius={25}
+        labelRadius={({ innerRadius }) => innerRadius + 40}
+        style={{
+          labels: {
+            fontSize: 28,
+            align: 'center'
+          },
+        }}
+        innerRadius={35}
         colorScale={[
           '#FFB319',
           '#FFE194',
           '#CAB8F8',
-          '#b5179e',
+          // '#b5179e',
+          '#97BFB4',
           '#B8DFD8',
           'tomato',
           '#B5DEFF',
@@ -86,11 +93,6 @@ const ActivityTracker = () => {
         // height={300}
         x="activity"
         y="frequency"
-        style={{
-          labels: {
-            fontSize: 28,
-          },
-        }}
       />
     </View>
   );
