@@ -47,12 +47,7 @@ const TextEntry = ({ route }) => {
           <View style={styles.inner}>
             {!photoURI ? (
               <>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
+                <View style={styles.btnContainer}>
                   <Button title="Cancel" onPress={handleCancel} />
                   <Link
                     to={{ screen: 'ImageEntries' }}
@@ -68,23 +63,14 @@ const TextEntry = ({ route }) => {
               </>
             ) : (
               <>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
+                <View style={styles.btnContainer}>
                   <Button title="Cancel" onPress={handleCancel} />
                   <Button title="Submit" onPress={handleSubmit} />
                 </View>
-                <View style={{ alignItems: 'center' }}>
+                <View style={styles.imgContainer}>
                   <Image
                     source={{ uri: photoURI }}
-                    style={{
-                      width: 250,
-                      height: 250,
-                      borderRadius: 20,
-                    }}
+                    style={styles.displayImage}
                   />
                 </View>
               </>
@@ -120,5 +106,15 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  displayImage: {
+    width: 250,
+    height: 250,
+    borderRadius: 20,
+  },
+  imgContainer: { alignItems: 'center' },
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
