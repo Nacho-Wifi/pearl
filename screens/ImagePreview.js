@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-const ImagePreview = ({ photoURI, retakePhoto, savePhoto }) => {
+const ImagePreview = ({ photoURI, retakePhoto }) => {
   const navigation = useNavigation();
   const handleUsePhoto = () => {
     navigation.navigate('TextEntry', {

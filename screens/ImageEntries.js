@@ -10,15 +10,14 @@ import {
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import ImagePreview from './ImagePreview';
-import {
-  ref,
-  getDownloadURL,
-  uploadBytes,
-  uploadBytesResumable,
-  getStorage,
-} from 'firebase/storage';
-import { auth } from '../firebase';
-import uuid from 'react-native-uuid';
+// import {
+//   ref,
+//   getDownloadURL,
+//   uploadBytesResumable,
+//   getStorage,
+// } from 'firebase/storage';
+// import { auth } from '../firebase';
+// import uuid from 'react-native-uuid';
 
 const ImageEntries = () => {
   let cameraRef = useRef(null);
@@ -53,36 +52,36 @@ const ImageEntries = () => {
     setCapturedImage(photo);
   };
 
-  const savePhoto = async () => {
-    const imageUri = capturedImage.uri;
-    //fetch image from the uri
-    const response = await fetch(imageUri);
-    //create a blob of the image which we will then pass on to firestore and will then upload the image
-    const blob = await response.blob();
-    //uuid generates a string of random characters
-    const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
-    const storage = getStorage();
-    const storageRef = ref(storage, path);
-    const uploadTask = uploadBytesResumable(storageRef, blob);
+  // const savePhoto = async () => {
+  //   const imageUri = capturedImage.uri;
+  //   //fetch image from the uri
+  //   const response = await fetch(imageUri);
+  //   //create a blob of the image which we will then pass on to firestore and will then upload the image
+  //   const blob = await response.blob();
+  //   //uuid generates a string of random characters
+  //   const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
+  //   const storage = getStorage();
+  //   const storageRef = ref(storage, path);
+  //   const uploadTask = uploadBytesResumable(storageRef, blob);
 
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-      },
-      (error) => {
-        console.log('Error found', error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-        });
-      }
-    );
-  };
+  //   uploadTask.on(
+  //     'state_changed',
+  //     (snapshot) => {
+  //       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+  //       const progress =
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //       console.log('Upload is ' + progress + '% done');
+  //     },
+  //     (error) => {
+  //       console.log('Error found', error);
+  //     },
+  //     () => {
+  //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+  //         console.log('File available at', downloadURL);
+  //       });
+  //     }
+  //   );
+  // };
 
   const retakePhoto = () => {
     setCapturedImage(null);
@@ -103,11 +102,7 @@ const ImageEntries = () => {
   return (
     <View style={styles.container}>
       {preview && capturedImage && (
-        <ImagePreview
-          photoURI={capturedImage.uri}
-          savePhoto={savePhoto}
-          retakePhoto={retakePhoto}
-        />
+        <ImagePreview photoURI={capturedImage.uri} retakePhoto={retakePhoto} />
       )}
       {hasPermission && !preview && !capturedImage && (
         <Camera style={styles.camera} type={type} ref={cameraRef}>

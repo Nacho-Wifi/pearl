@@ -11,6 +11,15 @@ import {
   setDoc,
 } from 'firebase/firestore';
 
+//firebase storage
+import {
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+  getStorage,
+} from 'firebase/storage';
+import uuid from 'react-native-uuid';
+
 const JournalEntry = ({ route }) => {
   const emojiMapping = {
     'U+1F622': '😢',
@@ -23,6 +32,7 @@ const JournalEntry = ({ route }) => {
   //this route.params gives us access to the props passed down by our Activities component using react navigation
   const { activities, journalId, photoURI, inputText } = route.params;
   const [moods, setMoods] = useState([]);
+  const [saveDownloadURL, setSaveDownloadURL] = useState('');
   const [textEntry, setTextEntry] = useState(false);
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
@@ -49,12 +59,49 @@ const JournalEntry = ({ route }) => {
       inputText,
     });
   };
+
+  const savePhoto = async (mood) => {
+    const imageUri = photoURI;
+    //fetch image from the uri
+    const response = await fetch(imageUri);
+    //create a blob of the image which we will then pass on to firestore and will then upload the image
+    const blob = await response.blob();
+    //uuid generates a string of random characters
+    const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
+    const storage = getStorage();
+    const storageRef = ref(storage, path);
+    const uploadTask = uploadBytesResumable(storageRef, blob);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+      },
+      (error) => {
+        console.log('Error found', error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setSaveDownloadURL(downloadURL);
+          console.log('i am the mood', mood);
+          setJournal(mood);
+          console.log('File available at', saveDownloadURL);
+        });
+      }
+    );
+  };
+
   const setJournal = async (mood) => {
     // If journalId is undefined, create a new journal entry
     if (!journalId) {
       await addDoc(journalsCollectionRef, {
         mood,
         activities,
+        photoURL: saveDownloadURL,
+        textInput: inputText,
         createdAt: new Date().toDateString(),
         userId: auth.currentUser.email,
       });
@@ -80,7 +127,11 @@ const JournalEntry = ({ route }) => {
             key={mood.id}
             style={styles.button}
             onPress={() => {
-              setJournal(mood);
+              if (photoURI) {
+                savePhoto(mood);
+              } else {
+                setJournal(mood);
+              }
             }}
           >
             <Text>{emojiMapping[mood.imageUrl]}</Text>
