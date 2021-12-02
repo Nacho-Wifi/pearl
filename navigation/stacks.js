@@ -5,8 +5,8 @@ import HomeScreen from '../screens/HomeScreen';
 import JournalEntry from '../screens/JournalEntry';
 import Activities from '../screens/Activities';
 import SignUp from '../screens/SignUp';
-import MoodChart from '../screens/MoodChart';
-import ActivityTracker from '../screens/ActivityTracker';
+// import MoodChart from '../screens/MoodChart';
+// import ActivityTracker from '../screens/ActivityTracker';
 
 const Stack = createNativeStackNavigator();
 

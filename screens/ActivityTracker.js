@@ -19,22 +19,14 @@ import {
   VictoryPie,
   VictoryArea,
   VictoryAxis,
+  VictoryLabel
 } from 'victory-native';
 
 const { width, height } = Dimensions.get('screen');
 
-const MoodChart = () => {
+const ActivityTracker = () => {
   const [entries, setEntries] = useState([]);
   const journalCollectionRef = collection(db, 'Journals');
-  // let userId;
-
-  // const auth = getAuth();
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) userId = user.email;
-  //   else {
-  //     console.log('no logged in user');
-  //   }
-  // });
 
   // retrieve all journal entries where userId matches that of logged in user
   useEffect(() => {
@@ -103,7 +95,7 @@ const MoodChart = () => {
     </View>
   );
 };
-export default MoodChart;
+export default ActivityTracker;
 
 const styles = StyleSheet.create({
   container: {
