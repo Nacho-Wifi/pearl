@@ -15,24 +15,28 @@ import { Link } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/core';
 
 const TextEntry = ({ route }) => {
-  const [inputText, setInputText] = useState('');
-  // const [currentImage, setCurrentImage] = useState('');
-  const { photo } = route.params;
+  const [input, setInput] = useState('');
+  const { photoURI, inputText } = route.params;
   const navigation = useNavigation();
+  useEffect(() => {
+    setInput(inputText);
+  }, []);
   const handleCancel = () => {
     //navigates back to JournalEntry with the photo.uri and text input set to null
-    console.log(
-      'Maybe if the user does not want to make a text post, nagivate back to journalEntry component'
-    );
+    navigation.navigate('JournalEntry', {
+      photoURI: '',
+      inputText: '',
+    });
   };
 
   const handleSubmit = () => {
     //navigates back to JournalEntry with the photo.uri and text input as params
     navigation.navigate('JournalEntry', {
-      photoURI: photo.uri,
-      inputText,
+      photoURI,
+      inputText: input,
     });
   };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -41,32 +45,27 @@ const TextEntry = ({ route }) => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
-            {!photo ? (
-              <View style={{ alignItems: 'center' }}>
+            {!photoURI ? (
+              <>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Button
-                    style={{ justifyContent: 'flex-end' }}
-                    title="Submit"
-                    onPress={() => null}
-                  />
+                  <Button title="Cancel" onPress={handleCancel} />
                   <Link
                     to={{ screen: 'ImageEntries' }}
                     style={{
                       color: 'black',
                       textDecorationLine: 'underline',
-                      flex: 1,
-                      justifyContent: 'center',
                     }}
                   >
                     Add a picture!
                   </Link>
+                  <Button title="Submit" onPress={handleSubmit} />
                 </View>
-              </View>
+              </>
             ) : (
               <>
                 <View
@@ -80,7 +79,7 @@ const TextEntry = ({ route }) => {
                 </View>
                 <View style={{ alignItems: 'center' }}>
                   <Image
-                    source={{ uri: photo.uri }}
+                    source={{ uri: photoURI }}
                     style={{
                       width: 250,
                       height: 250,
@@ -95,8 +94,8 @@ const TextEntry = ({ route }) => {
               <TextInput
                 multiline={true}
                 style={styles.input}
-                onChangeText={(input) => setInputText(input)}
-                value={inputText}
+                onChangeText={(words) => setInput(words)}
+                value={input}
                 placeholder="Tell me more..."
               />
             </View>

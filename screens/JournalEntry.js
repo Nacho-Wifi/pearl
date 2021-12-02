@@ -21,9 +21,9 @@ const JournalEntry = ({ route }) => {
   };
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
-  const { activities, journalId } = route.params;
+  const { activities, journalId, photoURI, inputText } = route.params;
   const [moods, setMoods] = useState([]);
-  const [photoEntry, setPhotoEntry] = useState(null);
+  const [textEntry, setTextEntry] = useState(false);
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
@@ -34,9 +34,19 @@ const JournalEntry = ({ route }) => {
     };
     getMoods();
   }, []);
+
+  //this second useEffect is used to check if an optional TextEntry has already been filled
+  //to toggle between adding text entry and edit text entry
+  useEffect(() => {
+    if (photoURI || inputText) {
+      setTextEntry(true);
+    } else setTextEntry(false);
+  }, [photoURI, inputText]);
+
   const handleOptionalEntry = () => {
     navigation.navigate('TextEntry', {
-      photo: photoEntry,
+      photoURI,
+      inputText,
     });
   };
   const setJournal = async (mood) => {
@@ -77,9 +87,15 @@ const JournalEntry = ({ route }) => {
           </TouchableOpacity>
         );
       })}
-      <TouchableOpacity style={styles.button} onPress={handleOptionalEntry}>
-        <Text>Optional Text Entry</Text>
-      </TouchableOpacity>
+      {!textEntry ? (
+        <TouchableOpacity style={styles.button} onPress={handleOptionalEntry}>
+          <Text>Add Text Entry</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={handleOptionalEntry}>
+          <Text>Edit Text Entry</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

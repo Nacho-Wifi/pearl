@@ -104,7 +104,7 @@ const ImageEntries = () => {
     <View style={styles.container}>
       {preview && capturedImage && (
         <ImagePreview
-          photo={capturedImage}
+          photoURI={capturedImage.uri}
           savePhoto={savePhoto}
           retakePhoto={retakePhoto}
         />

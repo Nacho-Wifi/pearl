@@ -8,11 +8,11 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
+const ImagePreview = ({ photoURI, retakePhoto, savePhoto }) => {
   const navigation = useNavigation();
   const handleUsePhoto = () => {
     navigation.navigate('TextEntry', {
-      photo,
+      photoURI,
     });
   };
 
@@ -24,7 +24,7 @@ const ImagePreview = ({ photo, retakePhoto, savePhoto }) => {
       }}
     >
       <ImageBackground
-        source={{ uri: photo && photo.uri }}
+        source={{ uri: photoURI }}
         style={{
           flex: 1,
         }}
