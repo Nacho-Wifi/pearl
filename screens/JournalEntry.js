@@ -32,8 +32,8 @@ const JournalEntry = ({ route }) => {
   //this route.params gives us access to the props passed down by our Activities component using react navigation
   const { activities, journalId, photoURI, inputText } = route.params;
   const [moods, setMoods] = useState([]);
-  const [saveDownloadURL, setSaveDownloadURL] = useState('');
   const [textEntry, setTextEntry] = useState(false);
+  const [userActivities, setUserActivities] = useState([]);
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
@@ -52,6 +52,13 @@ const JournalEntry = ({ route }) => {
       setTextEntry(true);
     } else setTextEntry(false);
   }, [photoURI, inputText]);
+
+  //running into an issue where the activities prop being passed down from Activities component
+  //becomes undefined when I route to JournalEntry from TextEntry
+  //because TextEntry is ONLY passing down photoURI and textinput
+  useEffect(() => {
+    setUserActivities(activities);
+  }, []);
 
   const handleOptionalEntry = () => {
     navigation.navigate('TextEntry', {
@@ -85,33 +92,32 @@ const JournalEntry = ({ route }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setSaveDownloadURL(downloadURL);
-          console.log('i am the mood', mood);
-          setJournal(mood);
-          console.log('File available at', saveDownloadURL);
+          setJournal(mood, downloadURL);
         });
       }
     );
   };
 
-  const setJournal = async (mood) => {
+  const setJournal = async (mood, downloadURL) => {
     // If journalId is undefined, create a new journal entry
     if (!journalId) {
       await addDoc(journalsCollectionRef, {
         mood,
-        activities,
-        photoURL: saveDownloadURL,
+        activities: userActivities,
+        photoURL: downloadURL || '',
         textInput: inputText,
         createdAt: new Date().toDateString(),
         userId: auth.currentUser.email,
       });
-      // Otherwise, update the exisiting journal entry
+      // Otherwise, update the existing journal entry
     } else {
       console.log('ACTIVITIES: ', activities);
       await setDoc(doc(db, 'Journals', journalId.journalId), {
         mood,
-        activities, // an array of objects of the activities
+        activities: userActivities, // an array of objects of the activities
+        photoURL: downloadURL || '',
         createdAt: new Date().toDateString(),
+        textInput: inputText,
         userId: auth.currentUser.email,
       });
     }
@@ -128,6 +134,7 @@ const JournalEntry = ({ route }) => {
             style={styles.button}
             onPress={() => {
               if (photoURI) {
+                //will call setJournal in savePhoto after getting downloadURL
                 savePhoto(mood);
               } else {
                 setJournal(mood);
