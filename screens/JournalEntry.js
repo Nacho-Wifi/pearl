@@ -34,6 +34,7 @@ const JournalEntry = ({ route }) => {
   const [moods, setMoods] = useState([]);
   const [textEntry, setTextEntry] = useState(false);
   const [userActivities, setUserActivities] = useState([]);
+  const [userJournalData, setUserJournalData] = useState(null);
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
@@ -43,6 +44,14 @@ const JournalEntry = ({ route }) => {
       setMoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
     };
     getMoods();
+  }, []);
+
+  useEffect(() => {
+    //this will store journalData of user in userJournalData state
+    //so it doesn't get lost when we nagivate to the Textentries page
+    if (journalData) {
+      setUserJournalData(journalData);
+    }
   }, []);
 
   //this second useEffect is used to check if an optional TextEntry has already been filled
@@ -100,7 +109,7 @@ const JournalEntry = ({ route }) => {
 
   const setJournal = async (mood, downloadURL) => {
     // If journalId is undefined, create a new journal entry
-    if (!journalData) {
+    if (!userJournalData) {
       await addDoc(journalsCollectionRef, {
         mood,
         activities: userActivities,
@@ -112,7 +121,7 @@ const JournalEntry = ({ route }) => {
       // Otherwise, update the existing journal entry
     } else {
       console.log('ACTIVITIES: ', activities);
-      await setDoc(doc(db, 'Journals', journalData.journalId), {
+      await setDoc(doc(db, 'Journals', userJournalData.journalId), {
         mood,
         activities: userActivities, // an array of objects of the activities
         photoURL: downloadURL || '',
