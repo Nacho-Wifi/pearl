@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
-import { useSelector } from 'react-redux';
+
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { StyleSheet, View, Dimensions } from 'react-native';
