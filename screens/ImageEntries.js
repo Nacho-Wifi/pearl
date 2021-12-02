@@ -10,14 +10,6 @@ import {
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import ImagePreview from './ImagePreview';
-// import {
-//   ref,
-//   getDownloadURL,
-//   uploadBytesResumable,
-//   getStorage,
-// } from 'firebase/storage';
-// import { auth } from '../firebase';
-// import uuid from 'react-native-uuid';
 
 const ImageEntries = () => {
   let cameraRef = useRef(null);
@@ -51,37 +43,6 @@ const ImageEntries = () => {
     setPreview(true);
     setCapturedImage(photo);
   };
-
-  // const savePhoto = async () => {
-  //   const imageUri = capturedImage.uri;
-  //   //fetch image from the uri
-  //   const response = await fetch(imageUri);
-  //   //create a blob of the image which we will then pass on to firestore and will then upload the image
-  //   const blob = await response.blob();
-  //   //uuid generates a string of random characters
-  //   const path = `journal/${auth.currentUser.uid}/${uuid.v4()}`;
-  //   const storage = getStorage();
-  //   const storageRef = ref(storage, path);
-  //   const uploadTask = uploadBytesResumable(storageRef, blob);
-
-  //   uploadTask.on(
-  //     'state_changed',
-  //     (snapshot) => {
-  //       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-  //       const progress =
-  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //       console.log('Upload is ' + progress + '% done');
-  //     },
-  //     (error) => {
-  //       console.log('Error found', error);
-  //     },
-  //     () => {
-  //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-  //         console.log('File available at', downloadURL);
-  //       });
-  //     }
-  //   );
-  // };
 
   const retakePhoto = () => {
     setCapturedImage(null);
@@ -120,33 +81,11 @@ const ImageEntries = () => {
               <Text style={styles.text}> Flip </Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              flexDirection: 'row',
-              flex: 1,
-              width: '100%',
-              padding: 20,
-              justifyContent: 'space-between',
-            }}
-          >
-            <View
-              style={{
-                alignSelf: 'center',
-                flex: 1,
-                alignItems: 'center',
-              }}
-            >
+          <View style={styles.circleButtonContainer}>
+            <View style={styles.circleButtonPlacement}>
               <TouchableOpacity
                 onPress={takePicture}
-                style={{
-                  width: 70,
-                  height: 70,
-                  bottom: 0,
-                  borderRadius: 50,
-                  backgroundColor: '#fff',
-                }}
+                style={styles.circleButton}
               />
             </View>
           </View>
@@ -179,9 +118,6 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   button: {
-    // flex: 0.1,
-    // alignSelf: 'flex-end',
-    // alignItems: 'center',
     marginTop: 25,
     height: 25,
     width: 35,
@@ -189,5 +125,26 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: 'white',
+  },
+  circleButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    flex: 1,
+    width: '100%',
+    padding: 20,
+    justifyContent: 'space-between',
+  },
+  circleButton: {
+    width: 70,
+    height: 70,
+    bottom: 0,
+    borderRadius: 50,
+    backgroundColor: '#fff',
+  },
+  circleButtonPlacement: {
+    alignSelf: 'center',
+    flex: 1,
+    alignItems: 'center',
   },
 });
