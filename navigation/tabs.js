@@ -9,6 +9,7 @@ import { MainStackNavigator } from './stacks';
 import MoodChart from '../screens/MoodChart';
 import { Image } from 'react-native';
 import ActivityTracker from '../screens/ActivityTracker';
+import MyData from '../screens/MyData';
 
 //we need to create style settings / rely on state here to put icons in our Tabs
 const Tab = createBottomTabNavigator();
@@ -49,7 +50,7 @@ const Tabs = () => {
       ></Tab.Screen>
       <Tab.Screen
         name="DataViz"
-        component={ActivityTracker}
+        component={MyData}
         options={{
           tabBarLabel: 'My Data',
           tabBarIcon: ({ focused, color, size }) => (

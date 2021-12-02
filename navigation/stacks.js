@@ -7,8 +7,8 @@ import Activities from '../screens/Activities';
 import ImageEntries from '../screens/ImageEntries';
 import TextEntry from '../screens/TextEntry';
 import SignUp from '../screens/SignUp';
-import MoodChart from '../screens/MoodChart';
-import ActivityTracker from '../screens/ActivityTracker';
+// import MoodChart from '../screens/MoodChart';
+// import ActivityTracker from '../screens/ActivityTracker';
 
 const Stack = createNativeStackNavigator();
 

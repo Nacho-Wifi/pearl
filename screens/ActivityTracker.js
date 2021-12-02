@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/core';
+
+import { CurrentRenderContext, useNavigation } from '@react-navigation/core';
 
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -19,29 +20,21 @@ import {
   VictoryPie,
   VictoryArea,
   VictoryAxis,
+  VictoryLabel
 } from 'victory-native';
 
 const { width, height } = Dimensions.get('screen');
 
-const MoodChart = () => {
+const ActivityTracker = () => {
   const [entries, setEntries] = useState([]);
   const journalCollectionRef = collection(db, 'Journals');
-  let userId;
-
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) userId = user.email;
-    else {
-      console.log('no logged in user');
-    }
-  });
 
   // retrieve all journal entries where userId matches that of logged in user
   useEffect(() => {
     const getUserEntries = async () => {
       const userQuery = query(
         journalCollectionRef,
-        where('userId', '==', userId)
+        where('userId', '==', auth.currentUser.email)
       );
       const querySnapshot = await getDocs(userQuery);
       setEntries(
@@ -77,13 +70,20 @@ const MoodChart = () => {
         theme={VictoryTheme.material}
         // data={activityTracker.slice(0,7)}
         data={activityTracker}
-        labelRadius={({ innerRadius }) => innerRadius + 60}
-        innerRadius={40}
+        labelRadius={({ innerRadius }) => innerRadius + 40}
+        style={{
+          labels: {
+            fontSize: 28,
+            align: 'center'
+          },
+        }}
+        innerRadius={35}
         colorScale={[
           '#FFB319',
           '#FFE194',
           '#CAB8F8',
-          '#b5179e',
+          // '#b5179e',
+          '#97BFB4',
           '#B8DFD8',
           'tomato',
           '#B5DEFF',
@@ -94,16 +94,11 @@ const MoodChart = () => {
         // height={300}
         x="activity"
         y="frequency"
-        style={{
-          labels: {
-            fontSize: 18,
-          },
-        }}
       />
     </View>
   );
 };
-export default MoodChart;
+export default ActivityTracker;
 
 const styles = StyleSheet.create({
   container: {
