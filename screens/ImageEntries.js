@@ -39,7 +39,9 @@ const ImageEntries = () => {
   const takePicture = async () => {
     if (!hasPermission) return;
     //returns an object containing information about the photo, including uri
-    const photo = await cameraRef.current.takePictureAsync();
+    const photo = await cameraRef.current.takePictureAsync({
+      quality: 0.7,
+    });
     setPreview(true);
     setCapturedImage(photo);
   };
@@ -55,7 +57,7 @@ const ImageEntries = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
     });
     setCapturedImage(result);
   };
