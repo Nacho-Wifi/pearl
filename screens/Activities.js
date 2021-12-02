@@ -18,12 +18,13 @@ const Activities = ({ route }) => {
     "U+1F6B2": "🚲",
   }
   const navigation = useNavigation();
-  const journalId = route.params;
+  const journalData = route.params;
   // State
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
 
   const activitiesCollectionRef = collection(db, 'Activities');
+  console.log('SELECTED ACTIVITIES: ', selectedActivities)
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
     const getActivities = async () => {
@@ -32,12 +33,23 @@ const Activities = ({ route }) => {
     };
     getActivities();
   }, []);
+
+  useEffect(() => {
+    // if journal entry exists, set select activities to journal entry
+    if (journalData) {
+
+      setSelectedActivities(journalData.journalEntries.activities);
+      // TODO: CHECK IF JOURNAL ENTRIES CONTAINS PHOTOID
+      // TODO: IS SELECTED ACTIVITIES BEING SET TO AN OBJECT
+    }
+  }, []);
+
   const handleNext = () => {
     // activities are being added onto state array here - if we want to remove one we need to remove it from state
     navigation.navigate('JournalEntry', {
       //pass down selected Activities as props to the moods/journal entry component
       activities: selectedActivities,
-      journalId: journalId,
+      journalData,
     });
   };
   const handleActivitySelect = (activity) => {
@@ -55,10 +67,13 @@ const Activities = ({ route }) => {
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
-          // console.log('CURRENT ACTIVITIES: ', selectedActivities)
+          console.log('ACTIVITIES IN SELECTED ACTIVITIES: ', selectedActivities)
+          console.log('MAPPED ACTIVITIES', activity)
+          console.log(selectedActivities.includes(activity))
           return (
             <TouchableOpacity
               key={activity.id}
+
               // Check if activity is in selectedActivities array - if it is make it darker
               style={selectedActivities.includes(activity) ? [styles.selectedButton, styles.selectedButtonText] : styles.button}
               onPress={() => {

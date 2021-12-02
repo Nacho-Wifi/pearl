@@ -30,7 +30,7 @@ const JournalEntry = ({ route }) => {
   };
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
-  const { activities, journalId, photoURI, inputText } = route.params;
+  const { activities, journalData, photoURI, inputText } = route.params;
   const [moods, setMoods] = useState([]);
   const [textEntry, setTextEntry] = useState(false);
   const [userActivities, setUserActivities] = useState([]);
@@ -100,24 +100,24 @@ const JournalEntry = ({ route }) => {
 
   const setJournal = async (mood, downloadURL) => {
     // If journalId is undefined, create a new journal entry
-    if (!journalId) {
+    if (!journalData) {
       await addDoc(journalsCollectionRef, {
         mood,
         activities: userActivities,
         photoURL: downloadURL || '',
-        textInput: inputText,
+        textInput: inputText || '',
         createdAt: new Date().toDateString(),
         userId: auth.currentUser.email,
       });
       // Otherwise, update the existing journal entry
     } else {
       console.log('ACTIVITIES: ', activities);
-      await setDoc(doc(db, 'Journals', journalId.journalId), {
+      await setDoc(doc(db, 'Journals', journalData.journalId), {
         mood,
         activities: userActivities, // an array of objects of the activities
         photoURL: downloadURL || '',
         createdAt: new Date().toDateString(),
-        textInput: inputText,
+        textInput: inputText || '',
         userId: auth.currentUser.email,
       });
     }
