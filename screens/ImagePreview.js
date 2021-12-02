@@ -17,69 +17,15 @@ const ImagePreview = ({ photoURI, retakePhoto }) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: 'transparent',
-        flex: 0.5,
-      }}
-    >
-      <ImageBackground
-        source={{ uri: photoURI }}
-        style={{
-          flex: 1,
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            padding: 15,
-            justifyContent: 'flex-end',
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <TouchableOpacity
-              onPress={retakePhoto}
-              style={{
-                width: 130,
-                height: 40,
-
-                alignItems: 'center',
-                borderRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 20,
-                }}
-              >
-                Try Again
-              </Text>
+    <SafeAreaView style={styles.container}>
+      <ImageBackground source={{ uri: photoURI }} style={styles.displayImage}>
+        <View style={styles.btnContainer}>
+          <View style={styles.btnRow}>
+            <TouchableOpacity onPress={retakePhoto} style={styles.btn}>
+              <Text style={styles.btnText}>Try Again</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleUsePhoto}
-              style={{
-                width: 130,
-                height: 40,
-
-                alignItems: 'center',
-                borderRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 20,
-                }}
-              >
-                Use Photo!
-              </Text>
+            <TouchableOpacity onPress={handleUsePhoto} style={styles.btn}>
+              <Text style={styles.btnText}>Use Photo!</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -90,4 +36,32 @@ const ImagePreview = ({ photoURI, retakePhoto }) => {
 
 export default ImagePreview;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'transparent',
+    flex: 0.5,
+  },
+  displayImage: {
+    flex: 1,
+  },
+  btnContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    padding: 15,
+    justifyContent: 'flex-end',
+  },
+  btnRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  btn: {
+    width: 130,
+    height: 40,
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 20,
+  },
+});
