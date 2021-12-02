@@ -22,27 +22,31 @@ const Activities = ({ route }) => {
   // State
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const activitiesCollectionRef = collection(db, 'Activities');
   console.log('SELECTED ACTIVITIES: ', selectedActivities)
+  // Gets all activities data
   useEffect(() => {
+
     //every time we make a request return this promise, data to be resolved ...
     const getActivities = async () => {
       const data = await getDocs(activitiesCollectionRef);
       setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
+      // if this is true, craete activities id state then check if the id == activity.id? 
+      // would only work if user has an entry already
+      if (journalData) setSelectedActivities(journalData.journalEntries.activities);
+      setIsLoading(false);
     };
     getActivities();
   }, []);
 
-  useEffect(() => {
-    // if journal entry exists, set select activities to journal entry
-    if (journalData) {
-
-      setSelectedActivities(journalData.journalEntries.activities);
-      // TODO: CHECK IF JOURNAL ENTRIES CONTAINS PHOTOID
-      // TODO: IS SELECTED ACTIVITIES BEING SET TO AN OBJECT
-    }
-  }, []);
+  // useEffect(() => {
+  //   // if journal entry exists, set select activities to journal entry
+  //   if (journalData) {
+  //     setSelectedActivities(journalData.journalEntries.activities);
+  //   }
+  // }, []);
 
   const handleNext = () => {
     // activities are being added onto state array here - if we want to remove one we need to remove it from state
@@ -58,11 +62,20 @@ const Activities = ({ route }) => {
       setSelectedActivities((oldState) => [...oldState, activity]);
     } else {
       // If user selects the activity again, it will remove it from the selectedActivities state array
-      setSelectedActivities(selectedActivities.filter(current => activity !== current))
+      setSelectedActivities(selectedActivities.filter(current => activity.id !== current.id))
     }
   };
 
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
+
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
