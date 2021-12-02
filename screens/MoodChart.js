@@ -28,24 +28,13 @@ const { width, height } = Dimensions.get('screen');
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
   const journalCollectionRef = collection(db, 'Journals');
-  let userId;
 
-  // const auth = getAuth();
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) userId = user.email;
-  //   else {
-  //     console.log('no logged in user');
-  //   }
-  // });
 
-  console.log('auth.current.email', auth.currentUser.email)
   useEffect(() => {
 
     const getUserEntries = async () => {
       const userQuery = query(
         journalCollectionRef,
-        // where('userId', '==', userId)
-
         where('userId', '==', auth.currentUser.email)
       );
       const querySnapshot = await getDocs(userQuery);
@@ -57,33 +46,8 @@ const MoodChart = () => {
 
   }, []);
 
-  // const monthToNum =  {
-  //   "Jan": "01",
-  //   "Feb": "02",
-  //   "Mar": "03",
-  //   "Apr": "04",
-  //   "May": "05",
-  //   "Jun": "06",
-  //   "Jul": "07",
-  //   "Aug": "08",
-  //   "Sep": "09",
-  //   "Oct": "10",
-  //   "Nov": "11",
-  //   "Dec": "12"
-  // }
-
-  // function convertToDate(string) {
-  //   let year = string.slice(-4);
-  //   let day = string.slice(8, 10);
-  //   let monthToConvert = string.slice(4,7);
-  //   let month = monthToNum[monthToConvert];
-  //   let newStringDate = `${year}-${month}-${day}`;
-  //   let date = new Date(newStringDate);
-  //   return date;
-  // }
-
   let mappedEntries = entries.map((entry) => {
-    console.log('entry', entry)
+
     return {
       date: new Date(entry.createdAt) || '',
       scale: entry.mood.scale || 0,
@@ -146,3 +110,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+

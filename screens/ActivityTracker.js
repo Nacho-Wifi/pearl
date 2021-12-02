@@ -26,22 +26,22 @@ const { width, height } = Dimensions.get('screen');
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
   const journalCollectionRef = collection(db, 'Journals');
-  let userId;
+  // let userId;
 
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) userId = user.email;
-    else {
-      console.log('no logged in user');
-    }
-  });
+  // const auth = getAuth();
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) userId = user.email;
+  //   else {
+  //     console.log('no logged in user');
+  //   }
+  // });
 
   // retrieve all journal entries where userId matches that of logged in user
   useEffect(() => {
     const getUserEntries = async () => {
       const userQuery = query(
         journalCollectionRef,
-        where('userId', '==', userId)
+        where('userId', '==', auth.currentUser.email)
       );
       const querySnapshot = await getDocs(userQuery);
       setEntries(
@@ -78,7 +78,7 @@ const MoodChart = () => {
         // data={activityTracker.slice(0,7)}
         data={activityTracker}
         labelRadius={({ innerRadius }) => innerRadius + 60}
-        innerRadius={40}
+        innerRadius={25}
         colorScale={[
           '#FFB319',
           '#FFE194',
@@ -96,7 +96,7 @@ const MoodChart = () => {
         y="frequency"
         style={{
           labels: {
-            fontSize: 18,
+            fontSize: 28,
           },
         }}
       />
