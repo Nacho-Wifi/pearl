@@ -11,6 +11,7 @@ import {
   Platform,
   Keyboard,
   Button,
+  Alert,
 } from 'react-native';
 import { Link } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/core';
@@ -22,8 +23,7 @@ const TextEntry = ({ route }) => {
   useEffect(() => {
     setInput(inputText);
   }, []);
-  console.log('i am the route params', route.params);
-  const handleCancel = () => {
+  const handleDelete = () => {
     //navigates back to JournalEntry with the photo.uri and text input set to empty string
     navigation.navigate('JournalEntry', {
       photoURI: '',
@@ -31,9 +31,39 @@ const TextEntry = ({ route }) => {
     });
   };
 
+  const alertDelete = () => {
+    Alert.alert(
+      'Remove?',
+      'Are you sure you want to delete your entry? This cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          // onPress: () => {},
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => handleDelete() },
+      ]
+    );
+  };
+
   const handleRetake = () => {
     //navigates back to ImagePreview from TextEntry
     navigation.navigate('ImageEntries');
+  };
+
+  const alertRetake = () => {
+    Alert.alert(
+      'Discard Photo?',
+      'If you retake your photo, your picture will be deleted.',
+      [
+        {
+          text: 'Cancel',
+          // onPress: () => {},
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => handleRetake() },
+      ]
+    );
   };
 
   const handleSubmit = () => {
@@ -77,7 +107,7 @@ const TextEntry = ({ route }) => {
             ) : (
               <>
                 <View style={styles.btnContainer}>
-                  <Button title="Retake Photo" onPress={handleRetake} />
+                  <Button title="Retake Photo" onPress={alertRetake} />
                 </View>
                 <View style={styles.imgContainer}>
                   <Image
@@ -98,7 +128,11 @@ const TextEntry = ({ route }) => {
             )}
 
             <View style={styles.btnContainer}>
-              <Button title="Cancel" onPress={handleCancel} />
+              {/* only display alert for delete if there is something to delete */}
+              <Button
+                title="Delete"
+                onPress={photoURI || inputText ? alertDelete : handleDelete}
+              />
               <Button title="Submit" onPress={handleSubmit} />
             </View>
           </View>

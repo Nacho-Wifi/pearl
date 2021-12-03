@@ -81,6 +81,7 @@ const ImageEntries = () => {
           <TouchableOpacity onPress={handleCancel}>
             <Text>Cancel</Text>
           </TouchableOpacity>
+
           <Camera style={styles.camera} type={type} ref={cameraRef}>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
