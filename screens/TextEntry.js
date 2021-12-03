@@ -66,7 +66,7 @@ const TextEntry = ({ route }) => {
     );
   };
 
-  const handleSubmit = () => {
+  const handleContinue = () => {
     //navigates back to JournalEntry with the photo.uri and text input as params
     navigation.navigate('JournalEntry', {
       photoURI,
@@ -133,7 +133,7 @@ const TextEntry = ({ route }) => {
                 title="Delete"
                 onPress={photoURI || inputText ? alertDelete : handleDelete}
               />
-              <Button title="Submit" onPress={handleSubmit} />
+              <Button title="Continue" onPress={handleContinue} />
             </View>
           </View>
         </TouchableWithoutFeedback>
