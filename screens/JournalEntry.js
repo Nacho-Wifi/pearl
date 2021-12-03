@@ -141,7 +141,6 @@ const JournalEntry = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text> Mood:</Text>
       {moods.map((mood) => {
         return (
           <TouchableOpacity
