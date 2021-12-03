@@ -25,7 +25,9 @@ const Activities = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   const activitiesCollectionRef = collection(db, 'Activities');
-  console.log('SELECTED ACTIVITIES: ', selectedActivities)
+  // console.log('SELECTED ACTIVITIES: ', selectedActivities)
+  // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
+
   // Gets all activities data
   useEffect(() => {
 
@@ -41,12 +43,13 @@ const Activities = ({ route }) => {
     getActivities();
   }, []);
 
-  // useEffect(() => {
-  //   // if journal entry exists, set select activities to journal entry
-  //   if (journalData) {
-  //     setSelectedActivities(journalData.journalEntries.activities);
-  //   }
-  // }, []);
+  // const isActivitySelected = (activity) => {
+  //   // check if selectedActivities (which will be populated with already existing entires passed down as props) 
+  //   // contains the current activity we're looping over - cannot use includes because the array may contain a copy of the object
+  //   selectedActivities.some(element => {
+  //     element.id === activity.id
+  //   })
+  // }
 
   const handleNext = () => {
     // activities are being added onto state array here - if we want to remove one we need to remove it from state
@@ -80,15 +83,15 @@ const Activities = ({ route }) => {
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
-          console.log('ACTIVITIES IN SELECTED ACTIVITIES: ', selectedActivities)
-          console.log('MAPPED ACTIVITIES', activity)
-          console.log(selectedActivities.includes(activity))
+          // console.log('ACTIVITIES IN SELECTED ACTIVITIES: ', selectedActivities)
+          // console.log('MAPPED ACTIVITIES', activity)
+          // console.log('selected activites contain activity? ', selectedActivities.find(el => el.id === activity.id))
           return (
             <TouchableOpacity
               key={activity.id}
 
               // Check if activity is in selectedActivities array - if it is make it darker
-              style={selectedActivities.includes(activity) ? [styles.selectedButton, styles.selectedButtonText] : styles.button}
+              style={selectedActivities.some(element => element.id === activity.id) ? [styles.selectedButton, styles.selectedButtonText] : styles.button}
               onPress={() => {
                 handleActivitySelect(activity);
               }}
