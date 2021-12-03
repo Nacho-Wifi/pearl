@@ -8,6 +8,8 @@ import {
   Platform,
   SafeAreaView,
   Image,
+  Alert,
+  Link,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
@@ -37,9 +39,14 @@ const ImageEntries = () => {
   if (hasPermission === null) {
     return <View />;
   }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+  if (!hasPermission && !hasCameraRollPermission) {
+    return (
+      <Text style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+        No access to camera and camera roll
+      </Text>
+    );
   }
+
   const takePicture = async () => {
     if (!hasPermission) return;
     //returns an object containing information about the photo, including uri
