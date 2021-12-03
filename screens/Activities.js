@@ -18,26 +18,45 @@ const Activities = ({ route }) => {
     "U+1F6B2": "🚲",
   }
   const navigation = useNavigation();
-  const journalId = route.params;
+  const journalData = route.params;
   // State
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const activitiesCollectionRef = collection(db, 'Activities');
+  // console.log('SELECTED ACTIVITIES: ', selectedActivities)
+  // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
+
+  // Gets all activities data
   useEffect(() => {
+
     //every time we make a request return this promise, data to be resolved ...
     const getActivities = async () => {
       const data = await getDocs(activitiesCollectionRef);
       setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
+      // if this is true, craete activities id state then check if the id == activity.id? 
+      // would only work if user has an entry already
+      if (journalData) setSelectedActivities(journalData.journalEntries.activities);
+      setIsLoading(false);
     };
     getActivities();
   }, []);
+
+  // const isActivitySelected = (activity) => {
+  //   // check if selectedActivities (which will be populated with already existing entires passed down as props) 
+  //   // contains the current activity we're looping over - cannot use includes because the array may contain a copy of the object
+  //   selectedActivities.some(element => {
+  //     element.id === activity.id
+  //   })
+  // }
+
   const handleNext = () => {
     // activities are being added onto state array here - if we want to remove one we need to remove it from state
     navigation.navigate('JournalEntry', {
       //pass down selected Activities as props to the moods/journal entry component
       activities: selectedActivities,
-      journalId: journalId,
+      journalData,
     });
   };
   const handleActivitySelect = (activity) => {
@@ -46,21 +65,33 @@ const Activities = ({ route }) => {
       setSelectedActivities((oldState) => [...oldState, activity]);
     } else {
       // If user selects the activity again, it will remove it from the selectedActivities state array
-      setSelectedActivities(selectedActivities.filter(current => activity !== current))
+      setSelectedActivities(selectedActivities.filter(current => activity.id !== current.id))
     }
   };
 
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
+
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
-          // console.log('CURRENT ACTIVITIES: ', selectedActivities)
+          // console.log('ACTIVITIES IN SELECTED ACTIVITIES: ', selectedActivities)
+          // console.log('MAPPED ACTIVITIES', activity)
+          // console.log('selected activites contain activity? ', selectedActivities.find(el => el.id === activity.id))
           return (
             <TouchableOpacity
               key={activity.id}
+
               // Check if activity is in selectedActivities array - if it is make it darker
-              style={selectedActivities.includes(activity) ? [styles.selectedButton, styles.selectedButtonText] : styles.button}
+              style={selectedActivities.some(element => element.id === activity.id) ? [styles.selectedButton, styles.selectedButtonText] : styles.button}
               onPress={() => {
                 handleActivitySelect(activity);
               }}
