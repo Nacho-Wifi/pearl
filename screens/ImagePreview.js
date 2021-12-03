@@ -39,7 +39,7 @@ export default ImagePreview;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
-    flex: 0.5,
+    flex: 0.9,
   },
   displayImage: {
     flex: 1,
