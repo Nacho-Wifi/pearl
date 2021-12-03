@@ -4,6 +4,7 @@ import {
   Text,
   View,
   ImageBackground,
+  Image,
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
@@ -21,11 +22,11 @@ const ImagePreview = ({ photoURI, retakePhoto }) => {
       <ImageBackground source={{ uri: photoURI }} style={styles.displayImage}>
         <View style={styles.btnContainer}>
           <View style={styles.btnRow}>
-            <TouchableOpacity onPress={retakePhoto} style={styles.btn}>
-              <Text style={styles.btnText}>Try Again</Text>
+            <TouchableOpacity onPress={retakePhoto}>
+              <Image source={require('../assets/icons/go-back.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleUsePhoto} style={styles.btn}>
-              <Text style={styles.btnText}>Use Photo!</Text>
+            <TouchableOpacity onPress={handleUsePhoto}>
+              <Image source={require('../assets/icons/go-ahead.png')} />
             </TouchableOpacity>
           </View>
         </View>
@@ -39,7 +40,7 @@ export default ImagePreview;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
-    flex: 0.5,
+    flex: 0.9,
   },
   displayImage: {
     flex: 1,
@@ -53,15 +54,5 @@ const styles = StyleSheet.create({
   btnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  btn: {
-    width: 130,
-    height: 40,
-    alignItems: 'center',
-    borderRadius: 4,
-  },
-  btnText: {
-    color: '#fff',
-    fontSize: 20,
   },
 });
