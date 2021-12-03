@@ -10,6 +10,7 @@ import {
   Image,
   Alert,
   Link,
+  Linking,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
@@ -41,9 +42,12 @@ const ImageEntries = () => {
   }
   if (!hasPermission && !hasCameraRollPermission) {
     return (
-      <Text style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        No access to camera and camera roll
-      </Text>
+      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+        <Text>
+          No access to camera and camera roll. Please go to your settings and
+          grant access to Camera
+        </Text>
+      </View>
     );
   }
 
