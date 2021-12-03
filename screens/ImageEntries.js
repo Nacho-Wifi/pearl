@@ -47,6 +47,12 @@ const ImageEntries = () => {
           No access to camera and camera roll. Please go to your settings and
           grant access to Camera
         </Text>
+        <Button
+          title="Open Settings"
+          onPress={() => {
+            Linking.openSettings();
+          }}
+        />
       </View>
     );
   }
