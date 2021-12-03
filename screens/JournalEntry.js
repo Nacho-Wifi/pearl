@@ -57,22 +57,22 @@ const JournalEntry = ({ route }) => {
   //this second useEffect is used to check if an optional TextEntry has already been filled
   //to toggle between adding text entry and edit text entry
   useEffect(() => {
+    // if a photo url or input text exists locally or in the database, set setTextEntry to true
+    // TODO: 
     if (photoURI || inputText) {
       setTextEntry(true);
     } else setTextEntry(false);
   }, [photoURI, inputText]);
 
-  //running into an issue where the activities prop being passed down from Activities component
-  //becomes undefined when I route to JournalEntry from TextEntry
-  //because TextEntry is ONLY passing down photoURI and textinput
   useEffect(() => {
     setUserActivities(activities);
   }, []);
 
   const handleOptionalEntry = () => {
     navigation.navigate('TextEntry', {
-      photoURI,
-      inputText,
+      // if userJournalData is defined, we want to pass down userJournalData.journalEntries.photoURL
+      photoURI: userJournalData ? userJournalData.journalEntries.photoURL : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
+      inputText: userJournalData ? userJournalData.journalEntries.textInput : inputText,
     });
   };
 
