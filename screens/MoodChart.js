@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -28,9 +28,28 @@ const MoodChart = () => {
   const [entries, setEntries] = useState([]);
   const journalCollectionRef = collection(db, 'Journals');
 
+  // const didMountRef = useRef(false);
+
+  // useEffect(() => {
+
+  //   const getUserEntries = async () => {
+
+  //     journalCollectionRef.where("userId", "==", auth.currentUser.email).onSnapshot
+
+  //     const userQuery = query(
+  //       journalCollectionRef,
+  //       where('userId', '==', auth.currentUser.email)
+  //     );
+  //     const querySnapshot = await getDocs(userQuery);
+  //     setEntries(
+  //       querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  //     );
+  //   };
+  //   getUserEntries();
+  // }, [entries]);
 
   useEffect(() => {
-
+    console.log('HITTING THE USE EFFECT!!');
     const getUserEntries = async () => {
       const userQuery = query(
         journalCollectionRef,
@@ -42,11 +61,12 @@ const MoodChart = () => {
       );
     };
     getUserEntries();
-
+    return () => {
+      console.log('unmounting ...');
+    };
   }, []);
 
   let mappedEntries = entries.map((entry) => {
-
     return {
       date: new Date(entry.createdAt) || '',
       scale: entry.mood.scale || 0,
@@ -58,7 +78,7 @@ const MoodChart = () => {
   return (
     <View style={styles.container}>
       {/* <VictoryChart theme={VictoryTheme.material} scale={{ x: 'time' }}> */}
-      <VictoryChart theme = {VictoryTheme.material} >
+      <VictoryChart theme={VictoryTheme.material}>
         {/* <Defs>
           <LinearGradient id="gradientStroke">
             <Stop offset="25%" stopColor="orange" />
@@ -69,7 +89,7 @@ const MoodChart = () => {
         </Defs> */}
         <VictoryArea
           // style={{ data: { fill: 'url(#gradientStroke)' } }}
-          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 3}}}
+          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 3 } }}
           data={mappedEntries}
           x="date"
           y="scale"
@@ -109,4 +129,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { CurrentRenderContext, useNavigation } from '@react-navigation/core';
 
@@ -20,7 +20,7 @@ import {
   VictoryPie,
   VictoryArea,
   VictoryAxis,
-  VictoryLabel
+  VictoryLabel,
 } from 'victory-native';
 
 const { width, height } = Dimensions.get('screen');
@@ -42,7 +42,10 @@ const ActivityTracker = () => {
       );
     };
     getUserEntries();
-  }, []);
+    return () => {
+      console.log('unmounting ...');
+    };
+  }, [entries]);
 
   // iterate through ALL activities for that user, on all days, make pie chart
   let activityHash = {};
@@ -74,7 +77,7 @@ const ActivityTracker = () => {
         style={{
           labels: {
             fontSize: 28,
-            align: 'center'
+            align: 'center',
           },
         }}
         innerRadius={35}
