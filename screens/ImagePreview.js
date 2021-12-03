@@ -9,11 +9,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-const ImagePreview = ({ photoURI, retakePhoto }) => {
+const ImagePreview = ({ photoURI, retakePhoto, clearImage }) => {
   const navigation = useNavigation();
   const handleUsePhoto = () => {
     navigation.navigate('TextEntry', {
       photoURI,
+      clearImage,
     });
   };
 
@@ -22,10 +23,10 @@ const ImagePreview = ({ photoURI, retakePhoto }) => {
       <ImageBackground source={{ uri: photoURI }} style={styles.displayImage}>
         <View style={styles.btnContainer}>
           <View style={styles.btnRow}>
-            <TouchableOpacity onPress={retakePhoto} style={styles.btn}>
+            <TouchableOpacity onPress={retakePhoto}>
               <Image source={require('../assets/icons/go-back.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleUsePhoto} style={styles.btn}>
+            <TouchableOpacity onPress={handleUsePhoto}>
               <Image source={require('../assets/icons/go-ahead.png')} />
             </TouchableOpacity>
           </View>
@@ -55,14 +56,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  // btn: {
-  // width: 130,
-  // height: 40,
-  // alignItems: 'center',
-  // borderRadius: 4,
-  // },
-  // btnText: {
-  //   color: '#fff',
-  //   fontSize: 20,
-  // },
 });

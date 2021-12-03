@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Platform,
   Keyboard,
   Button,
@@ -16,17 +17,26 @@ import { useNavigation } from '@react-navigation/core';
 
 const TextEntry = ({ route }) => {
   const [input, setInput] = useState('');
-  const { photoURI, inputText } = route.params;
+  const { photoURI, inputText, clearImage } = route.params;
   const navigation = useNavigation();
   useEffect(() => {
     setInput(inputText);
   }, []);
   const handleCancel = () => {
+    //clearImage clears the preview state in ImageEntries so we are able to take a new picture later on
+    if (clearImage) {
+      clearImage();
+    }
     //navigates back to JournalEntry with the photo.uri and text input set to null
     navigation.navigate('JournalEntry', {
       photoURI: '',
       inputText: '',
     });
+  };
+
+  const handleBack = () => {
+    //navigates back to ImagePreview from TextEntry
+    navigation.goBack();
   };
 
   const handleSubmit = () => {
@@ -37,6 +47,9 @@ const TextEntry = ({ route }) => {
     });
   };
 
+  const handleTakePicture = () => {
+    navigation.navigate('ImageEntries');
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -47,25 +60,27 @@ const TextEntry = ({ route }) => {
           <View style={styles.inner}>
             {!photoURI ? (
               <>
-                <View style={styles.btnContainer}>
-                  <Button title="Cancel" onPress={handleCancel} />
-                  <Link
-                    to={{ screen: 'ImageEntries' }}
-                    style={{
-                      color: 'black',
-                      textDecorationLine: 'underline',
-                    }}
-                  >
-                    Add a picture!
-                  </Link>
-                  <Button title="Submit" onPress={handleSubmit} />
+                <View style={styles.addBtnContainer}>
+                  <View style={styles.addBtn}>
+                    <TouchableOpacity onPress={handleTakePicture}>
+                      <Image
+                        source={require('../assets/icons/addPicture.png')}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
+                <TextInput
+                  multiline={true}
+                  style={styles.input}
+                  onChangeText={(words) => setInput(words)}
+                  value={input}
+                  placeholder="Tell me more..."
+                />
               </>
             ) : (
               <>
                 <View style={styles.btnContainer}>
-                  <Button title="Cancel" onPress={handleCancel} />
-                  <Button title="Submit" onPress={handleSubmit} />
+                  <Button title="Go Back" onPress={handleBack} />
                 </View>
                 <View style={styles.imgContainer}>
                   <Image
@@ -73,17 +88,21 @@ const TextEntry = ({ route }) => {
                     style={styles.displayImage}
                   />
                 </View>
+                <View style={styles.inner}>
+                  <TextInput
+                    multiline={true}
+                    style={styles.input}
+                    onChangeText={(words) => setInput(words)}
+                    value={input}
+                    placeholder="Tell me more..."
+                  />
+                </View>
               </>
             )}
 
-            <View style={styles.inner}>
-              <TextInput
-                multiline={true}
-                style={styles.input}
-                onChangeText={(words) => setInput(words)}
-                value={input}
-                placeholder="Tell me more..."
-              />
+            <View style={styles.btnContainer}>
+              <Button title="Cancel" onPress={handleCancel} />
+              <Button title="Submit" onPress={handleSubmit} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -101,11 +120,24 @@ const styles = StyleSheet.create({
   inner: {
     padding: 24,
   },
+  addBtnContainer: {
+    alignItems: 'center',
+  },
+  addBtn: {
+    width: 250,
+    height: 250,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   input: {
     height: 100,
     margin: 12,
-    borderWidth: 1,
+    borderWidth: 2,
     padding: 10,
+    borderRadius: 10,
   },
   displayImage: {
     width: 250,
