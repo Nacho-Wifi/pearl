@@ -12,6 +12,7 @@ import {
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import ImagePreview from './ImagePreview';
+import { useNavigation } from '@react-navigation/core';
 
 const ImageEntries = () => {
   let cameraRef = useRef(null);
@@ -21,6 +22,7 @@ const ImageEntries = () => {
   const [preview, setPreview] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
 
+  const navigation = useNavigation();
   useEffect(() => {
     const getPermission = async () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
@@ -53,6 +55,10 @@ const ImageEntries = () => {
     setPreview(false);
   };
 
+  const handleCancel = () => {
+    navigation.navigate('TextEntry');
+  };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -71,34 +77,39 @@ const ImageEntries = () => {
         <ImagePreview photoURI={capturedImage.uri} retakePhoto={retakePhoto} />
       )}
       {hasPermission && !preview && !capturedImage && (
-        <Camera style={styles.camera} type={type} ref={cameraRef}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setType(
-                  type === Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back
-                );
-              }}
-            >
-              <Image source={require('../assets/icons/camera-flip.png')} />
-            </TouchableOpacity>
-            {hasCameraRollPermission && !preview && !capturedImage && (
-              <TouchableOpacity onPress={pickImage}>
-                <Image source={require('../assets/icons/photoAlbum.png')} />
-              </TouchableOpacity>
-            )}
-          </View>
-          <View style={styles.circleButtonContainer}>
-            <View style={styles.circleButtonPlacement}>
+        <>
+          <TouchableOpacity onPress={handleCancel}>
+            <Text>Cancel</Text>
+          </TouchableOpacity>
+          <Camera style={styles.camera} type={type} ref={cameraRef}>
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
-                onPress={takePicture}
-                style={styles.circleButton}
-              />
+                onPress={() => {
+                  setType(
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
+                  );
+                }}
+              >
+                <Image source={require('../assets/icons/camera-flip.png')} />
+              </TouchableOpacity>
+              {hasCameraRollPermission && !preview && !capturedImage && (
+                <TouchableOpacity onPress={pickImage}>
+                  <Image source={require('../assets/icons/photoAlbum.png')} />
+                </TouchableOpacity>
+              )}
             </View>
-          </View>
-        </Camera>
+            <View style={styles.circleButtonContainer}>
+              <View style={styles.circleButtonPlacement}>
+                <TouchableOpacity
+                  onPress={takePicture}
+                  style={styles.circleButton}
+                />
+              </View>
+            </View>
+          </Camera>
+        </>
       )}
     </SafeAreaView>
   );

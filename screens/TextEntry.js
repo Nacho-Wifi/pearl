@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/core';
 
 const TextEntry = ({ route }) => {
   const [input, setInput] = useState('');
-  const { photoURI, inputText } = route.params;
+  const { photoURI, inputText } = route.params || '';
   const navigation = useNavigation();
   useEffect(() => {
     setInput(inputText);
