@@ -29,6 +29,7 @@ const ActivityTracker = () => {
   const [entries, setEntries] = useState([]);
   const journalCollectionRef = collection(db, 'Journals');
 
+
   // retrieve all journal entries where userId matches that of logged in user
   useEffect(() => {
     const getUserEntries = async () => {
@@ -65,7 +66,9 @@ const ActivityTracker = () => {
   }
 
   return (
+
     <View style={styles.container}>
+
       <VictoryPie
         theme={VictoryTheme.material}
         // data={activityTracker.slice(0,7)}
