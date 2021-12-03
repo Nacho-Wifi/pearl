@@ -48,10 +48,6 @@ const ImageEntries = () => {
     setCapturedImage(photo);
   };
 
-  const clearImage = () => {
-    setCapturedImage(null);
-    setPreview(false);
-  };
   const retakePhoto = () => {
     setCapturedImage(null);
     setPreview(false);
@@ -72,11 +68,7 @@ const ImageEntries = () => {
   return (
     <SafeAreaView style={styles.container}>
       {preview && capturedImage && (
-        <ImagePreview
-          photoURI={capturedImage.uri}
-          retakePhoto={retakePhoto}
-          clearImage={clearImage}
-        />
+        <ImagePreview photoURI={capturedImage.uri} retakePhoto={retakePhoto} />
       )}
       {hasPermission && !preview && !capturedImage && (
         <Camera style={styles.camera} type={type} ref={cameraRef}>

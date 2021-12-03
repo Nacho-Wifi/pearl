@@ -17,26 +17,23 @@ import { useNavigation } from '@react-navigation/core';
 
 const TextEntry = ({ route }) => {
   const [input, setInput] = useState('');
-  const { photoURI, inputText, clearImage } = route.params;
+  const { photoURI, inputText } = route.params;
   const navigation = useNavigation();
   useEffect(() => {
     setInput(inputText);
   }, []);
+  console.log('i am the route params', route.params);
   const handleCancel = () => {
-    //clearImage clears the preview state in ImageEntries so we are able to take a new picture later on
-    if (clearImage) {
-      clearImage();
-    }
-    //navigates back to JournalEntry with the photo.uri and text input set to null
+    //navigates back to JournalEntry with the photo.uri and text input set to empty string
     navigation.navigate('JournalEntry', {
       photoURI: '',
       inputText: '',
     });
   };
 
-  const handleBack = () => {
+  const handleRetake = () => {
     //navigates back to ImagePreview from TextEntry
-    navigation.goBack();
+    navigation.navigate('ImageEntries');
   };
 
   const handleSubmit = () => {
@@ -80,7 +77,7 @@ const TextEntry = ({ route }) => {
             ) : (
               <>
                 <View style={styles.btnContainer}>
-                  <Button title="Go Back" onPress={handleBack} />
+                  <Button title="Retake Photo" onPress={handleRetake} />
                 </View>
                 <View style={styles.imgContainer}>
                   <Image
