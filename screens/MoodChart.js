@@ -66,6 +66,17 @@ const MoodChart = () => {
             <Stop offset="100%" stopColor="#FFB319" />
           </LinearGradient>
         </Defs> */}
+        <VictoryAxis
+
+          // tickValues={xTickValues}
+
+          fixLabelOverlap={true}
+        />
+        <VictoryAxis dependentAxis
+            domain={[0, 5]}
+            tickValues={['😢', '😔', '😐', '😌', '😁']}
+            tickFormat={(t) => t}
+        />
         <VictoryArea
           // style={{ data: { fill: 'url(#gradientStroke)' } }}
           style={{ data: { fill: "#B8DFD8", stroke: "pink", strokeWidth: 3 } }}
@@ -77,6 +88,7 @@ const MoodChart = () => {
           interpolation="basis"
           padding={{ top: 0, bottom: 30 }}
         />
+
 
         {/* <VictoryAxis
           style={{
