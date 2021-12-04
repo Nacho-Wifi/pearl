@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 import { color } from 'react-native-reanimated';
+import LoadingIcon from './components/LoadingIcon';
 
 const Activities = ({ route }) => {
   const emojiMapping = {
@@ -30,7 +31,6 @@ const Activities = ({ route }) => {
 
   // Gets all activities data
   useEffect(() => {
-
     //every time we make a request return this promise, data to be resolved ...
     const getActivities = async () => {
       const data = await getDocs(activitiesCollectionRef);
@@ -42,14 +42,6 @@ const Activities = ({ route }) => {
     };
     getActivities();
   }, []);
-
-  // const isActivitySelected = (activity) => {
-  //   // check if selectedActivities (which will be populated with already existing entires passed down as props) 
-  //   // contains the current activity we're looping over - cannot use includes because the array may contain a copy of the object
-  //   selectedActivities.some(element => {
-  //     element.id === activity.id
-  //   })
-  // }
 
   const handleNext = () => {
     // activities are being added onto state array here - if we want to remove one we need to remove it from state
@@ -71,9 +63,7 @@ const Activities = ({ route }) => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text>Loading...</Text>
-      </View>
+      <LoadingIcon></LoadingIcon>
     );
   }
 
@@ -83,15 +73,12 @@ const Activities = ({ route }) => {
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
-          // console.log('ACTIVITIES IN SELECTED ACTIVITIES: ', selectedActivities)
-          // console.log('MAPPED ACTIVITIES', activity)
-          // console.log('selected activites contain activity? ', selectedActivities.find(el => el.id === activity.id))
           return (
             <TouchableOpacity
               key={activity.id}
 
               // Check if activity is in selectedActivities array - if it is make it darker
-              style={selectedActivities.some(element => element.id === activity.id) ? [styles.selectedButton, styles.selectedButtonText] : styles.button}
+              style={selectedActivities.some(element => element.id === activity.id) ? [styles.selectedButton] : styles.button}
               onPress={() => {
                 handleActivitySelect(activity);
               }}
@@ -111,32 +98,45 @@ const Activities = ({ route }) => {
 export default Activities;
 
 const styles = StyleSheet.create({
+  // this isn't working lol
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start' // if you want to fill rows left to right
+    // flexGrow: 1,
+    // justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#BDD8F1',
-    width: '60%',
+    backgroundColor: 'white',
+    width: '50%',
     padding: 15,
     margin: 16,
     alignItems: 'center',
+    borderColor: 'white',
     borderRadius: 10,
+    borderWidth: 2,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: '600',
+    color: 'black',
+    fontWeight: '200',
     fontSize: 16,
     textAlign: 'center'
   },
   selectedButton: {
-    backgroundColor: '#7bb6ed', // Temporary!
-    width: '60%',
+    backgroundColor: 'white',
+    width: '50%',
     margin: 16,
     padding: 15,
     alignItems: 'center',
-    // borderColor: '#BDD8F1',
-    // borderWidth: 2,
+    borderColor: '#BDD8F1',
+    borderWidth: 2,
     borderRadius: 10,
+    shadowColor: '#BDD8F1',
+    shadowOpacity: 0.5,
+    elevation: 6,
+    shadowRadius: 8,
+    shadowOffset: { width: 1, height: 6 },
+
   },
 });

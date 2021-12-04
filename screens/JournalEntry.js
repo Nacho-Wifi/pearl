@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import LoadingIcon from './components/LoadingIcon';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
@@ -31,13 +32,19 @@ const JournalEntry = ({ route }) => {
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
   const { activities, journalData, photoURI, inputText } = route.params;
+
+  // State
   const [moods, setMoods] = useState([]);
   const [textEntry, setTextEntry] = useState(false);
   const [userActivities, setUserActivities] = useState([]);
   const [userJournalData, setUserJournalData] = useState(null);
   const [selectedMood, setSelectedMood] = useState({});
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Collection refs
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
+
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
     const getMoods = async () => {
@@ -45,6 +52,7 @@ const JournalEntry = ({ route }) => {
       setMoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
     };
     getMoods();
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -139,6 +147,12 @@ const JournalEntry = ({ route }) => {
     navigation.replace('HomeScreen');
   };
 
+  if (isLoading) {
+    return (
+      <LoadingIcon></LoadingIcon>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {moods.map((mood) => {
@@ -193,36 +207,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // button: {
-  //   backgroundColor: '#BDD8F1',
-  //   width: '24%',
-  //   padding: 15,
-  //   borderRadius: 10,
-  //   margin: 16,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
   button: {
-    backgroundColor: '#BDD8F1',
-    width: '60%',
+    backgroundColor: 'white',
+    width: '24%',
     padding: 15,
     margin: 16,
     alignItems: 'center',
+    borderColor: 'white',
     borderRadius: 10,
+    borderWidth: 2,
   },
   selectedButton: {
-    backgroundColor: '#7bb6ed', // Temporary!
-    width: '60%',
+    backgroundColor: 'white',
+    width: '24%',
     margin: 16,
     padding: 15,
     alignItems: 'center',
-    // borderColor: '#BDD8F1',
-    // borderWidth: 2,
+    borderColor: '#BDD8F1',
+    borderWidth: 2,
     borderRadius: 10,
+    shadowColor: '#BDD8F1',
+    shadowOpacity: 0.5,
+    elevation: 6,
+    shadowRadius: 8,
+    shadowOffset: { width: 1, height: 6 },
   },
-  // buttonText: {
-  //   color: 'white',
-  //   fontWeight: '700',
-  //   fontSize: 16,
-  // },
 });

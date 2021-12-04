@@ -24,7 +24,7 @@ const MainStackNavigator = () => {
         }
       }
     >
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home' }} />
       <Stack.Screen name="ImageEntries" component={ImageEntries} />
       <Stack.Screen name="Activities" component={Activities} />
       <Stack.Screen
