@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { auth, db } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import {
   StyleSheet,
@@ -23,7 +23,8 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        console.log('Registered: ', user.email);
+        user.displayName = firstName;
+        console.log('Registered: ', user);
         const data = {
           email: user.email,
           firstName,

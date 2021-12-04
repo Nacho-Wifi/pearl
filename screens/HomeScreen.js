@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
-import { doc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, collection, query, where, getDocs, getDoc, Firestore } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { set } from 'react-native-reanimated';
 
@@ -22,7 +22,9 @@ const HomeScreen = () => {
   const [journalId, setJournalId] = useState();
   const [loading, setLoading] = useState(false);
   const journalEntriesCollectionRef = collection(db, 'Journals');
+
   let userId;
+  let firstName;
 
   useEffect(() => {
     //this is all inside useEffect because we DON'T want the edit or enter journal button to load until we have data on the user
@@ -30,7 +32,11 @@ const HomeScreen = () => {
     onAuthStateChanged(auth, (user) => {
       setLoading(true);
       if (user) {
+        console.log(user)
+        // if user exists, find their user document by email
         userId = user.email;
+        firstName = user.displayName;
+        console.log(firstName)
 
         //once we have the user info, check if that user has an entry for today ... date is set to string to make it comparable to what we have placed in firebase
         const getEntries = async () => {
@@ -57,7 +63,7 @@ const HomeScreen = () => {
       }
     });
   }, []);
-
+  // console.log('first name here? ', userId)
   const navigation = useNavigation();
 
   const makeNewEntry = () => {
@@ -102,7 +108,7 @@ const HomeScreen = () => {
           loop
           style={styles.lottiePearl}
         />
-        <Text>How are you feeling today?</Text>
+        <Text>How are you feeling today, {firstName}?</Text>
         <>
           {!journalEntries ? (
             <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
