@@ -19,12 +19,12 @@ import { set } from 'react-native-reanimated';
 
 const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
+  const [firstName, setFirstName] = useState('');
   const [journalId, setJournalId] = useState();
   const [loading, setLoading] = useState(false);
   const journalEntriesCollectionRef = collection(db, 'Journals');
 
   let userId;
-  let firstName;
 
   useEffect(() => {
     //this is all inside useEffect because we DON'T want the edit or enter journal button to load until we have data on the user
@@ -35,13 +35,14 @@ const HomeScreen = () => {
         console.log(user)
         // if user exists, find their user document by email
         userId = user.email;
-        firstName = user.displayName;
-        console.log(firstName)
+        console.log('display name from getAuth: ', user.displayName)
+        setFirstName(user.displayName)
+        // firstName = user.displayName;
+        console.log('first name? ', firstName)
 
         //once we have the user info, check if that user has an entry for today ... date is set to string to make it comparable to what we have placed in firebase
         const getEntries = async () => {
           let today = new Date().toDateString();
-
           const entryQuery = query(
             journalEntriesCollectionRef,
             where('userId', '==', userId),
@@ -63,7 +64,7 @@ const HomeScreen = () => {
       }
     });
   }, []);
-  // console.log('first name here? ', userId)
+  console.log('first name here? ', firstName)
   const navigation = useNavigation();
 
   const makeNewEntry = () => {
@@ -108,6 +109,7 @@ const HomeScreen = () => {
           loop
           style={styles.lottiePearl}
         />
+        {console.log(firstName)}
         <Text>How are you feeling today, {firstName}?</Text>
         <>
           {!journalEntries ? (
