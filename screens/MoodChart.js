@@ -66,12 +66,14 @@ const MoodChart = () => {
             <Stop offset="100%" stopColor="#FFB319" />
           </LinearGradient>
         </Defs> */}
-        <VictoryAxis
+        {/* <VictoryAxis
 
-          // tickValues={xTickValues}
+          tickValues={
+            ["Sun", "Mon", "Tue", "Wed",
+          "Thu", "Fri", "Sat"]}
 
           fixLabelOverlap={true}
-        />
+        /> */}
         <VictoryAxis dependentAxis
             domain={[0, 5]}
             tickValues={['😢', '😔', '😐', '😌', '😁']}
