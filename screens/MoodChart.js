@@ -56,24 +56,19 @@ const MoodChart = () => {
 
   return (
     <View style={styles.container}>
-      {/* <VictoryChart theme={VictoryTheme.material} scale={{ x: 'time' }}> */}
-      <VictoryChart theme={VictoryTheme.material}>
-        {/* <Defs>
-          <LinearGradient id="gradientStroke">
-            <Stop offset="25%" stopColor="orange" />
-            <Stop offset="50%" stopColor="gold" />
-
-            <Stop offset="100%" stopColor="#FFB319" />
-          </LinearGradient>
-        </Defs> */}
-        {/* <VictoryAxis
-
-          tickValues={
-            ["Sun", "Mon", "Tue", "Wed",
-          "Thu", "Fri", "Sat"]}
-
+      <VictoryChart
+      theme={VictoryTheme.material}
+      scale={{x: 'time'}}
+      >
+        <VictoryAxis
+          tickFormat={date => date.toLocaleString('en-us', { day: 'numeric' })
+          +'\n'+
+          date.toLocaleString('en-us',
+          { weekday: 'short'})
+          }
           fixLabelOverlap={true}
-        /> */}
+
+        />
         <VictoryAxis dependentAxis
             domain={[0, 5]}
             tickValues={['😢', '😔', '😐', '😌', '😁']}
