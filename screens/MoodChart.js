@@ -26,6 +26,8 @@ const { width, height } = Dimensions.get('screen');
 
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
+  //const [todayEntry, setTodayEntry] ... takes today's mood
+  let counter = 0;
   const journalCollectionRef = collection(db, 'Journals');
 
   // const didMountRef = useRef(false);
@@ -41,6 +43,7 @@ const MoodChart = () => {
   //       where('userId', '==', auth.currentUser.email)
   //     );
   //     const querySnapshot = await getDocs(userQuery);
+  //ONLY RETURN MOOD HERE!!!!
   //     setEntries(
   //       querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
   //     );
@@ -48,22 +51,31 @@ const MoodChart = () => {
   //   getUserEntries();
   // }, [entries]);
 
+  //load initial data
+
+  //counter
+  //useeffect1 - this use effect runs just one time - because it has an empty array at the the end. this use effect grabs all of the users (recent?) mood data and plots it on chart
+
+  //second use effect - this one runs if counter > 0 .. here is where we set TODAYS entry ... we set the array at the end equal to [todaysEntry ] .. then this should only change if today's entry changed ... and we can reset our journalEntries state with this && today's state
+
   useEffect(() => {
-    console.log('HITTING THE USE EFFECT!!');
     const getUserEntries = async () => {
+      console.log('WE ARE MOODS QUERYING!!!!!!');
       const userQuery = query(
         journalCollectionRef,
         where('userId', '==', auth.currentUser.email)
       );
       const querySnapshot = await getDocs(userQuery);
-      setEntries(
-        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
+      const allEntries = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      console.log('THIS IS ALL THE ENTRIES', allEntries);
+      // setEntries(
+      //   querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      // );
     };
     getUserEntries();
-    return () => {
-      console.log('unmounting ...');
-    };
   }, []);
 
   let mappedEntries = entries.map((entry) => {

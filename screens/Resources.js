@@ -57,10 +57,6 @@ const Map = () => {
       return (
         <View style={styles.container}>
           <Text>Resources Near You</Text>
-          <script
-            async
-            src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap"
-          ></script>
           <MapView
             style={styles.map}
             provider={PROVIDER_GOOGLE}

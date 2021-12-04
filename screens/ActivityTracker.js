@@ -32,6 +32,7 @@ const ActivityTracker = () => {
   // retrieve all journal entries where userId matches that of logged in user
   useEffect(() => {
     const getUserEntries = async () => {
+      console.log('WE ARE ACTIVITIES QUERYING!!!');
       const userQuery = query(
         journalCollectionRef,
         where('userId', '==', auth.currentUser.email)
@@ -42,10 +43,7 @@ const ActivityTracker = () => {
       );
     };
     getUserEntries();
-    return () => {
-      console.log('unmounting ...');
-    };
-  }, [entries]);
+  }, []);
 
   // iterate through ALL activities for that user, on all days, make pie chart
   let activityHash = {};

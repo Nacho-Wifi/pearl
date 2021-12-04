@@ -18,14 +18,20 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="HomeScreen"
-      screenOptions={{
-        headerShown: false,
-      }}
+      screenOptions={
+        {
+          // headerShown: false,
+        }
+      }
     >
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="ImageEntries" component={ImageEntries} />
       <Stack.Screen name="Activities" component={Activities} />
-      <Stack.Screen name="JournalEntry" component={JournalEntry} />
+      <Stack.Screen
+        name="JournalEntry"
+        component={JournalEntry}
+        options={{ title: 'My Mood' }}
+      />
       <Stack.Screen name="TextEntry" component={TextEntry} />
       {/* <Stack.Screen name="MoodChart" component={MoodChart} />
       <Stack.Screen name="ActivityTracker" component={ActivityTracker} /> */}
