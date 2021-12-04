@@ -4,7 +4,7 @@ import { CurrentRenderContext, useNavigation } from "@react-navigation/core";
 
 import { auth, db } from "../firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import {
   doc,
   addDoc,
@@ -23,6 +23,7 @@ import {
   VictoryAxis,
   VictoryLabel,
 } from "victory-native";
+import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -48,15 +49,14 @@ const ActivityTracker = () => {
     getUserEntries();
   }, []);
 
-  // iterate through ALL activities for that user, on all days, make pie chart
+  // iterate through ALL activities for that user, on all days, make pie chart (if activities exist)
   let activityHash = {};
   entries
     .map((entry) => entry.activities)
     .flat()
-    .forEach((activity) =>
-      activityHash[activity.image]
-        ? (activityHash[activity.image] += 1)
-        : (activityHash[activity.image] = 1)
+    .forEach((activity) => {
+      activity === undefined ? null :
+      activityHash[activity.image] = activityHash[activity.image] + 1 || 1 }
     );
 
   // pull out emoticons and frequency of activity associated with that emoticon
@@ -68,7 +68,20 @@ const ActivityTracker = () => {
     });
   }
 
+  // const undefinedCheck = (element) => element === undefined;
+
   return (
+    !activityTracker.length ?
+    <View style={styles.container}>
+      <LottieView
+        style={styles.lottiePie}
+        source={require('../assets/lottie/pieChart.json')}
+        autoPlay
+      />
+      <Text style={styles.textStyling}>
+        Select some activities to see your data!
+      </Text>
+    </View> :
     <View style={styles.container}>
       <VictoryPie
         theme={VictoryTheme.material}
@@ -110,4 +123,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  textStyling: {
+    display: "flex",
+    color: '#b5179e',
+    alignContent: "center",
+    textAlign: "center",
+    fontFamily: "Avenir",
+    fontSize: 16
+  },
+  lottiePie: {
+    width: 150,
+    height: 150
+  }
 });

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { auth, db } from "../firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import {
   doc,
   addDoc,
@@ -21,7 +21,7 @@ import {
   VictoryAxis,
   VictoryLabel,
 } from "victory-native";
-//import { Defs, LinearGradient, Stop } from 'react-native-svg';
+import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -45,7 +45,9 @@ const MoodChart = () => {
     getUserEntries();
   }, []);
 
-  let mappedEntries = entries.map((entry) => {
+  let totalMood = 0;
+  const mappedEntries = entries.map((entry) => {
+    if(entry.mood.scale) totalMood += entry.mood.scale;
     return {
       date: new Date(entry.createdAt) || "",
       scale: entry.mood.scale || 0,
@@ -54,11 +56,36 @@ const MoodChart = () => {
     };
   });
 
+  console.log('totalMood:', totalMood)
+  // if haven't logged in past 7 days
+  // see message
+const week = () => {
+    let date = new Date();
+    date.setDate(date.getDate() - 7);
+    return date;
+}
+
+const oneWeekAgo = week();
+
+
   return (
+    totalMood === 0 ?
+    <View style={styles.container}>
+      <LottieView
+        style={styles.lottieHistogram}
+        source={require('../assets/lottie/histogram.json')}
+        autoPlay
+      />
+      <Text style={styles.textStyling}>
+      Select a mood for today to see your data!
+    </Text>
+    </View>
+     :
     <View style={styles.container}>
       <VictoryChart
       theme={VictoryTheme.material}
       scale={{x: 'time'}}
+      minDomain={{x: oneWeekAgo}}
       >
         <VictoryAxis
           tickFormat={date => date.toLocaleString('en-us', { day: 'numeric' })
@@ -67,7 +94,6 @@ const MoodChart = () => {
           { weekday: 'short'})
           }
           fixLabelOverlap={true}
-
         />
         <VictoryAxis dependentAxis
             domain={[0, 5]}
@@ -75,8 +101,7 @@ const MoodChart = () => {
             tickFormat={(t) => t}
         />
         <VictoryArea
-          // style={{ data: { fill: 'url(#gradientStroke)' } }}
-          style={{ data: { fill: "#B8DFD8", stroke: "pink", strokeWidth: 3 } }}
+          style={{ data: { fill: "#B8DFD8", stroke: "pink", strokeWidth: 2 } }}
           data={mappedEntries}
           x="date"
           y="scale"
@@ -84,26 +109,8 @@ const MoodChart = () => {
           animate
           interpolation="basis"
           padding={{ top: 0, bottom: 30 }}
+          minDomain={{x: oneWeekAgo}}
         />
-
-
-        {/* <VictoryAxis
-          style={{
-            axis: { stroke: 'none' },
-            tickLabels: {
-              fill: 'grey',
-            },
-          }}
-          //label="Date"
-        /> */}
-        {/* <VictoryAxis
-          dependentAxis
-          style={{
-            axis: { stroke: 'none' },
-            tickLabels: { fill: 'none' },
-          }}
-          label="Mood"
-        /> */}
       </VictoryChart>
     </View>
   );
@@ -116,4 +123,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  textStyling: {
+    display: "flex",
+    color: '#b5179e',
+    alignContent: "center",
+    textAlign: "center",
+    fontFamily: "Avenir",
+    fontSize: 16
+  },
+  lottieHistogram: {
+    width: 150,
+    height: 150
+  }
 });
