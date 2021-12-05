@@ -2,6 +2,13 @@
 
 TODO: About
 
+## Tech Stack
+
+* Firebase
+  * Authentication
+  * Firestore Database
+* Victory Native
+
 ## Usage
 
 1. Clone the repository:

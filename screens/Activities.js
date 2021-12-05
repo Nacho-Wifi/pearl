@@ -5,6 +5,7 @@ import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 import { color } from 'react-native-reanimated';
 import LoadingIcon from './components/LoadingIcon';
+import AddActivity from './AddActivity';
 
 const Activities = ({ route }) => {
   const emojiMapping = {
@@ -26,7 +27,7 @@ const Activities = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   const activitiesCollectionRef = collection(db, 'Activities');
-  // console.log('SELECTED ACTIVITIES: ', selectedActivities)
+  console.log('SELECTED ACTIVITIES: ', selectedActivities)
   // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
 
   // *** if activities are passed down as props and user wants to unselect one, it's currently adding the activity 
@@ -91,6 +92,10 @@ const Activities = ({ route }) => {
             </TouchableOpacity>
           );
         })}
+        {/* <TouchableOpacity style={styles.button} onPress={handleNext}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity> */}
+        <AddActivity />
         <TouchableOpacity style={styles.button} onPress={handleNext}>
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
