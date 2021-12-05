@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
-import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
+import { doc, addDoc, getDocs, collection, setDoc, query, where } from 'firebase/firestore';
 import { color } from 'react-native-reanimated';
 import LoadingIcon from './components/LoadingIcon';
 import AddActivity from './AddActivity';
@@ -27,17 +27,17 @@ const Activities = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   const activitiesCollectionRef = collection(db, 'Activities');
-  console.log('SELECTED ACTIVITIES: ', selectedActivities)
-  // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
 
-  // *** if activities are passed down as props and user wants to unselect one, it's currently adding the activity 
-  // to state array again as a duplicate
-
-  // Gets all activities data
+  // Gets all default activities and user's customized activities
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
     const getActivities = async () => {
-      const data = await getDocs(activitiesCollectionRef);
+      const activitiesQuery = query(
+        activitiesCollectionRef,
+        where('userId', 'in', [journalData.userId, '']),
+      );
+      const data = await getDocs(activitiesQuery);
+
       setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
       // if this is true, craete activities id state then check if the id == activity.id? 
       // would only work if user has an entry already
@@ -58,8 +58,6 @@ const Activities = ({ route }) => {
   // TODO: REFACTOR THIS TO REMOVE REPEATING CODE
   const handleActivitySelect = (activity) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
-    // console.log('ACTIVITY: ', activity)
-    // console.log('is activity in selected Activities state? ', selectedActivities.includes(activity))
 
     if (!selectedActivities.some(element => element.id === activity.id)) {
       setSelectedActivities((oldState) => [...oldState, activity]);
@@ -92,9 +90,6 @@ const Activities = ({ route }) => {
             </TouchableOpacity>
           );
         })}
-        {/* <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity> */}
         <AddActivity />
         <TouchableOpacity style={styles.button} onPress={handleNext}>
           <Text style={styles.buttonText}>Next</Text>
