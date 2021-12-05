@@ -4,7 +4,7 @@ import { CurrentRenderContext, useNavigation } from "@react-navigation/core";
 
 import { auth, db } from "../firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { StyleSheet, View, Dimensions, Text, SafeAreaView } from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import {
   doc,
   addDoc,
@@ -22,7 +22,8 @@ import {
   VictoryArea,
   VictoryAxis,
   VictoryLabel,
-  VictoryContainer
+  VictoryVoronoiContainer,
+  VictoryTooltip
 } from "victory-native";
 import LottieView from 'lottie-react-native';
 
@@ -83,20 +84,26 @@ const ActivityTracker = () => {
         Select some activities to see your data!
       </Text>
     </View> :
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <VictoryPie
-        width={380}
+        width={320}
         theme={VictoryTheme.material}
-        // data={activityTracker.slice(0,7)}
         data={activityTracker}
-        labelRadius={({ innerRadius }) => innerRadius + 40}
+        // labelComponent={
+
+        //   <VictoryTooltip
+        //     active={true}
+        //   />
+        // }
+
+        //labelRadius={({ innerRadius }) => innerRadius + 40}
         style={{
           labels: {
             fontSize: 28,
             align: "center",
           },
         }}
-        innerRadius={35}
+        //innerRadius={35}
         colorScale={[
           "#FFB319",
           "#FFE194",
@@ -115,7 +122,7 @@ const ActivityTracker = () => {
         y="frequency"
 
       />
-    </SafeAreaView>
+    </View>
   );
 };
 export default ActivityTracker;

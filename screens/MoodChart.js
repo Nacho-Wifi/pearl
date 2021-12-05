@@ -19,10 +19,8 @@ import {
   VictoryPie,
   VictoryArea,
   VictoryAxis,
-  VictoryLabel,
   VictoryVoronoiContainer,
   VictoryTooltip,
-  VictoryLine
 } from "victory-native";
 import LottieView from "lottie-react-native";
 
@@ -100,14 +98,28 @@ const MoodChart = () => {
     <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
-        scale={{ x: "time" }}
-        minDomain={{ x: oneWeekAgo }}
-        height={300}
         containerComponent={
           <VictoryVoronoiContainer
+            dimension="x"
             labels={({datum}) => datum.activities[0].image}
+            labelComponent={
+            <VictoryTooltip
+            style={{fontSize: 30}}
+            // cornerRadius={16}
+            pointerLength={0}
+            constrainToVisibleArea
+            flyoutStyle={{
+              fill: "none",
+              stroke: "none",
+              }}
+            // flyoutWidth={60}
+            // flyoutHeight={60}
+            />}
           />}
-
+        scale={{ x: "time" }}
+        minDomain={{ x: oneWeekAgo }}
+        maxDomain={{y:5.2}}
+        height={300}
 
       >
         <VictoryAxis
@@ -125,17 +137,17 @@ const MoodChart = () => {
           tickFormat={(t) => t}
         />
 
-
         <VictoryArea
-          style={{ data: { fill: "#B8DFD8", stroke: "pink", strokeWidth: 2 } }}
+          style={{ data: { fill: "#B8DFD8", stroke: "pink", strokeWidth: 2 }}}
           data={mappedEntries}
           x="date"
           y="scale"
-          height={300}
           animate
-          interpolation="basis"
-          minDomain={{ x: day }}
-          labelComponent={<VictoryTooltip/>}
+          interpolation="catmullRom"
+
+          labelComponent={<VictoryTooltip
+
+          />}
         />
 
       </VictoryChart>
@@ -153,7 +165,7 @@ const MoodChart = () => {
             >
             <Text style={{color: "white"}}>VIEW MONTH</Text>
             </TouchableOpacity>
-            {/* <Text style={styles.button}>Month</Text> */}
+
       </View>
     </View>
   );
