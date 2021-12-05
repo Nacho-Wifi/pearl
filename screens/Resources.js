@@ -22,15 +22,18 @@ const Map = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
     (async () => {
+      setLoading(true);
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location denied');
         return;
       }
 
-      let coordinates = await Location.getCurrentPositionAsync({});
+      let coordinates = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Lowest,
+      });
+
       setLocation(coordinates);
 
       setMapRegion({
@@ -44,8 +47,6 @@ const Map = () => {
   }, []);
 
   const getPlaces = async (type, location) => {
-    // let radius = 1000;
-
     const nearbyServiceWithGoogleType = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?`;
     const nearbyServiceWithoutGoogleType = `https://maps.googleapis.com/maps/api/place/textsearch/json?`;
     const api = `&key=${GOOGLE_PLACES_API}`;
@@ -77,39 +78,11 @@ const Map = () => {
     setSearchResults(spotsNearby);
   };
 
-  //   let newPromise = new Promise((res, rej) => {
-  //     res(
-  //       fetch(url)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           return res.results.map((element) => {
-  //             return {
-  //               id: element.place_id,
-  //               name: element.name,
-  //               rating: element.rating,
-  //               vicinity: element.vicinity,
-  //               marker: {
-  //                 latitude: element.geometry.location.lat,
-  //                 longitude: element.geometry.location.lng,
-  //               },
-  //             };
-  //           });
-  //         })
-  //         .then((value) => {
-  //           setSearchResults(value);
-  //           return value;
-  //         })
-  //     );
-  //   });
-  //   return newPromise;
-  // };
-
-  let text = 'Waiting..';
+  let text = 'Waiting for location permission';
   if (loading) {
     return <View>Loading ...</View>;
   } else {
     if (errorMsg) {
-      console.log('IS THERE AN ERROR', errorMsg);
       text = errorMsg;
       return (
         <View style={styles.container}>
@@ -127,25 +100,7 @@ const Map = () => {
       text = JSON.stringify(location);
       return (
         <View style={styles.container}>
-          <Text>Resources Near You</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => getPlaces('park', location)}
-          >
-            <Text>Parks</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => getPlaces('therapist', location)}
-          >
-            <Text>Therapy</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => getPlaces('meditation', location)}
-          >
-            <Text>Meditation</Text>
-          </TouchableOpacity>
+          <Text style={styles.header}>Resources Near You</Text>
           <MapView
             style={styles.map}
             provider={PROVIDER_GOOGLE}
@@ -167,12 +122,33 @@ const Map = () => {
               );
             })}
           </MapView>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => getPlaces('park', location)}
+          >
+            <Text>Parks</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => getPlaces('therapist', location)}
+          >
+            <Text>Therapy</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => getPlaces('meditation', location)}
+          >
+            <Text>Meditation</Text>
+          </TouchableOpacity>
+          <Text>National Suicide Prevention Lifeline: (800) 273-8255</Text>
+          <Text>Crisis Text Line: Text HOME to 741741</Text>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Text>Unpersonalized resources</Text>
+          <Text>Loading ... </Text>
+          {/* <Text>Unpersonalized resources</Text>
           <MapView
             style={styles.map}
             provider={PROVIDER_GOOGLE}
@@ -183,7 +159,7 @@ const Map = () => {
               longitudeDelta: 0.0922,
               latitudeDelta: 0.0421,
             }}
-          />
+          /> */}
         </View>
       );
     }
@@ -210,5 +186,9 @@ const styles = StyleSheet.create({
   map: {
     width: '90%',
     height: 300,
+  },
+  header: {
+    fontSize: 25,
+    padding: 5,
   },
 });
