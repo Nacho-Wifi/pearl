@@ -29,6 +29,7 @@ const { width, height } = Dimensions.get("screen");
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
   const [day, setDay] = useState(oneWeekAgo);
+  let totalMood = 0;
 
   useEffect(() => {
     const getUserEntries = () => {
@@ -44,17 +45,17 @@ const MoodChart = () => {
         setEntries(journalEntry);
       });
     };
+    totalMood=1;
     getUserEntries();
   }, []);
 
-  const changeTimeline = (time) => {
 
+  const changeTimeline = (time) => {
     if (time === "week") setDay(oneWeekAgo);
     else if (time === "month") setDay(oneMonthAgo);
-    // necessary?
   }
 
-  let totalMood = 0;
+
   const mappedEntries = entries.map((entry) => {
     if (entry.mood.scale) totalMood += entry.mood.scale;
     return {
@@ -64,6 +65,7 @@ const MoodChart = () => {
       activities: entry.activities || [],
     };
   });
+
 
   let dateDescription = {};
 
@@ -87,7 +89,9 @@ const MoodChart = () => {
   const oneMonthAgo = month();
   console.log('dateDescription:', dateDescription)
 
-  return totalMood === 0 ? (
+  return (
+    // totalMood === 0 ?
+    entries.length <=1 ?
     <View style={styles.container}>
       <LottieView
         style={styles.lottieHistogram}
@@ -95,10 +99,10 @@ const MoodChart = () => {
         autoPlay
       />
       <Text style={styles.textStyling}>
-        Select a mood for today to see your data!
+        Select a mood, today and tomorrow!
       </Text>
     </View>
-  ) : (
+   :
     <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
