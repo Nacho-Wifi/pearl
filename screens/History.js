@@ -45,10 +45,6 @@ const History = () => {
           //we have access to the datestring aka yyyy-mm-dd.
           //to show the correct date when using toDateString(), we must change the format
           //from yyyy-mm-dd to yyyy/mm/dd
-          console.log(
-            'selected day',
-            new Date(day.dateString.replace(/-/g, '/')).toDateString()
-          );
           handleClick(
             new Date(day.dateString.replace(/-/g, '/')).toDateString()
           );
