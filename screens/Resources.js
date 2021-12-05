@@ -6,6 +6,7 @@ import {
   Text,
   View,
   StyleSheet,
+  ScrollView,
   Dimensions,
   Button,
   TouchableOpacity,
@@ -100,48 +101,50 @@ const Map = () => {
       text = JSON.stringify(location);
       return (
         <View style={styles.container}>
-          <Text style={styles.header}>Resources Near You</Text>
-          <MapView
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            showsUserLocation={true}
-            region={mapRegion}
-          >
-            {searchResults.map((place) => {
-              return (
-                <Marker
-                  title={`${place.name}`}
-                  description={`${place.vicinity}`}
-                  key={place.id}
-                  coordinate={{
-                    latitude: place.marker.latitude,
-                    longitude: place.marker.longitude,
-                  }}
-                  pinColor={'#83CA9E'}
-                />
-              );
-            })}
-          </MapView>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => getPlaces('park', location)}
-          >
-            <Text>Parks</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => getPlaces('therapist', location)}
-          >
-            <Text>Therapy</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => getPlaces('meditation', location)}
-          >
-            <Text>Meditation</Text>
-          </TouchableOpacity>
-          <Text>National Suicide Prevention Lifeline: (800) 273-8255</Text>
-          <Text>Crisis Text Line: Text HOME to 741741</Text>
+          <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+            <Text style={styles.header}>Resources Near You</Text>
+            <MapView
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              showsUserLocation={true}
+              region={mapRegion}
+            >
+              {searchResults.map((place) => {
+                return (
+                  <Marker
+                    title={`${place.name}`}
+                    description={`${place.vicinity}`}
+                    key={place.id}
+                    coordinate={{
+                      latitude: place.marker.latitude,
+                      longitude: place.marker.longitude,
+                    }}
+                    pinColor={'#83CA9E'}
+                  />
+                );
+              })}
+            </MapView>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => getPlaces('park', location)}
+            >
+              <Text>Parks</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => getPlaces('therapist', location)}
+            >
+              <Text>Therapy</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => getPlaces('meditation', location)}
+            >
+              <Text>Meditation</Text>
+            </TouchableOpacity>
+            <Text>National Suicide Prevention Lifeline: (800) 273-8255</Text>
+            <Text>Crisis Text Line: Text HOME to 741741</Text>
+          </ScrollView>
         </View>
       );
     } else {
@@ -190,5 +193,6 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 25,
     padding: 5,
+    marginTop: 50,
   },
 });
