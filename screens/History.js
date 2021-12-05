@@ -9,6 +9,8 @@ const History = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [entry, setEntry] = useState({});
   const journalEntriesCollectionRef = collection(db, 'Journals');
+  //get time of userCreation to set mininum for Calendar
+  const userCreation = auth.currentUser.metadata.creationTime;
   const handleClick = async (daySelected) => {
     const userId = auth.currentUser.email;
     const entryQuery = query(
@@ -53,6 +55,7 @@ const History = () => {
         }}
         // Do not show days of other months in month page. Default = false
         hideExtraDays={true}
+        minDate={userCreation}
         maxDate={new Date()}
         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
         onPressArrowLeft={(subtractMonth) => subtractMonth()}
