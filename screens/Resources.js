@@ -119,7 +119,7 @@ const Map = () => {
                       latitude: place.marker.latitude,
                       longitude: place.marker.longitude,
                     }}
-                    pinColor={'#83CA9E'}
+                    pinColor={'blue'}
                   />
                 );
               })}
@@ -142,8 +142,9 @@ const Map = () => {
             >
               <Text>Meditation</Text>
             </TouchableOpacity>
-            <Text>National Suicide Prevention Lifeline: (800) 273-8255</Text>
-            <Text>Crisis Text Line: Text HOME to 741741</Text>
+            <Text style={styles.hotlineHeader}>Hotlines:</Text>
+            <Text>{`\u2022 National Suicide Prevention Lifeline: (800) 273-8255`}</Text>
+            <Text>{`\u2022 Crisis Text Line: Text HOME to 741741`}</Text>
           </ScrollView>
         </View>
       );
@@ -194,5 +195,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
     padding: 5,
     marginTop: 50,
+  },
+  hotlineHeader: {
+    fontSize: 20,
+    marginTop: 20,
+    marginBottom: 10,
   },
 });
