@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import { GOOGLE_MAPS_API_KEY, GOOGLE_PLACES_API } from '@env';
+import { set } from 'react-native-reanimated';
 
 const Map = () => {
   const [location, setLocation] = useState(null);
@@ -55,38 +56,53 @@ const Map = () => {
     let url;
     if (type === 'park') {
       url = `${nearbyServiceWithGoogleType}${locationUrl}&rankby=distance${typeData}${api}`;
+    } else {
+      url = `${nearbyServiceWithoutGoogleType}${locationUrl}&query=${type}&rankby=distance${api}`;
     }
 
-    let nearbySpots = () => {
-      fetch(url);
-    };
-
-    let newPromise = new Promise((res, rej) => {
-      res(
-        fetch(url)
-          .then((res) => res.json())
-          .then((res) => {
-            return res.results.map((element) => {
-              return {
-                id: element.place_id,
-                name: element.name,
-                rating: element.rating,
-                vicinity: element.vicinity,
-                marker: {
-                  latitude: element.geometry.location.lat,
-                  longitude: element.geometry.location.lng,
-                },
-              };
-            });
-          })
-          .then((value) => {
-            setSearchResults(value);
-            return value;
-          })
-      );
+    let res = await fetch(url);
+    let data = await res.json();
+    let spotsNearby = data.results.map((element) => {
+      return {
+        id: element.place_id,
+        name: element.name,
+        rating: element.rating,
+        vicinity: element.vicinity,
+        marker: {
+          latitude: element.geometry.location.lat,
+          longitude: element.geometry.location.lng,
+        },
+      };
     });
-    return newPromise;
+    setSearchResults(spotsNearby);
   };
+
+  //   let newPromise = new Promise((res, rej) => {
+  //     res(
+  //       fetch(url)
+  //         .then((res) => res.json())
+  //         .then((res) => {
+  //           return res.results.map((element) => {
+  //             return {
+  //               id: element.place_id,
+  //               name: element.name,
+  //               rating: element.rating,
+  //               vicinity: element.vicinity,
+  //               marker: {
+  //                 latitude: element.geometry.location.lat,
+  //                 longitude: element.geometry.location.lng,
+  //               },
+  //             };
+  //           });
+  //         })
+  //         .then((value) => {
+  //           setSearchResults(value);
+  //           return value;
+  //         })
+  //     );
+  //   });
+  //   return newPromise;
+  // };
 
   let text = 'Waiting..';
   if (loading) {
@@ -117,6 +133,18 @@ const Map = () => {
             onPress={() => getPlaces('park', location)}
           >
             <Text>Parks</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => getPlaces('therapist', location)}
+          >
+            <Text>Therapy</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => getPlaces('meditation', location)}
+          >
+            <Text>Meditation</Text>
           </TouchableOpacity>
           <MapView
             style={styles.map}
