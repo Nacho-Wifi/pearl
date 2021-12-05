@@ -70,8 +70,6 @@ const ActivityTracker = () => {
     });
   }
 
-  // const undefinedCheck = (element) => element === undefined;
-
   return (
     !activityTracker.length ?
     <View style={styles.container}>
@@ -84,18 +82,34 @@ const ActivityTracker = () => {
         Select some activities to see your data!
       </Text>
     </View> :
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      >
       <VictoryPie
-        width={320}
+        width={300}
         theme={VictoryTheme.material}
         data={activityTracker}
+        events={[{
+          target: "data",
+          eventHandlers: {
+            onPressIn: () => {
+              return [
+                {
+                  target: "data",
+                  mutation: ({ style }) => {
+                    return (style.fill === "#ff0dbf" ? null : { style: { fill: "#ff0dbf"}}
+                    );
+                  }
+                },
+              ]
+            }
+          }
+        }]}
         // labelComponent={
-
         //   <VictoryTooltip
         //     active={true}
         //   />
         // }
-
         //labelRadius={({ innerRadius }) => innerRadius + 40}
         style={{
           labels: {

@@ -47,6 +47,13 @@ const MoodChart = () => {
     getUserEntries();
   }, []);
 
+  const changeTimeline = (time) => {
+
+    if (time === "week") setDay(oneWeekAgo);
+    else if (time === "month") setDay(oneMonthAgo);
+    // necessary?
+  }
+
   let totalMood = 0;
   const mappedEntries = entries.map((entry) => {
     if (entry.mood.scale) totalMood += entry.mood.scale;
@@ -59,11 +66,9 @@ const MoodChart = () => {
   });
 
   let dateDescription = {};
-  let minDomain = {};
 
   console.log("totalMood:", totalMood);
-  // if haven't logged in past 7 days
-  // see message
+
   const week = () => {
     let date = new Date();
     date.setDate(date.getDate() - 7);
@@ -82,8 +87,7 @@ const MoodChart = () => {
   const oneMonthAgo = month();
   console.log('dateDescription:', dateDescription)
 
-  return (
-    totalMood === 0 ?
+  return totalMood === 0 ? (
     <View style={styles.container}>
       <LottieView
         style={styles.lottieHistogram}
@@ -94,7 +98,7 @@ const MoodChart = () => {
         Select a mood for today to see your data!
       </Text>
     </View>
-   :
+  ) : (
     <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
@@ -112,12 +116,10 @@ const MoodChart = () => {
               fill: "none",
               stroke: "none",
               }}
-            // flyoutWidth={60}
-            // flyoutHeight={60}
             />}
           />}
         scale={{ x: "time" }}
-        minDomain={{ x: oneWeekAgo }}
+        minDomain={{ x: day }}
         maxDomain={{y:5.2}}
         height={300}
 
@@ -144,24 +146,25 @@ const MoodChart = () => {
           y="scale"
           animate
           interpolation="catmullRom"
-
-          labelComponent={<VictoryTooltip
-
-          />}
+          labelComponent={<VictoryTooltip/>}
         />
-
       </VictoryChart>
 
       <View style={styles.buttonContainer}>
             <TouchableOpacity
             style={styles.leftButton}
-            // onClick={setDay(oneWeekAgo)}
+            onPress={() => {
+              changeTimeline("week");
+            }}
             >
             <Text style={{color: "white"}}>VIEW WEEK</Text>
             </TouchableOpacity>
             <TouchableOpacity
-            style={styles.rightButton}
-            // onClick={setDay(oneMonthAgo)}
+              style={styles.rightButton}
+              onPress={() => {
+                changeTimeline("month")
+              }}
+
             >
             <Text style={{color: "white"}}>VIEW MONTH</Text>
             </TouchableOpacity>
