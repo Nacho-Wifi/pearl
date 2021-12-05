@@ -4,10 +4,11 @@ import {
   Text,
   View,
   Modal,
-  Pressable,
   Image,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
+import LottieView from 'lottie-react-native';
 
 const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
   const emojiMapping = {
@@ -42,14 +43,20 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <View>
-                <Text>Sorry, you didn't have an Entry for this day</Text>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
+              <View style={styles.cancelContainer}>
+                <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
                 >
-                  <Text style={styles.textStyle}>Hide Modal</Text>
-                </Pressable>
+                  <Image source={require('../assets/icons/cancel.png')} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.lottieContainer}>
+                <LottieView
+                  style={styles.noResult}
+                  source={require('../assets/lottie/no-result.json')}
+                  autoPlay
+                />
+                <Text>Sorry, you didn't have a journal entry for this day</Text>
               </View>
             </View>
           </View>
@@ -69,6 +76,11 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <View style={styles.cancelContainer}>
+              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                <Image source={require('../assets/icons/cancel.png')} />
+              </TouchableOpacity>
+            </View>
             <View>
               {/* Mood */}
               <Text style={styles.modalText}>Mood:</Text>
@@ -100,13 +112,6 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
                   <Text style={styles.modalText}>{entry.textInput}</Text>
                 </View>
               )}
-
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
             </View>
           </View>
         </View>
@@ -171,9 +176,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // textContainer: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
+  noResult: {
+    width: 150,
+    height: 150,
+  },
+  lottieContainer: {
+    alignItems: 'center',
+  },
+  cancelContainer: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    padding: 10,
+  },
 });
