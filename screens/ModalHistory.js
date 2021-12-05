@@ -98,6 +98,9 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
                 );
               })}
               {/* Photo */}
+              {(!!entry.photoURL || !!entry.textInput) && (
+                <Text style={styles.modalText}>Journal Entry: </Text>
+              )}
               {!!entry.photoURL && (
                 <View style={styles.imageContainer}>
                   <Image
@@ -108,7 +111,7 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
               )}
               {/* Text Input */}
               {!!entry.textInput && (
-                <View style={styles.textContainer}>
+                <View style={styles.imageContainer}>
                   <Text style={styles.modalText}>{entry.textInput}</Text>
                 </View>
               )}
@@ -138,7 +141,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
+    // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -166,6 +169,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
+    fontSize: 20,
     // textAlign: 'center',
   },
   displayImage: {
