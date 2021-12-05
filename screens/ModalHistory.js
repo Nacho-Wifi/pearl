@@ -4,11 +4,14 @@ import { StyleSheet, Text, View, Modal, Pressable } from 'react-native';
 const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
   //check if entry is empty object aka
   //no journal entry for the date selected
-  console.log('i am the etrt', entry);
-  if (Object.keys(entry).length === 0) {
-    console.log('i am in here');
-    return <View>Sorry, you didn't have an Entry for this day</View>;
-  }
+  // if (Object.keys(entry).length === 0) {
+  //   console.log('i am in here');
+  //   return (
+  //     <View>
+  //       <Text>Sorry, you didn't have an Entry for this day</Text>
+  //     </View>
+  //   );
+  // }
   return (
     <View style={styles.modalContainer}>
       <Modal
@@ -22,13 +25,27 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Mood:</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+            {Object.keys(entry).length === 0 ? (
+              <View>
+                <Text>Sorry, you didn't have an Entry for this day</Text>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.modalText}>Mood:</Text>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </Pressable>
+              </View>
+            )}
           </View>
         </View>
       </Modal>

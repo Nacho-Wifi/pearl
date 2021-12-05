@@ -10,7 +10,6 @@ const History = () => {
   const [entry, setEntry] = useState({});
   const journalEntriesCollectionRef = collection(db, 'Journals');
   const handleClick = async (daySelected) => {
-    console.log('i am daySelected', daySelected);
     const userId = auth.currentUser.email;
     const entryQuery = query(
       journalEntriesCollectionRef,
@@ -21,6 +20,7 @@ const History = () => {
     querySnapshot.forEach((doc) => {
       //setEntry as the doc we get back from Journal for that day
       //will pass down to ModalHistory as props to display
+      console.log('i am the data', doc.data());
       setEntry(doc.data());
     });
     setModalVisible(true);
