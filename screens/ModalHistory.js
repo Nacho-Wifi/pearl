@@ -79,24 +79,28 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
               <Text style={styles.modalText}>Activities:</Text>
               {entry.activities.map((activity) => {
                 return (
-                  <Text style={styles.modalText}>
+                  <Text key={activity.id} style={styles.modalText}>
                     {activity.activityName}{' '}
                     {activitiesEmojiMapping[activity.emojiUnicode]}
                   </Text>
                 );
               })}
               {/* Photo */}
-
-              <View style={styles.imageContainer}>
-                <Image
-                  style={styles.displayImage}
-                  source={{ uri: entry.photoURL }}
-                />
-              </View>
+              {!!entry.photoURL && (
+                <View style={styles.imageContainer}>
+                  <Image
+                    style={styles.displayImage}
+                    source={{ uri: entry.photoURL }}
+                  />
+                </View>
+              )}
               {/* Text Input */}
-              <View style={styles.textContainer}>
-                <Text style={styles.modalText}>{entry.textInput}</Text>
-              </View>
+              {!!entry.textInput && (
+                <View style={styles.textContainer}>
+                  <Text style={styles.modalText}>{entry.textInput}</Text>
+                </View>
+              )}
+
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    // justifyContent: 'center',
+    justifyContent: 'center',
     // alignItems: 'center',
     marginTop: 22,
   },
