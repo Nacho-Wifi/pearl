@@ -67,8 +67,9 @@ const Activities = ({ route }) => {
     );
   }
 
+  // WHY AM I HAVING TO CLICK THE BUTTON TWICE TO UNSELECT IT 
+  // WHY IS IT ADDING AN ENTRY TWICE 
   return (
-
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
@@ -76,7 +77,6 @@ const Activities = ({ route }) => {
           return (
             <TouchableOpacity
               key={activity.id}
-
               // Check if activity is in selectedActivities array - if it is make it darker
               style={selectedActivities.some(element => element.id === activity.id) ? [styles.selectedButton] : styles.button}
               onPress={() => {
@@ -137,6 +137,5 @@ const styles = StyleSheet.create({
     elevation: 6,
     shadowRadius: 8,
     shadowOffset: { width: 1, height: 6 },
-
   },
 });
