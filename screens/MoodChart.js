@@ -20,6 +20,9 @@ import {
   VictoryArea,
   VictoryAxis,
   VictoryLabel,
+  VictoryVoronoiContainer,
+  VictoryTooltip,
+  VictoryLine
 } from "victory-native";
 import LottieView from "lottie-react-native";
 
@@ -94,12 +97,18 @@ const MoodChart = () => {
       </Text>
     </View>
    :
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
         scale={{ x: "time" }}
         minDomain={{ x: oneWeekAgo }}
         height={300}
+        containerComponent={
+          <VictoryVoronoiContainer
+            labels={({datum}) => datum.activities[0].image}
+          />}
+
+
       >
         <VictoryAxis
           tickFormat={(date) =>
@@ -115,26 +124,27 @@ const MoodChart = () => {
           tickValues={["😢", "😔", "😐", "😌", "😁"]}
           tickFormat={(t) => t}
         />
+
+
         <VictoryArea
           style={{ data: { fill: "#B8DFD8", stroke: "pink", strokeWidth: 2 } }}
           data={mappedEntries}
           x="date"
           y="scale"
-          height={200}
+          height={300}
           animate
           interpolation="basis"
-          padding={{ top: 0, bottom: 30 }}
           minDomain={{ x: day }}
+          labelComponent={<VictoryTooltip/>}
         />
+
       </VictoryChart>
 
       <View style={styles.buttonContainer}>
             <TouchableOpacity
             style={styles.leftButton}
             // onClick={setDay(oneWeekAgo)}
-
             >
-
             <Text style={{color: "white"}}>VIEW WEEK</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -142,11 +152,10 @@ const MoodChart = () => {
             // onClick={setDay(oneMonthAgo)}
             >
             <Text style={{color: "white"}}>VIEW MONTH</Text>
-
             </TouchableOpacity>
             {/* <Text style={styles.button}>Month</Text> */}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 export default MoodChart;
