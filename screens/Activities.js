@@ -29,6 +29,9 @@ const Activities = ({ route }) => {
   // console.log('SELECTED ACTIVITIES: ', selectedActivities)
   // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
 
+  // *** if activities are passed down as props and user wants to unselect one, it's currently adding the activity 
+  // to state array again as a duplicate
+
   // Gets all activities data
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
@@ -51,9 +54,13 @@ const Activities = ({ route }) => {
       journalData,
     });
   };
+  // TODO: REFACTOR THIS TO REMOVE REPEATING CODE
   const handleActivitySelect = (activity) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
-    if (!selectedActivities.includes(activity)) {
+    // console.log('ACTIVITY: ', activity)
+    // console.log('is activity in selected Activities state? ', selectedActivities.includes(activity))
+
+    if (!selectedActivities.some(element => element.id === activity.id)) {
       setSelectedActivities((oldState) => [...oldState, activity]);
     } else {
       // If user selects the activity again, it will remove it from the selectedActivities state array
@@ -67,17 +74,14 @@ const Activities = ({ route }) => {
     );
   }
 
-  // WHY AM I HAVING TO CLICK THE BUTTON TWICE TO UNSELECT IT 
-  // WHY IS IT ADDING AN ENTRY TWICE 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-        {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
         {activities.map((activity) => {
           return (
             <TouchableOpacity
               key={activity.id}
-              // Check if activity is in selectedActivities array - if it is make it darker
+              // Check if activity is in selectedActivities state - if it is give it an outline
               style={selectedActivities.some(element => element.id === activity.id) ? [styles.selectedButton] : styles.button}
               onPress={() => {
                 handleActivitySelect(activity);
