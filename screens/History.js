@@ -17,12 +17,18 @@ const History = () => {
       where('createdAt', '==', daySelected)
     );
     const querySnapshot = await getDocs(entryQuery);
-    querySnapshot.forEach((doc) => {
-      //setEntry as the doc we get back from Journal for that day
-      //will pass down to ModalHistory as props to display
-      console.log('i am the data', doc.data());
-      setEntry(doc.data());
-    });
+    //if querySnapshot size is 0, there was not an entry for that day and
+    //we setEntry to an empty object
+    if (querySnapshot.size > 0) {
+      querySnapshot.forEach((doc) => {
+        //setEntry as the doc we get back from Journal for that day
+        //will pass down to ModalHistory as props to display
+        setEntry(doc.data());
+      });
+    } else {
+      setEntry({});
+    }
+
     setModalVisible(true);
   };
   return (
