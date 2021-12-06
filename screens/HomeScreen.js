@@ -21,7 +21,7 @@ const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
   const [journalId, setJournalId] = useState();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
+
   const journalEntriesCollectionRef = collection(db, 'Journals');
   let userId;
 
@@ -32,7 +32,6 @@ const HomeScreen = () => {
       setLoading(true);
       if (user) {
         userId = user.email;
-        setEmail(userId);
 
         //once we have the user info, check if that user has an entry for today ... date is set to string to make it comparable to what we have placed in firebase
         const getEntries = async () => {
@@ -71,7 +70,6 @@ const HomeScreen = () => {
     navigation.navigate('Activities', {
       journalEntries,
       journalId,
-      userId: email,
     });
   };
 

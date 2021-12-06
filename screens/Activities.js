@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, SafeAreaView } from 'react-native';
+import { getAuth, onAuthStateChanged } from '@firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc, query, where } from 'firebase/firestore';
@@ -21,30 +22,44 @@ const Activities = ({ route }) => {
   }
   const navigation = useNavigation();
   const journalData = route.params;
+  console.log(journalData)
   // State
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
+  const [email, setEmail] = useState('');
 
+  let userId;
   const activitiesCollectionRef = collection(db, 'Activities');
 
   // Gets all default activities and user's customized activities
   useEffect(() => {
     //every time we make a request return this promise, data to be resolved ...
-    const getActivities = async () => {
-      const activitiesQuery = query(
-        activitiesCollectionRef,
-        where('userId', 'in', [journalData.userId, '']),
-      );
-      const data = await getDocs(activitiesQuery);
+    // current user
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userId = user.email;
+        console.log(userId)
+        setEmail(userId);
+      }
 
-      setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
-      // if this is true, craete activities id state then check if the id == activity.id? 
-      // would only work if user has an entry already
-      if (journalData) setSelectedActivities(journalData.journalEntries.activities);
-      setIsLoading(false);
-    };
-    getActivities();
+
+      const getActivities = async () => {
+        const activitiesQuery = query(
+          activitiesCollectionRef,
+          where('userId', 'in', [email, '']),
+        );
+        const data = await getDocs(activitiesQuery);
+
+        setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
+        // if this is true, craete activities id state then check if the id == activity.id? 
+        // would only work if user has an entry already
+        if (journalData) setSelectedActivities(journalData.journalEntries.activities);
+        setIsLoading(false);
+      };
+      getActivities();
+    });
   }, []);
 
   const handleNext = () => {
