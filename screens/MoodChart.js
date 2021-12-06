@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/core";
-import { auth, db } from "../firebase";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { StyleSheet, View, Dimensions, Text, TextInput, SafeAreaView, TouchableOpacity, Button } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/core';
+import { auth, db } from '../firebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  TextInput,
+  SafeAreaView,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import {
   doc,
   addDoc,
@@ -12,7 +21,7 @@ import {
   where,
   query,
   onSnapshot,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 import {
   VictoryChart,
   VictoryTheme,
@@ -21,10 +30,10 @@ import {
   VictoryAxis,
   VictoryVoronoiContainer,
   VictoryTooltip,
-} from "victory-native";
-import LottieView from "lottie-react-native";
+} from 'victory-native';
+import LottieView from 'lottie-react-native';
 
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get('screen');
 
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
@@ -33,8 +42,8 @@ const MoodChart = () => {
   useEffect(() => {
     const getUserEntries = () => {
       const q = query(
-        collection(db, "Journals"),
-        where("userId", "==", auth.currentUser.email)
+        collection(db, 'Journals'),
+        where('userId', '==', auth.currentUser.email)
       );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const journalEntry = [];
@@ -47,29 +56,26 @@ const MoodChart = () => {
     getUserEntries();
   }, []);
 
-
   const changeTimeline = (time) => {
-    if (time === "week") setDay(oneWeekAgo);
-    else if (time === "month") setDay(oneMonthAgo);
-  }
-
+    if (time === 'week') setDay(oneWeekAgo);
+    else if (time === 'month') setDay(oneMonthAgo);
+  };
 
   const mappedEntries = entries.map((entry) => {
     return {
-      date: new Date(entry.createdAt) || "",
+      date: new Date(entry.createdAt) || '',
       scale: entry.mood.scale || 0,
-      mood: entry.mood.name || "",
+      mood: entry.mood.name || '',
       activities: entry.activities || [],
     };
   });
-
 
   let dateDescription = {};
 
   const week = () => {
     let date = new Date();
     date.setDate(date.getDate() - 7);
-    dateDescription = { weekday: "short" }
+    dateDescription = { weekday: 'short' };
     return date;
   };
   const oneWeekAgo = week();
@@ -77,95 +83,92 @@ const MoodChart = () => {
   const month = () => {
     let date = new Date();
     date.setDate(date.getDate() - 30);
-    dateDescription = { month: "short"};
+    dateDescription = { month: 'short' };
     return date;
-  }
+  };
 
   const oneMonthAgo = month();
-  console.log('dateDescription:', dateDescription)
+  console.log('dateDescription:', dateDescription);
 
-  return (
-    entries.length <=1 ?
+  return entries.length <= 1 ? (
     <View style={styles.container}>
       <LottieView
         style={styles.lottieHistogram}
-        source={require("../assets/lottie/histogram.json")}
+        source={require('../assets/lottie/histogram.json')}
         autoPlay
       />
-      <Text style={styles.textStyling}>
-        Select a mood, today and tomorrow!
-      </Text>
+      <Text style={styles.textStyling}>Select a mood, today and tomorrow!</Text>
     </View>
-   :
+  ) : (
     <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
         containerComponent={
           <VictoryVoronoiContainer
             dimension="x"
-            labels={({datum}) => datum.activities[0].image}
+            labels={({ datum }) => datum.activities[0].image}
             labelComponent={
-            <VictoryTooltip
-            style={{fontSize: 30}}
-            // cornerRadius={16}
-            pointerLength={0}
-            constrainToVisibleArea
-            flyoutStyle={{
-              fill: "none",
-              stroke: "none",
-              }}
-            />}
-          />}
-        scale={{ x: "time" }}
+              <VictoryTooltip
+                style={{ fontSize: 30 }}
+                // cornerRadius={16}
+                pointerLength={0}
+                constrainToVisibleArea
+                flyoutStyle={{
+                  fill: 'none',
+                  stroke: 'none',
+                }}
+              />
+            }
+          />
+        }
+        scale={{ x: 'time' }}
         minDomain={{ x: day }}
-        maxDomain={{y:5.2}}
+        maxDomain={{ y: 5.2 }}
         height={300}
-
       >
         <VictoryAxis
           tickFormat={(date) =>
-            date.toLocaleString("en-us", { day: "numeric" }) +
-            "\n" +
-            date.toLocaleString("en-us", dateDescription)
+            date.toLocaleString('en-us', { day: 'numeric' }) +
+            '\n' +
+            date.toLocaleString('en-us', dateDescription)
           }
           fixLabelOverlap={true}
         />
         <VictoryAxis
           dependentAxis
           domain={[0, 5]}
-          tickValues={["😢", "😔", "😐", "😌", "😁"]}
+          tickValues={['😢', '😔', '😐', '😌', '😁']}
           tickFormat={(t) => t}
         />
 
         <VictoryArea
-          style={{ data: { fill: "#B8DFD8", stroke: "pink", strokeWidth: 2 }}}
+          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 2 } }}
           data={mappedEntries}
           x="date"
           y="scale"
           animate
           interpolation="catmullRom"
-          labelComponent={<VictoryTooltip/>}
+          labelComponent={<VictoryTooltip />}
         />
       </VictoryChart>
 
       <View style={styles.buttonContainer}>
-            <TouchableOpacity
-            style={styles.leftButton}
-            onPress={() => {
-              changeTimeline("week");
-            }}
-            >
-            <Text style={{color: "white"}}>VIEW WEEK</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.rightButton}
-              onPress={() => {
-                changeTimeline("month")
-              }}
-            >
-            <Text style={{color: "white"}}>VIEW MONTH</Text>
-            </TouchableOpacity>
-
+        <TouchableOpacity
+          style={styles.leftButton}
+          onPress={() => {
+            changeTimeline('week');
+          }}
+        >
+          <Text style={{ color: 'white' }}>VIEW WEEK</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.rightButton}
+          onPress={() => {
+            changeTimeline('month');
+          }}
+        >
+          <Text style={{ color: 'white' }}>VIEW MONTH</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -175,15 +178,15 @@ export default MoodChart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textStyling: {
-    display: "flex",
-    color: "#b5179e",
-    alignContent: "center",
-    textAlign: "center",
-    fontFamily: "Avenir",
+    display: 'flex',
+    color: '#b5179e',
+    alignContent: 'center',
+    textAlign: 'center',
+    fontFamily: 'Avenir',
     fontSize: 16,
   },
   lottieHistogram: {
@@ -192,23 +195,23 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    fontFamily: "Avenir",
-    fontSize: 14
+    fontFamily: 'Avenir',
+    fontSize: 14,
   },
   rightButton: {
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    backgroundColor: "grey",
-    textAlign: "center",
+    backgroundColor: 'grey',
+    textAlign: 'center',
   },
   leftButton: {
     borderTopLeftRadius: 15,
     borderBottomLeftRadius: 15,
     paddingVertical: 5,
     paddingHorizontal: 15,
-    backgroundColor: "darkgrey",
-    textAlign: "center",
-  }
+    backgroundColor: 'darkgrey',
+    textAlign: 'center',
+  },
 });
