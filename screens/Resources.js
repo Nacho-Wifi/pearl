@@ -1,5 +1,10 @@
 import MapView from 'react-native-maps';
-import { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import {
+  PROVIDER_GOOGLE,
+  Marker,
+  Callout,
+  onCalloutPress,
+} from 'react-native-maps';
 import React, { useState, useEffect } from 'react';
 import {
   Platform,
@@ -10,9 +15,22 @@ import {
   Dimensions,
   Button,
   TouchableOpacity,
+  Linking,
+  Alert,
 } from 'react-native';
 import * as Location from 'expo-location';
 import { GOOGLE_PLACES_API } from '@env';
+
+const makeCall = (num) => {
+  Linking.openURL(`tel:${num}`);
+};
+
+const redirectToGoogleMaps = (place) => {
+  //you can't have a ' ' space between search terms / name in query to get directions ... cut that out using regex & replace with the needed '+'
+  const name = place.name.replace(/\s/g, '+');
+  const linkToLocation = `https://www.google.com/maps?saddr=My+Location&daddr=${name}`;
+  Linking.openURL(linkToLocation);
+};
 
 const Map = () => {
   const [location, setLocation] = useState(null);
@@ -84,7 +102,10 @@ const Map = () => {
     text = errorMsg;
     return (
       <View style={styles.container}>
-        <Text>Resources</Text>
+        <Text style={styles.header}>Resources</Text>
+        <Text style={{ textAlign: 'center' }}>
+          Allow location to find local resources:
+        </Text>
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
@@ -92,13 +113,15 @@ const Map = () => {
           followsUserLocation={true}
           initialRegion={mapRegion}
         ></MapView>
-        <Text style={styles.hotlineHeader}>Hotlines:</Text>
-        <Text
-          style={{ textAlign: 'center' }}
-        >{`\u2022 National Suicide Prevention Lifeline: (800) 273-8255`}</Text>
-        <Text
-          style={{ textAlign: 'center' }}
-        >{`\u2022 Crisis Text Line: Text HOME to 741741`}</Text>
+        <Text style={styles.hotlineNumbers}>
+          National Suicide Prevention Lifeline:
+        </Text>
+        <Text style={styles.phoneNumber} onPress={() => makeCall('8002738255')}>
+          (800) 273-8255
+        </Text>
+        <Text style={styles.hotlineNumbers}>
+          Crisis Text Line: Text HOME to 741741
+        </Text>
       </View>
     );
   } else if (location) {
@@ -117,32 +140,24 @@ const Map = () => {
             region={mapRegion}
           >
             {searchResults.map((place) => {
-              if (place.vicinity) {
-                return (
-                  <Marker
-                    title={`${place.name}`}
-                    description={`${place.vicinity}`}
-                    key={place.id}
-                    coordinate={{
-                      latitude: place.marker.latitude,
-                      longitude: place.marker.longitude,
-                    }}
-                    pinColor={'blue'}
-                  />
-                );
-              }
-
-              //description/vicinity is undefined for all except park search markers, so we cut that category out here
               return (
                 <Marker
-                  title={`${place.name}`}
                   key={place.id}
                   coordinate={{
                     latitude: place.marker.latitude,
                     longitude: place.marker.longitude,
                   }}
-                  pinColor={'blue'}
-                />
+                  pinColor={'#D3F6F3'}
+                >
+                  <Callout
+                    onPress={() => {
+                      redirectToGoogleMaps(place);
+                    }}
+                    style={styles.callout}
+                  >
+                    <Text> {`${place.name}`}</Text>
+                  </Callout>
+                </Marker>
               );
             })}
           </MapView>
@@ -170,13 +185,20 @@ const Map = () => {
           <Text style={styles.hotlineNumbers}>
             National Suicide Prevention Lifeline:
           </Text>
-          <Text>(800) 273-8255</Text>
+          <Text
+            style={styles.phoneNumber}
+            onPress={() => makeCall('8002738255')}
+          >
+            (800) 273-8255
+          </Text>
           <Text style={styles.hotlineNumbers}>
             Crisis Text Line: Text HOME to 741741
           </Text>
         </ScrollView>
       </View>
     );
+  } else {
+    return <Text>Loading ...</Text>;
   }
 };
 export default Map;
@@ -216,5 +238,12 @@ const styles = StyleSheet.create({
   },
   hotlineNumbers: {
     margin: 10,
+  },
+  phoneNumber: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
+  callout: {
+    fontSize: 10,
   },
 });
