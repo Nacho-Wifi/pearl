@@ -23,7 +23,7 @@ const SignUp = () => {
 
   const handleSignUp = (email, password, firstName, lastName) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
+      .then((userCredential) => {
         const user = userCredential.user;
         updateProfile(auth.currentUser, {
           displayName: firstName
@@ -34,7 +34,7 @@ const SignUp = () => {
           firstName,
           lastName,
         };
-        await setDoc(doc(db, 'Users', user.email), data);
+        setDoc(doc(db, 'Users', user.email), data);
       })
       .catch((error) => alert(error.message));
   };
