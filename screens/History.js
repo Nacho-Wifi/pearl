@@ -4,6 +4,7 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import ModalHistory from './ModalHistory';
 import { auth, db } from '../firebase';
 import { getDocs, query, where, collection } from 'firebase/firestore';
+import LottieView from 'lottie-react-native';
 
 const History = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,7 +41,13 @@ const History = () => {
         justifyContent: 'center',
       }}
     >
+      <LottieView
+        style={styles.lottieMountain}
+        source={require('../assets/lottie/mountain-night.json')}
+        autoPlay
+      />
       <Calendar
+        style={{ borderRadius: 8 }}
         onDayPress={(day) => {
           //we have access to the datestring aka yyyy-mm-dd.
           //to show the correct date when using toDateString(), we must change the format
@@ -71,4 +78,10 @@ const History = () => {
 
 export default History;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  lottieMountain: {
+    width: 470,
+    height: 920,
+    position: 'absolute',
+  },
+});

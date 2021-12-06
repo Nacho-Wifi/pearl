@@ -42,7 +42,7 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
           }}
         >
           <LottieView
-            style={styles.lottieSunset}
+            style={styles.lottieMountain}
             source={require('../assets/lottie/mountain.json')}
             autoPlay
           />
@@ -82,7 +82,7 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
         }}
       >
         <LottieView
-          style={styles.lottieSunset}
+          style={styles.lottieMountain}
           source={require('../assets/lottie/mountain.json')}
           autoPlay
         />
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     marginTop: 22,
   },
-  lottieSunset: {
+  lottieMountain: {
     width: 500,
     height: 900,
     position: 'absolute',
