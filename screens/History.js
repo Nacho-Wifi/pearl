@@ -47,7 +47,7 @@ const History = () => {
         autoPlay
       />
       <Calendar
-        style={{ borderRadius: 8 }}
+        style={{ borderRadius: 10, borderWidth: 3, borderColor: 'gray' }}
         onDayPress={(day) => {
           //we have access to the datestring aka yyyy-mm-dd.
           //to show the correct date when using toDateString(), we must change the format
