@@ -243,7 +243,4 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
   },
-  callout: {
-    fontSize: 10,
-  },
 });
