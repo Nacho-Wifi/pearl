@@ -1,12 +1,12 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import MoodChart from "./MoodChart";
-import ActivityTracker from "./ActivityTracker";
+import MoodChart from './MoodChart';
+import ActivityTracker from './ActivityTracker';
 
 const MyData = () => {
   return (
-    <View style={[styles.container, { flexDirection: "column" }]}>
+    <View style={[styles.container, { flexDirection: 'column' }]}>
       <ActivityTracker />
       <MoodChart />
     </View>

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
 import { CurrentRenderContext, useNavigation } from '@react-navigation/core';
-
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import {
   doc,
   addDoc,
@@ -13,6 +11,7 @@ import {
   collection,
   where,
   query,
+  onSnapshot,
 } from 'firebase/firestore';
 import {
   VictoryChart,
@@ -20,40 +19,47 @@ import {
   VictoryPie,
   VictoryArea,
   VictoryAxis,
-  VictoryLabel
+  VictoryLabel,
+  VictoryVoronoiContainer,
+  VictoryTooltip,
 } from 'victory-native';
+import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get('screen');
 
 const ActivityTracker = () => {
   const [entries, setEntries] = useState([]);
-  const journalCollectionRef = collection(db, 'Journals');
 
   // retrieve all journal entries where userId matches that of logged in user
   useEffect(() => {
-    const getUserEntries = async () => {
-      const userQuery = query(
-        journalCollectionRef,
+    const getUserEntries = () => {
+      const q = query(
+        collection(db, 'Journals'),
         where('userId', '==', auth.currentUser.email)
       );
-      const querySnapshot = await getDocs(userQuery);
-      setEntries(
-        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const journalEntry = [];
+        querySnapshot.forEach((doc) => {
+          journalEntry.push(doc.data());
+        });
+        setEntries(journalEntry);
+      });
     };
     getUserEntries();
   }, []);
 
-  // iterate through ALL activities for that user, on all days, make pie chart
+  // iterate through ALL activities for that user, on all days, make pie chart (if activities exist)
   let activityHash = {};
   entries
     .map((entry) => entry.activities)
     .flat()
-    .forEach((activity) =>
-      activityHash[activity.image]
-        ? (activityHash[activity.image] += 1)
-        : (activityHash[activity.image] = 1)
-    );
+    .forEach((activity) => {
+      activity === undefined
+        ? null
+        : (activityHash[activity.image] =
+            activityHash[activity.image] + 1 || 1);
+    });
 
   // pull out emoticons and frequency of activity associated with that emoticon
   let activityTracker = [];
@@ -64,25 +70,60 @@ const ActivityTracker = () => {
     });
   }
 
-  return (
+  return !activityTracker.length ? (
+    <View style={styles.container}>
+      <LottieView
+        style={styles.lottiePie}
+        source={require('../assets/lottie/pieChart.json')}
+        autoPlay
+      />
+      <Text style={styles.textStyling}>
+        Select some activities to see your data!
+      </Text>
+    </View>
+  ) : (
     <View style={styles.container}>
       <VictoryPie
+        width={300}
         theme={VictoryTheme.material}
-        // data={activityTracker.slice(0,7)}
         data={activityTracker}
-        labelRadius={({ innerRadius }) => innerRadius + 40}
-        style={{
-          labels: {
-            fontSize: 28,
-            align: 'center'
+        events={[
+          {
+            target: 'data',
+            eventHandlers: {
+              onPressIn: () => {
+                return [
+                  {
+                    target: 'data',
+                    mutation: ({ style }) => {
+                      return style.fill === '#ff0dbf'
+                        ? null
+                        : { style: { fill: '#ff0dbf' } };
+                    },
+                  },
+                  {
+                    target: 'labels',
+                    mutation: ({ text }) => {
+                      return text === 'clicked' ? null : { text: 'clicked' };
+                    },
+                  },
+                ];
+              },
+            },
           },
-        }}
-        innerRadius={35}
+        ]}
+        // style={{
+        //   labels: {
+        //     fontSize: 24,
+        //     position: "fixed"
+        //     //align: "center",
+        //   },
+        // }}
+        //innerRadius={35}
         colorScale={[
           '#FFB319',
           '#FFE194',
           '#CAB8F8',
-          // '#b5179e',
           '#97BFB4',
           '#B8DFD8',
           'tomato',
@@ -90,8 +131,6 @@ const ActivityTracker = () => {
           '#ca6702',
           'pink',
         ]}
-        // width={width/1.1}
-        // height={300}
         x="activity"
         y="frequency"
       />
@@ -105,5 +144,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 30,
+    fontSize: 20,
+  },
+  textStyling: {
+    display: 'flex',
+    color: '#b5179e',
+    alignContent: 'center',
+    textAlign: 'center',
+    fontFamily: 'Avenir',
+    //fontSize: 16
+  },
+  lottiePie: {
+    width: 150,
+    height: 150,
   },
 });

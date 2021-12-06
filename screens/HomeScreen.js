@@ -87,9 +87,6 @@ const HomeScreen = () => {
       .catch((error) => alert(error.message));
   };
 
-  console.log('THIS IS LOADING', loading),
-    'THIS IS JOURNAL ENTRIES',
-    journalEntries;
   if (!loading) {
     return (
       <View style={styles.container}>

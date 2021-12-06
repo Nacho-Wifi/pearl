@@ -2,7 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  TextInput,
+  SafeAreaView,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import {
   doc,
   addDoc,
@@ -11,6 +20,7 @@ import {
   collection,
   where,
   query,
+  onSnapshot,
 } from 'firebase/firestore';
 import {
   VictoryChart,
@@ -18,35 +28,40 @@ import {
   VictoryPie,
   VictoryArea,
   VictoryAxis,
-  VictoryLabel,
+  VictoryVoronoiContainer,
+  VictoryTooltip,
 } from 'victory-native';
-//import { Defs, LinearGradient, Stop } from 'react-native-svg';
+import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get('screen');
 
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
-  const journalCollectionRef = collection(db, 'Journals');
-
+  const [day, setDay] = useState(oneWeekAgo);
 
   useEffect(() => {
-
-    const getUserEntries = async () => {
-      const userQuery = query(
-        journalCollectionRef,
+    const getUserEntries = () => {
+      const q = query(
+        collection(db, 'Journals'),
         where('userId', '==', auth.currentUser.email)
       );
-      const querySnapshot = await getDocs(userQuery);
-      setEntries(
-        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const journalEntry = [];
+        querySnapshot.forEach((doc) => {
+          journalEntry.push(doc.data());
+        });
+        setEntries(journalEntry);
+      });
     };
     getUserEntries();
-
   }, []);
 
-  let mappedEntries = entries.map((entry) => {
+  const changeTimeline = (time) => {
+    if (time === 'week') setDay(oneWeekAgo);
+    else if (time === 'month') setDay(oneMonthAgo);
+  };
 
+  const mappedEntries = entries.map((entry) => {
     return {
       date: new Date(entry.createdAt) || '',
       scale: entry.mood.scale || 0,
@@ -55,48 +70,106 @@ const MoodChart = () => {
     };
   });
 
-  return (
-    <View style={styles.container}>
-      {/* <VictoryChart theme={VictoryTheme.material} scale={{ x: 'time' }}> */}
-      <VictoryChart theme = {VictoryTheme.material} >
-        {/* <Defs>
-          <LinearGradient id="gradientStroke">
-            <Stop offset="25%" stopColor="orange" />
-            <Stop offset="50%" stopColor="gold" />
+  let dateDescription = {};
 
-            <Stop offset="100%" stopColor="#FFB319" />
-          </LinearGradient>
-        </Defs> */}
+  const week = () => {
+    let date = new Date();
+    date.setDate(date.getDate() - 7);
+    dateDescription = { weekday: 'short' };
+    return date;
+  };
+  const oneWeekAgo = week();
+
+  const month = () => {
+    let date = new Date();
+    date.setDate(date.getDate() - 30);
+    dateDescription = { month: 'short' };
+    return date;
+  };
+
+  const oneMonthAgo = month();
+  console.log('dateDescription:', dateDescription);
+
+  return entries.length <= 1 ? (
+    <View style={styles.container}>
+      <LottieView
+        style={styles.lottieHistogram}
+        source={require('../assets/lottie/histogram.json')}
+        autoPlay
+      />
+      <Text style={styles.textStyling}>Select a mood, today and tomorrow!</Text>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <VictoryChart
+        theme={VictoryTheme.material}
+        containerComponent={
+          <VictoryVoronoiContainer
+            dimension="x"
+            labels={({ datum }) => datum.activities[0].image}
+            labelComponent={
+              <VictoryTooltip
+                style={{ fontSize: 30 }}
+                // cornerRadius={16}
+                pointerLength={0}
+                constrainToVisibleArea
+                flyoutStyle={{
+                  fill: 'none',
+                  stroke: 'none',
+                }}
+              />
+            }
+          />
+        }
+        scale={{ x: 'time' }}
+        minDomain={{ x: day }}
+        maxDomain={{ y: 5.2 }}
+        height={300}
+      >
+        <VictoryAxis
+          tickFormat={(date) =>
+            date.toLocaleString('en-us', { day: 'numeric' }) +
+            '\n' +
+            date.toLocaleString('en-us', dateDescription)
+          }
+          fixLabelOverlap={true}
+        />
+        <VictoryAxis
+          dependentAxis
+          domain={[0, 5]}
+          tickValues={['😢', '😔', '😐', '😌', '😁']}
+          tickFormat={(t) => t}
+        />
+
         <VictoryArea
-          // style={{ data: { fill: 'url(#gradientStroke)' } }}
-          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 3}}}
+          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 2 } }}
           data={mappedEntries}
           x="date"
           y="scale"
-          height={200}
           animate
-          interpolation="basis"
-          padding={{ top: 0, bottom: 30 }}
+          interpolation="catmullRom"
+          labelComponent={<VictoryTooltip />}
         />
-
-        {/* <VictoryAxis
-          style={{
-            axis: { stroke: 'none' },
-            tickLabels: {
-              fill: 'grey',
-            },
-          }}
-          //label="Date"
-        /> */}
-        {/* <VictoryAxis
-          dependentAxis
-          style={{
-            axis: { stroke: 'none' },
-            tickLabels: { fill: 'none' },
-          }}
-          label="Mood"
-        /> */}
       </VictoryChart>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.leftButton}
+          onPress={() => {
+            changeTimeline('week');
+          }}
+        >
+          <Text style={{ color: 'white' }}>VIEW WEEK</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.rightButton}
+          onPress={() => {
+            changeTimeline('month');
+          }}
+        >
+          <Text style={{ color: 'white' }}>VIEW MONTH</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -108,5 +181,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textStyling: {
+    display: 'flex',
+    color: '#b5179e',
+    alignContent: 'center',
+    textAlign: 'center',
+    fontFamily: 'Avenir',
+    fontSize: 16,
+  },
+  lottieHistogram: {
+    width: 150,
+    height: 150,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    fontFamily: 'Avenir',
+    fontSize: 14,
+  },
+  rightButton: {
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: 'grey',
+    textAlign: 'center',
+  },
+  leftButton: {
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    backgroundColor: 'darkgrey',
+    textAlign: 'center',
+  },
 });
-

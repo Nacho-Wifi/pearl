@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "FirebaseAuth",
@@ -17,7 +18,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.capstone.Pearl",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDZwnqWjOcw3fTcnxo2a45xK81sUzlzjYQ"
+      }
     },
     "android": {
       "adaptiveIcon": {
