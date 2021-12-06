@@ -19,26 +19,31 @@ import { set } from 'react-native-reanimated';
 
 const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
-  const [firstName, setFirstName] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [journalId, setJournalId] = useState();
   const [loading, setLoading] = useState(false);
   const journalEntriesCollectionRef = collection(db, 'Journals');
 
+  const auth = getAuth();
+
   let userId;
+  // When the component mounts, get the user's first name and set it to the displayName
+  useEffect(() => {
+    const user = auth.currentUser;
+    console.log('user.displayName>>>>', user.displayName)
+    if (user !== null) {
+      setDisplayName(user.displayName);
+      console.log('setting state with user.displayName >>>', displayName);
+    }
+  });
 
   useEffect(() => {
     //this is all inside useEffect because we DON'T want the edit or enter journal button to load until we have data on the user
-    const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       setLoading(true);
       if (user) {
-        console.log(user)
         // if user exists, find their user document by email
         userId = user.email;
-        console.log('display name from getAuth: ', user.displayName)
-        setFirstName(user.displayName)
-        // firstName = user.displayName;
-        console.log('first name? ', firstName)
 
         //once we have the user info, check if that user has an entry for today ... date is set to string to make it comparable to what we have placed in firebase
         const getEntries = async () => {
@@ -64,7 +69,6 @@ const HomeScreen = () => {
       }
     });
   }, []);
-  console.log('first name here? ', firstName)
   const navigation = useNavigation();
 
   const makeNewEntry = () => {
@@ -106,8 +110,7 @@ const HomeScreen = () => {
           loop
           style={styles.lottiePearl}
         />
-        {console.log(firstName)}
-        <Text>How are you feeling today, {firstName}?</Text>
+        {displayName !== undefined ? <Text>How are you feeling today, {displayName}?</Text> : <Text>How are you feeling today?</Text>}
         <>
           {!journalEntries ? (
             <TouchableOpacity style={styles.button} onPress={makeNewEntry}>

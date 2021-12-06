@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { auth, db } from '../firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, getAuth } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import {
   StyleSheet,
@@ -19,11 +19,15 @@ const SignUp = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
+  const auth = getAuth();
+
   const handleSignUp = (email, password, firstName, lastName) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        user.displayName = firstName;
+        updateProfile(auth.currentUser, {
+          displayName: firstName
+        });
         console.log('Registered: ', user);
         const data = {
           email: user.email,
