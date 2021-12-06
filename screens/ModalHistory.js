@@ -41,6 +41,11 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
             setModalVisible(!modalVisible);
           }}
         >
+          <LottieView
+            style={styles.lottieSunset}
+            source={require('../assets/lottie/mountain.json')}
+            autoPlay
+          />
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={styles.cancelContainer}>
@@ -76,6 +81,11 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
           setModalVisible(!modalVisible);
         }}
       >
+        <LottieView
+          style={styles.lottieSunset}
+          source={require('../assets/lottie/mountain.json')}
+          autoPlay
+        />
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.cancelContainer}>
@@ -136,6 +146,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // alignItems: 'center',
     marginTop: 22,
+  },
+  lottieSunset: {
+    width: 500,
+    height: 900,
+    position: 'absolute',
   },
   modalView: {
     marginTop: 20,
