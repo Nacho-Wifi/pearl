@@ -126,7 +126,7 @@ const JournalEntry = ({ route }) => {
       });
       // Otherwise, update the existing journal entry
     } else {
-      console.log('ACTIVITIES: ', activities);
+      //console.log('ACTIVITIES: ', activities);
       await setDoc(doc(db, 'Journals', userJournalData.journalId), {
         mood,
         activities: userActivities, // an array of objects of the activities
