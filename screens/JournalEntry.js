@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import LoadingIcon from './components/LoadingIcon';
 import { auth, db } from '../firebase';
 import {
   doc,
@@ -31,11 +32,16 @@ const JournalEntry = ({ route }) => {
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
   const { activities, journalData, photoURI, inputText } = route.params;
+
+  // State
   const [moods, setMoods] = useState([]);
   const [textEntry, setTextEntry] = useState(false);
   const [userActivities, setUserActivities] = useState([]);
   const [userJournalData, setUserJournalData] = useState(null);
   const [selectedMood, setSelectedMood] = useState({});
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Collections
   const moodsCollectionRef = collection(db, 'Moods');
   const journalsCollectionRef = collection(db, 'Journals');
   useEffect(() => {
@@ -43,6 +49,7 @@ const JournalEntry = ({ route }) => {
     const getMoods = async () => {
       const data = await getDocs(moodsCollectionRef);
       setMoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
+      setIsLoading(false);
     };
     getMoods();
   }, []);
@@ -138,6 +145,12 @@ const JournalEntry = ({ route }) => {
     }
     navigation.replace('HomeScreen');
   };
+
+  if (isLoading) {
+    return (
+      <LoadingIcon></LoadingIcon>
+    );
+  }
 
   return (
     <View style={styles.container}>
