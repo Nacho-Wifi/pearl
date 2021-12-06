@@ -36,7 +36,7 @@ const Activities = ({ route }) => {
     const getActivities = async () => {
       const data = await getDocs(activitiesCollectionRef);
       setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
-      // if this is true, craete activities id state then check if the id == activity.id? 
+      // if this is true, craete activities id state then check if the id == activity.id?
       // would only work if user has an entry already
       if (journalData) setSelectedActivities(journalData.journalEntries.activities);
       setIsLoading(false);
