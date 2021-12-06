@@ -19,7 +19,6 @@ import { set } from 'react-native-reanimated';
 
 const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
-  const [displayName, setDisplayName] = useState('');
   const [journalId, setJournalId] = useState();
   const [loading, setLoading] = useState(false);
   const journalEntriesCollectionRef = collection(db, 'Journals');
@@ -27,15 +26,6 @@ const HomeScreen = () => {
   const auth = getAuth();
 
   let userId;
-  // When the component mounts, get the user's first name and set it to the displayName
-  // useEffect(() => {
-  //   const user = auth.currentUser;
-  //   console.log('user.displayName>>>>', user.displayName)
-  //   if (user !== null) {
-  //     setDisplayName(user.displayName);
-  //     console.log('setting state with user.displayName >>>', displayName);
-  //   }
-  // });
 
   useEffect(() => {
     //this is all inside useEffect because we DON'T want the edit or enter journal button to load until we have data on the user
@@ -44,8 +34,6 @@ const HomeScreen = () => {
       if (user) {
         // if user exists, find their user document by email
         userId = user.email;
-        setDisplayName(user.displayName);
-        console.log('user.displayName in auth state change>>>>', user.displayName)
 
         //once we have the user info, check if that user has an entry for today ... date is set to string to make it comparable to what we have placed in firebase
         const getEntries = async () => {
@@ -112,7 +100,8 @@ const HomeScreen = () => {
           loop
           style={styles.lottiePearl}
         />
-        {displayName !== undefined ? <Text>How are you feeling today, {displayName}?</Text> : <Text>How are you feeling today?</Text>}
+
+        {auth.currentUser.displayName === null ? <Text>How are you feeling today?</Text> : <Text>How are you feeling today, {auth.currentUser.displayName}?</Text>}
         <>
           {!journalEntries ? (
             <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
