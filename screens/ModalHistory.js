@@ -56,7 +56,9 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
                   source={require('../assets/lottie/no-result.json')}
                   autoPlay
                 />
-                <Text>Sorry, you didn't have a journal entry for this day</Text>
+                <Text style={styles.noJournalText}>
+                  Sorry, you don't have a journal entry for this day
+                </Text>
               </View>
             </View>
           </View>
@@ -171,6 +173,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 20,
     // textAlign: 'center',
+    fontFamily: 'Avenir',
+  },
+  noJournalText: {
+    display: 'flex',
+    color: '#b5179e',
+    alignContent: 'center',
+    textAlign: 'center',
+    fontFamily: 'Avenir',
+    // fontSize: 16,
   },
   displayImage: {
     width: 200,
