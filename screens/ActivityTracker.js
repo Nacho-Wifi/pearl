@@ -97,32 +97,31 @@ const ActivityTracker = () => {
                 {
                   target: "data",
                   mutation: ({ style }) => {
-                    return (style.fill === "#ff0dbf" ? null : { style: { fill: "#ff0dbf"}}
-                    );
+                    return style.fill === "#ff0dbf" ? null : { style: { fill: "#ff0dbf"}};
                   }
                 },
+                {
+                  target: "labels",
+                  mutation: ({text}) => {
+                    return text === "clicked" ? null : { text: "clicked"};
+                  }
+                }
               ]
             }
           }
         }]}
-        // labelComponent={
-        //   <VictoryTooltip
-        //     active={true}
-        //   />
-        // }
-        //labelRadius={({ innerRadius }) => innerRadius + 40}
-        style={{
-          labels: {
-            fontSize: 28,
-            align: "center",
-          },
-        }}
+        // style={{
+        //   labels: {
+        //     fontSize: 24,
+        //     position: "fixed"
+        //     //align: "center",
+        //   },
+        // }}
         //innerRadius={35}
         colorScale={[
           "#FFB319",
           "#FFE194",
           "#CAB8F8",
-          // '#b5179e',
           "#97BFB4",
           "#B8DFD8",
           "tomato",
@@ -130,8 +129,6 @@ const ActivityTracker = () => {
           "#ca6702",
           "pink",
         ]}
-        // width={width/1.1}
-        // height={300}
         x="activity"
         y="frequency"
 
@@ -146,7 +143,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 30
+    paddingTop: 30,
+    fontSize: 20
   },
   textStyling: {
     display: "flex",
@@ -154,7 +152,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     textAlign: "center",
     fontFamily: "Avenir",
-    fontSize: 16
+    //fontSize: 16
   },
   lottiePie: {
     width: 150,

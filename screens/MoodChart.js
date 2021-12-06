@@ -29,7 +29,6 @@ const { width, height } = Dimensions.get("screen");
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
   const [day, setDay] = useState(oneWeekAgo);
-  let totalMood = 0;
 
   useEffect(() => {
     const getUserEntries = () => {
@@ -45,7 +44,6 @@ const MoodChart = () => {
         setEntries(journalEntry);
       });
     };
-    totalMood=1;
     getUserEntries();
   }, []);
 
@@ -57,7 +55,6 @@ const MoodChart = () => {
 
 
   const mappedEntries = entries.map((entry) => {
-    if (entry.mood.scale) totalMood += entry.mood.scale;
     return {
       date: new Date(entry.createdAt) || "",
       scale: entry.mood.scale || 0,
@@ -68,8 +65,6 @@ const MoodChart = () => {
 
 
   let dateDescription = {};
-
-  console.log("totalMood:", totalMood);
 
   const week = () => {
     let date = new Date();
@@ -90,7 +85,6 @@ const MoodChart = () => {
   console.log('dateDescription:', dateDescription)
 
   return (
-    // totalMood === 0 ?
     entries.length <=1 ?
     <View style={styles.container}>
       <LottieView
@@ -168,7 +162,6 @@ const MoodChart = () => {
               onPress={() => {
                 changeTimeline("month")
               }}
-
             >
             <Text style={{color: "white"}}>VIEW MONTH</Text>
             </TouchableOpacity>
