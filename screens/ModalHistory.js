@@ -18,17 +18,7 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
     'U+1F60C': '😌',
     'U+1F601': '😁',
   };
-  const activitiesEmojiMapping = {
-    'U+1F6C0': '🛀',
-    'U+1F3A8': '🎨',
-    'U+1F4D6': '📖',
-    'U+1F9D8': '🧘',
-    'U+1F6B6': '🚶',
-    'U+1F3A7': '🎧',
-    'U+1F372': '🍲',
-    'U+1F465': '👥',
-    'U+1F6B2': '🚲',
-  };
+
   //if entry is empty for the day, render out appropriate modal
   if (Object.keys(entry).length === 0) {
     return (
@@ -104,8 +94,7 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
               {entry.activities.map((activity) => {
                 return (
                   <Text key={activity.id} style={styles.modalText}>
-                    {activity.activityName}{' '}
-                    {activitiesEmojiMapping[activity.emojiUnicode]}
+                    {activity.activityName} {activity.image}
                   </Text>
                 );
               })}
@@ -188,15 +177,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 20,
     // textAlign: 'center',
-    fontFamily: 'Avenir',
   },
   noJournalText: {
     display: 'flex',
     color: '#b5179e',
     alignContent: 'center',
     textAlign: 'center',
-    fontFamily: 'Avenir',
-    // fontSize: 16,
   },
   displayImage: {
     width: 200,

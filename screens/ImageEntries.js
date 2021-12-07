@@ -61,7 +61,7 @@ const ImageEntries = () => {
     if (!hasPermission) return;
     //returns an object containing information about the photo, including uri
     const photo = await cameraRef.current.takePictureAsync({
-      quality: 0.5,
+      quality: 0.3,
     });
     setPreview(true);
     setCapturedImage(photo);
