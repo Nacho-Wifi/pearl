@@ -170,6 +170,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderRadius: 50,
     backgroundColor: '#fff',
+    borderColor: 'black',
+    borderWidth: 3,
   },
   circleButtonPlacement: {
     alignSelf: 'center',
