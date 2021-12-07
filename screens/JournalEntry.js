@@ -39,7 +39,7 @@ const JournalEntry = ({ route }) => {
   const [userActivities, setUserActivities] = useState([]);
   const [userJournalData, setUserJournalData] = useState(null);
   const [selectedMood, setSelectedMood] = useState({});
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   // Collections
   const moodsCollectionRef = collection(db, 'Moods');
@@ -137,9 +137,9 @@ const JournalEntry = ({ route }) => {
       await setDoc(doc(db, 'Journals', userJournalData.journalId), {
         mood,
         activities: userActivities, // an array of objects of the activities
-        photoURL: downloadURL || '',
+        photoURL: downloadURL || userJournalData.journalEntries.photoURL,
         createdAt: new Date().toDateString(),
-        textInput: inputText || '',
+        textInput: inputText || userJournalData.journalEntries.inputText,
         userId: auth.currentUser.email,
       });
     }
@@ -147,9 +147,7 @@ const JournalEntry = ({ route }) => {
   };
 
   if (isLoading) {
-    return (
-      <LoadingIcon></LoadingIcon>
-    );
+    return <LoadingIcon></LoadingIcon>;
   }
 
   return (
