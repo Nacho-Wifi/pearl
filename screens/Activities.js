@@ -79,14 +79,11 @@ const Activities = ({ route }) => {
   }
 
   return (
+    // <SafeAreaView>
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-        {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
-        {activities.map((activity) => {
-          // console.log('ACTIVITIES IN SELECTED ACTIVITIES: ', selectedActivities)
-          // console.log('MAPPED ACTIVITIES', activity)
-          // console.log('selected activites contain activity? ', selectedActivities.find(el => el.id === activity.id))
-          return (
+      {activities.map((activity) => {
+        return (
+          <SafeAreaView style={styles.buttonContainer}>
             <TouchableOpacity
               key={activity.id}
               // Check if activity is in selectedActivities array - if it is make it darker
@@ -100,18 +97,23 @@ const Activities = ({ route }) => {
               }}
             >
               <Text style={styles.buttonText}>
+                {activity.image}
                 {' '}
-                {emojiMapping[activity.emojiUnicode]}
+                {/* {emojiMapping[activity.emojiUnicode]} */}
               </Text>
-              <Text style={styles.buttonText}>{activity.activityName} </Text>
+
             </TouchableOpacity>
-          );
-        })}
+            <Text style={styles.buttonText}>{activity.activityName} </Text>
+          </SafeAreaView>
+        );
+      })}
+      <SafeAreaView style={styles.nextButton}>
         <TouchableOpacity style={styles.button} onPress={handleNext}>
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </SafeAreaView>
     </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 
@@ -119,14 +121,25 @@ export default Activities;
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     justifyContent: 'center',
   },
+  buttonContainer: {
+    padding: 100,
+    // flex: 1,
+    // flexWrap: 'wrap',
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+  },
   button: {
+    flexBasis: '10%',
     backgroundColor: 'white',
-    width: '50%',
+    // width: '25%',
+    height: 100,
     padding: 15,
-    margin: 16,
+    margin: 8,
     alignItems: 'center',
     borderColor: 'white',
     borderRadius: 10,
@@ -135,14 +148,20 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontWeight: '200',
-    fontSize: 16,
+    fontSize: 12,
     textAlign: 'center',
+  },
+  nextButton: {
+    alignSelf: 'center',
+    position: 'relative',
+    marginTop: 100,
+    // marginRight: 100,
   },
   selectedButton: {
     backgroundColor: 'white',
-    width: '50%',
-    margin: 16,
+    width: '25%',
     padding: 15,
+    margin: 8,
     alignItems: 'center',
     borderColor: '#BDD8F1',
     borderWidth: 2,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import LoadingIcon from './components/LoadingIcon';
 import { auth, db } from '../firebase';
@@ -153,7 +153,8 @@ const JournalEntry = ({ route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View></View>
       {moods.map((mood) => {
         return (
           <TouchableOpacity
@@ -194,7 +195,7 @@ const JournalEntry = ({ route }) => {
       >
         <Text>Save Journal</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -206,36 +207,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // button: {
-  //   backgroundColor: '#BDD8F1',
-  //   width: '24%',
-  //   padding: 15,
-  //   borderRadius: 10,
-  //   margin: 16,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
   button: {
-    backgroundColor: '#BDD8F1',
-    width: '60%',
+    backgroundColor: 'white',
+    width: '25%',
     padding: 15,
-    margin: 16,
+    margin: 8,
     alignItems: 'center',
+    borderColor: 'white',
     borderRadius: 10,
+    borderWidth: 2,
   },
   selectedButton: {
-    backgroundColor: '#7bb6ed', // Temporary!
-    width: '60%',
-    margin: 16,
+    backgroundColor: 'white',
+    width: '25%',
     padding: 15,
+    margin: 8,
     alignItems: 'center',
-    // borderColor: '#BDD8F1',
-    // borderWidth: 2,
+    borderColor: '#BDD8F1',
+    borderWidth: 2,
     borderRadius: 10,
+    shadowColor: '#BDD8F1',
+    shadowOpacity: 0.5,
+    elevation: 6,
+    shadowRadius: 8,
+    shadowOffset: { width: 1, height: 6 },
   },
-  // buttonText: {
-  //   color: 'white',
-  //   fontWeight: '700',
-  //   fontSize: 16,
-  // },
 });
