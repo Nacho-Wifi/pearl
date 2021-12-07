@@ -27,6 +27,7 @@ import {
   getStorage,
 } from 'firebase/storage';
 import uuid from 'react-native-uuid';
+import LottieView from 'lottie-react-native';
 
 const JournalEntry = ({ route }) => {
   const emojiMapping = {
@@ -50,6 +51,7 @@ const JournalEntry = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [savedPhoto, setSavedPhoto] = useState('');
   const [savedText, setSavedText] = useState('');
+  const [savingJournal, setSavingJournal] = useState(false);
 
   // Collections
   const moodsCollectionRef = collection(db, 'Moods');
@@ -209,6 +211,7 @@ const JournalEntry = ({ route }) => {
                 setJournal(selectedMood);
               } else {
                 //will call setJournal in savePhoto after getting downloadURL
+                setSavingJournal(true);
                 savePhoto(selectedMood);
               }
             } else {
@@ -219,6 +222,13 @@ const JournalEntry = ({ route }) => {
       >
         <Text>Save Journal</Text>
       </TouchableOpacity>
+      {savingJournal && (
+        <LottieView
+          style={styles.lottieUploading}
+          source={require('../assets/lottie/uploading.json')}
+          autoPlay
+        />
+      )}
     </View>
   );
 };
@@ -257,6 +267,12 @@ const styles = StyleSheet.create({
     // borderColor: '#BDD8F1',
     // borderWidth: 2,
     borderRadius: 10,
+  },
+  lottieUploading: {
+    position: 'absolute',
+    width: 500,
+    height: 1000,
+    backgroundColor: 'white',
   },
   // buttonText: {
   //   color: 'white',
