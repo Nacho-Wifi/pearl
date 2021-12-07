@@ -100,16 +100,18 @@ const HomeScreen = () => {
           source={require('../assets/lottie/ocean.json')}
           autoPlay
         >
-          <Image
-            source={require('../assets/icons/user.png')}
-            style={{
-              position: 'absolute',
-              left: 20,
-              top: 10,
-              height: 60,
-              width: 60,
-            }}
-          />
+          <Pressable onPress={handleSignOut}>
+            <Image
+              source={require('../assets/icons/logout.png')}
+              style={{
+                position: 'absolute',
+                left: 20,
+                marginTop: 20,
+                height: 40,
+                width: 40,
+              }}
+            />
+          </Pressable>
           <LottieView
             source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
             autoPlay
