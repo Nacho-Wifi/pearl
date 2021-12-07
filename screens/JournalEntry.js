@@ -68,6 +68,7 @@ const JournalEntry = ({ route }) => {
   useEffect(() => {
     // if a photo url or input text exists locally or in the database, set setTextEntry to true
     // TODO:
+    console.log(' i am picture', photoURI);
     if (photoURI || inputText) {
       setTextEntry(true);
     } else setTextEntry(false);
@@ -139,7 +140,7 @@ const JournalEntry = ({ route }) => {
         activities: userActivities, // an array of objects of the activities
         photoURL: downloadURL || userJournalData.journalEntries.photoURL,
         createdAt: new Date().toDateString(),
-        textInput: inputText || userJournalData.journalEntries.inputText,
+        textInput: inputText || userJournalData.journalEntries.textInput,
         userId: auth.currentUser.email,
       });
     }
@@ -183,8 +184,13 @@ const JournalEntry = ({ route }) => {
         style={styles.button}
         onPress={() => {
           if (photoURI) {
-            //will call setJournal in savePhoto after getting downloadURL
-            savePhoto(selectedMood);
+            if (photoURI.substring(0, 5) === 'https') {
+              //if photo has https, it has already been saved from last journal entry
+              setJournal(selectedMood);
+            } else {
+              //will call setJournal in savePhoto after getting downloadURL
+              savePhoto(selectedMood);
+            }
           } else {
             setJournal(selectedMood);
           }
