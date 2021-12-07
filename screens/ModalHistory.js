@@ -84,24 +84,12 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
               </TouchableOpacity>
             </View>
             <View>
-              {/* Mood */}
-              <Text style={styles.modalText}>Mood:</Text>
-              <Text style={styles.modalText}>
-                {emojiMapping[entry.mood.imageUrl]}
-              </Text>
-              {/* Activities */}
-              <Text style={styles.modalText}>Activities:</Text>
-              {entry.activities.map((activity) => {
-                return (
-                  <Text key={activity.id} style={styles.modalText}>
-                    {activity.activityName} {activity.image}
-                  </Text>
-                );
-              })}
+              <View style={styles.modalHeaderMainContainer}>
+                <Text style={styles.modalHeaderMain}>
+                  Entry for {entry.createdAt}{' '}
+                </Text>
+              </View>
               {/* Photo */}
-              {(!!entry.photoURL || !!entry.textInput) && (
-                <Text style={styles.modalText}>Journal Entry: </Text>
-              )}
               {!!entry.photoURL && (
                 <View style={styles.imageContainer}>
                   <Image
@@ -116,6 +104,19 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
                   <Text style={styles.modalText}>{entry.textInput}</Text>
                 </View>
               )}
+              {/* Mood */}
+              <Text style={styles.modalHeader}>
+                Mood: {emojiMapping[entry.mood.imageUrl]}
+              </Text>
+              {/* Activities */}
+              <Text style={styles.modalHeaderActivities}>Activities: </Text>
+              {entry.activities.map((activity) => {
+                return (
+                  <Text key={activity.id} style={styles.modalActivities}>
+                    {activity.activityName} {activity.image}
+                  </Text>
+                );
+              })}
             </View>
           </View>
         </View>
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
+    alignItems: 'center',
     marginTop: 22,
   },
   lottieMountain: {
@@ -157,6 +158,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalActivities: {
+    position: 'relative',
+  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -175,8 +179,33 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
+    fontSize: 15,
+  },
+  modalHeader: {
+    marginBottom: 15,
+    fontSize: 18,
+  },
+  modalHeaderActivities: {
+    // marginBottom: 10,
+    fontSize: 18,
+  },
+  modalHeaderMain: {
+    padding: 15,
     fontSize: 20,
-    // textAlign: 'center',
+  },
+  modalHeaderMainContainer: {
+    borderColor: '#F9ECEC',
+    borderWidth: 4,
+    padding: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0.5,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    marginBottom: 15,
   },
   noJournalText: {
     display: 'flex',
@@ -187,6 +216,7 @@ const styles = StyleSheet.create({
   displayImage: {
     width: 200,
     height: 200,
+    borderRadius: 20,
   },
   imageContainer: {
     alignItems: 'center',
