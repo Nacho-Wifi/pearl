@@ -62,7 +62,7 @@ const Activities = ({ route }) => {
   };
   const handleActivitySelect = (activity) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
-    if (!selectedActivities.some(element => element.id === activity.id)) {
+    if (!selectedActivities.some((element) => element.id === activity.id)) {
       setSelectedActivities((oldState) => [...oldState, activity]);
     } else {
       // If user selects the activity again, it will remove it from the selectedActivities state array
@@ -73,9 +73,7 @@ const Activities = ({ route }) => {
   };
 
   if (isLoading) {
-    return (
-      <LoadingIcon></LoadingIcon>
-    );
+    return <LoadingIcon></LoadingIcon>;
   }
 
   return (
