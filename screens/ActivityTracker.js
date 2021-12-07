@@ -50,7 +50,7 @@ const ActivityTracker = () => {
   }, []);
 
   // iterate through ALL activities for that user, on all days, make pie chart (if activities exist)
-  let activityHash = {};
+  const activityHash = {};
   entries
     .map((entry) => entry.activities)
     .flat()
@@ -62,13 +62,43 @@ const ActivityTracker = () => {
     });
 
   // pull out emoticons and frequency of activity associated with that emoticon
-  let activityTracker = [];
+  const activityTracker = [];
   for (let [key, val] of Object.entries(activityHash)) {
     activityTracker.push({
       activity: key,
       frequency: val,
     });
   }
+
+  // sorts most to least frequent
+  activityTracker.sort((current, next) => {
+    return next.frequency -current.frequency;
+  })
+  //console.log('activityTracker', activityTracker)
+
+  let pie = [];
+
+  if (activityTracker.length > 9) {
+    pie = activityTracker.slice(0, 9);
+    //console.log('pie:', pie)
+    let sum = activityTracker.slice(9, activityTracker.length).reduce((current, next) => {
+      console.log('current:', current, 'next:', next.frequency)
+      return current + next.frequency;
+    }, 0)
+
+    //console.log(sum);
+    pie.push({activity: '🐚', frequency: sum})
+  } else {
+    pie = activityTracker.slice();
+  }
+
+  console.log('pie.length', pie.length)
+  console.log('pie', pie)
+
+
+
+
+
 
   return !activityTracker.length ? (
     <View style={styles.container}>
@@ -92,7 +122,7 @@ const ActivityTracker = () => {
 
         width={300}
         theme={VictoryTheme.material}
-        data={activityTracker}
+        data={pie}
         labels = {({datum}) => datum.activity}
 
         // labelComponent={<VictoryTooltip />}
@@ -148,6 +178,7 @@ const ActivityTracker = () => {
           'tomato',
           '#B5DEFF',
           '#ca6702',
+          '#D0E562',
           'pink',
         ]}
         x="activity"
