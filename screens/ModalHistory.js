@@ -177,15 +177,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 20,
     // textAlign: 'center',
-    fontFamily: 'Avenir',
   },
   noJournalText: {
     display: 'flex',
     color: '#b5179e',
     alignContent: 'center',
     textAlign: 'center',
-    fontFamily: 'Avenir',
-    // fontSize: 16,
   },
   displayImage: {
     width: 200,
