@@ -43,11 +43,13 @@ const MoodChart = () => {
   const [entries, setEntries] = useState([]);
   const [day, setDay] = useState(oneWeekAgo);
   const [entriesLength, setEntriesLength] = useState(null)
+  const [loading, setLoading] = useState(true)
 
 
   useEffect(() => {
 
     const getUserEntries = () => {
+      setLoading(true);
       const q = query(
         collection(db, 'Journals'),
         where('userId', '==', auth.currentUser.email)
@@ -61,11 +63,21 @@ const MoodChart = () => {
         });
         setEntries(journalEntry);
         setEntriesLength(entries.length);
+        console.log('entries.length inside unsub', entries.length)
       });
+      //setEntriesLength(2);
+      setLoading(false)
+      console.log('entries.length, loading=false', entries.length)
     };
     getUserEntries();
     console.log('entries.length', entries.length)
+
+    //return () => {console.log('unmounting')};
   }, [entries.length]);
+
+  // useEffect(() => {
+  //   setEntriesLength(entries.length);
+  // },[entries.length])
 
 
   const changeTimeline = (time) => {
@@ -100,9 +112,9 @@ const MoodChart = () => {
   };
 
   const oneMonthAgo = month();
-  console.log('dateDescription:', dateDescription);
+  //console.log('dateDescription:', dateDescription);
 
-  if(!entriesLength) return <LoadingIcon/>
+  if(loading) return <LoadingIcon/>
 
   return (
     entriesLength <= 1 ?

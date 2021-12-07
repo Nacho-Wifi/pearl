@@ -83,10 +83,24 @@ const ActivityTracker = () => {
     </View>
   ) : (
     <View style={styles.container}>
+
       <VictoryPie
+
+
+
+
+
         width={300}
         theme={VictoryTheme.material}
         data={activityTracker}
+        labels = {({datum}) => datum.activity}
+
+        // labelComponent={<VictoryTooltip />}
+        // renderInPortal={true}
+
+
+
+
         events={[
           {
             target: 'data',
@@ -103,19 +117,24 @@ const ActivityTracker = () => {
                   },
                   {
                     target: 'labels',
-                    mutation: ({ text }) => {
-                      return text === 'clicked' ? null : { text: 'clicked' };
-                    },
+                    mutation: (props) => ({ datum: props.y})
+                    // mutation: ({ text }) => {
+                    //   return text === 'clicked' ? null : { text: 'clicked' };
+                    // },
                   },
                 ];
               },
             },
           },
         ]}
+
+        // labelPosition={({ index }) => index
+        // ? "centroid"
+        // : "startAngle"}
         // style={{
         //   labels: {
         //     fontSize: 24,
-        //     position: "fixed"
+        //     // position: "fixed"
         //     //align: "center",
         //   },
         // }}
@@ -134,6 +153,7 @@ const ActivityTracker = () => {
         x="activity"
         y="frequency"
       />
+
     </View>
   );
 };
@@ -144,7 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 30,
+    //paddingBottom: 30,
     fontSize: 20,
   },
   textStyling: {
