@@ -15,6 +15,9 @@ import Tabs from './navigation/tabs';
 //auth
 import { auth } from './firebase';
 
+//customize text
+import { setCustomText } from 'react-native-global-props';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -32,6 +35,14 @@ export default function App() {
       }
     });
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    setCustomText({
+      style: {
+        fontFamily: 'Avenir',
+      },
+    });
   }, []);
 
   if (!loaded) {

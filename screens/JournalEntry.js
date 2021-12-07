@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Alert,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import LoadingIcon from './components/LoadingIcon';
 import { auth, db } from '../firebase';
@@ -20,6 +27,7 @@ import {
   getStorage,
 } from 'firebase/storage';
 import uuid from 'react-native-uuid';
+import LottieView from 'lottie-react-native';
 
 // import checkIfOk from '../trendCheck';
 
@@ -33,7 +41,8 @@ const JournalEntry = ({ route }) => {
   };
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
-  const { activities, journalData, photoURI, inputText } = route.params;
+  const { activities, journalData, photoURI, inputText, deletePost } =
+    route.params;
 
   // State
   const [moods, setMoods] = useState([]);
@@ -42,6 +51,9 @@ const JournalEntry = ({ route }) => {
   const [userJournalData, setUserJournalData] = useState(null);
   const [selectedMood, setSelectedMood] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [savedPhoto, setSavedPhoto] = useState('');
+  const [savedText, setSavedText] = useState('');
+  const [savingJournal, setSavingJournal] = useState(false);
 
   // Collections
   const moodsCollectionRef = collection(db, 'Moods');
@@ -62,18 +74,26 @@ const JournalEntry = ({ route }) => {
     if (journalData) {
       setUserJournalData(journalData);
       setSelectedMood(journalData.journalEntries.mood);
+      setSavedPhoto(journalData.journalEntries.photoURL);
+      setSavedText(journalData.journalEntries.textInput);
     }
   }, []);
 
-  //this second useEffect is used to check if an optional TextEntry has already been filled
+  useEffect(() => {
+    //if textEntry clicks on handleDelete, deletePost:true will be sent back to clear our savedPhoto and savedText state
+    if (deletePost) {
+      setSavedPhoto('');
+      setSavedText('');
+    }
+  }, [deletePost]);
+
+  //this second useEffect is used to check if an optional TextEntry and photoEntry has already been filled (either in localstate or db)
   //to toggle between adding text entry and edit text entry
   useEffect(() => {
-    // if a photo url or input text exists locally or in the database, set setTextEntry to true
-    // TODO:
-    if (photoURI || inputText) {
+    if (photoURI || inputText || savedPhoto || savedText) {
       setTextEntry(true);
     } else setTextEntry(false);
-  }, [photoURI, inputText]);
+  }, [photoURI, inputText, savedPhoto, savedText]);
 
   useEffect(() => {
     setUserActivities(activities);
@@ -81,13 +101,9 @@ const JournalEntry = ({ route }) => {
 
   const handleOptionalEntry = () => {
     navigation.navigate('TextEntry', {
-      // if userJournalData is defined, we want to pass down userJournalData.journalEntries.photoURL
-      photoURI: userJournalData
-        ? userJournalData.journalEntries.photoURL
-        : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
-      inputText: userJournalData
-        ? userJournalData.journalEntries.textInput
-        : inputText,
+      // if a photoURI doesn't exist (we haven't taken a photo yet), load photo from database if one exists
+      photoURI: !photoURI ? savedPhoto : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
+      inputText: !inputText ? savedText : inputText,
     });
   };
 
@@ -139,9 +155,9 @@ const JournalEntry = ({ route }) => {
       await setDoc(doc(db, 'Journals', userJournalData.journalId), {
         mood,
         activities: userActivities, // an array of objects of the activities
-        photoURL: downloadURL || '',
+        photoURL: downloadURL || savedPhoto,
         createdAt: new Date().toDateString(),
-        textInput: inputText || '',
+        textInput: inputText || savedText,
         userId: auth.currentUser.email,
       });
     }
@@ -184,16 +200,37 @@ const JournalEntry = ({ route }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          if (photoURI) {
-            //will call setJournal in savePhoto after getting downloadURL
-            savePhoto(selectedMood);
+          if (!Object.keys(selectedMood).length) {
+            Alert.alert(
+              'No mood selected',
+              'You must select a mood to continue',
+              [{ text: 'OK', style: 'cancel', onPress: () => {} }]
+            );
           } else {
-            setJournal(selectedMood);
+            if (photoURI) {
+              if (photoURI.substring(0, 5) === 'https') {
+                //if photo has https, it has already been saved from last journal entry
+                setJournal(selectedMood);
+              } else {
+                //will call setJournal in savePhoto after getting downloadURL
+                setSavingJournal(true);
+                savePhoto(selectedMood);
+              }
+            } else {
+              setJournal(selectedMood);
+            }
           }
         }}
       >
         <Text>Save Journal</Text>
       </TouchableOpacity>
+      {savingJournal && (
+        <LottieView
+          style={styles.lottieUploading}
+          source={require('../assets/lottie/uploading.json')}
+          autoPlay
+        />
+      )}
     </View>
   );
 };
@@ -232,6 +269,12 @@ const styles = StyleSheet.create({
     // borderColor: '#BDD8F1',
     // borderWidth: 2,
     borderRadius: 10,
+  },
+  lottieUploading: {
+    position: 'absolute',
+    width: 500,
+    height: 1000,
+    backgroundColor: 'white',
   },
   // buttonText: {
   //   color: 'white',
