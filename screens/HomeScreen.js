@@ -10,10 +10,19 @@ import {
   Pressable,
   Image,
   Icon,
+  SafeAreaView,
 } from 'react-native';
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
-import { doc, collection, query, where, getDocs, getDoc, Firestore } from 'firebase/firestore';
+import {
+  doc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  Firestore,
+} from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { set } from 'react-native-reanimated';
 
@@ -83,40 +92,52 @@ const HomeScreen = () => {
 
   if (!loading) {
     return (
-      <View style={styles.container}>
-        <Image
-          source={require('../assets/icons/user.png')}
-          style={{
-            position: 'absolute',
-            left: 5,
-            top: 5,
-            height: 40,
-            width: 40,
-          }}
-        />
+      <SafeAreaView style={styles.container}>
         <LottieView
-          source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
+          style={styles.lottieOcean}
+          source={require('../assets/lottie/ocean.json')}
           autoPlay
-          loop
-          style={styles.lottiePearl}
-        />
+        >
+          <Image
+            source={require('../assets/icons/user.png')}
+            style={{
+              position: 'absolute',
+              left: 5,
+              top: 5,
+              height: 40,
+              width: 40,
+            }}
+          />
+          <LottieView
+            source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
+            autoPlay
+            loop
+            style={styles.lottiePearl}
+          />
 
-        {auth.currentUser.displayName === null ? <Text>How are you feeling today?</Text> : <Text>How are you feeling today, {auth.currentUser.displayName}?</Text>}
-        <>
-          {!journalEntries ? (
-            <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
-              <Text style={styles.buttonText}>Enter Journal</Text>
-            </TouchableOpacity>
+          {auth.currentUser.displayName === null ? (
+            <Text>How are you feeling today?</Text>
           ) : (
-            <TouchableOpacity style={styles.button} onPress={updateEntry}>
-              <Text style={styles.buttonText}>Edit Journal</Text>
-            </TouchableOpacity>
+            <Text>
+              How are you feeling today, {auth.currentUser.displayName}?
+            </Text>
           )}
-        </>
-        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+          <>
+            {!journalEntries ? (
+              <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
+                <Text style={styles.buttonText}>Enter Journal</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.button} onPress={updateEntry}>
+                <Text style={styles.buttonText}>Edit Journal</Text>
+              </TouchableOpacity>
+            )}
+          </>
+          {/* <TouchableOpacity style={styles.button} onPress={handleSignOut}>
           <Text style={styles.buttonText}>Sign Out</Text>
-        </TouchableOpacity>
-      </View>
+        </TouchableOpacity> */}
+        </LottieView>
+      </SafeAreaView>
     );
   } else {
     return <View></View>;
@@ -130,7 +151,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D3F6F3',
+    // backgroundColor: '#D3F6F3',
   },
   button: {
     backgroundColor: '#FBD1B7',
@@ -147,8 +168,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   lottiePearl: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
   },
   NavContainer: {
     position: 'absolute',
@@ -163,5 +184,10 @@ const styles = StyleSheet.create({
   },
   IconBehave: {
     padding: 14,
+  },
+  lottieOcean: {
+    width: 500,
+    height: 900,
+    position: 'absolute',
   },
 });
