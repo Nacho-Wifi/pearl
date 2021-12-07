@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+import LoadingIcon from './components/LoadingIcon';
+
 import {
   StyleSheet,
   View,
@@ -32,29 +35,38 @@ import {
   VictoryTooltip,
 } from 'victory-native';
 import LottieView from 'lottie-react-native';
+import { FlashMode } from 'expo-camera/build/Camera.types';
 
 const { width, height } = Dimensions.get('screen');
 
 const MoodChart = () => {
   const [entries, setEntries] = useState([]);
   const [day, setDay] = useState(oneWeekAgo);
+  const [entriesLength, setEntriesLength] = useState(null)
+
 
   useEffect(() => {
+
     const getUserEntries = () => {
       const q = query(
         collection(db, 'Journals'),
         where('userId', '==', auth.currentUser.email)
       );
+
+      // firestore listens for changes to journal entries and state is updated with new info so it shows up when immediately navigating to MyData screen
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const journalEntry = [];
         querySnapshot.forEach((doc) => {
           journalEntry.push(doc.data());
         });
         setEntries(journalEntry);
+        setEntriesLength(entries.length);
       });
     };
     getUserEntries();
-  }, []);
+    console.log('entries.length', entries.length)
+  }, [entries.length]);
+
 
   const changeTimeline = (time) => {
     if (time === 'week') setDay(oneWeekAgo);
@@ -90,16 +102,19 @@ const MoodChart = () => {
   const oneMonthAgo = month();
   console.log('dateDescription:', dateDescription);
 
-  return entries.length <= 1 ? (
+  if(!entriesLength) return <LoadingIcon/>
+
+  return (
+    entriesLength <= 1 ?
     <View style={styles.container}>
       <LottieView
         style={styles.lottieHistogram}
         source={require('../assets/lottie/histogram.json')}
         autoPlay
       />
-      <Text style={styles.textStyling}>Select a mood, today and tomorrow!</Text>
+      <Text style={styles.textStyling}>Your mood chart will appear here after two days of journaling!</Text>
     </View>
-  ) : (
+   :
     <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
