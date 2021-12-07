@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Alert,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import LoadingIcon from './components/LoadingIcon';
 import { auth, db } from '../firebase';
@@ -189,16 +196,24 @@ const JournalEntry = ({ route }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          if (photoURI) {
-            if (photoURI.substring(0, 5) === 'https') {
-              //if photo has https, it has already been saved from last journal entry
-              setJournal(selectedMood);
-            } else {
-              //will call setJournal in savePhoto after getting downloadURL
-              savePhoto(selectedMood);
-            }
+          if (!Object.keys(selectedMood).length) {
+            Alert.alert(
+              'No mood selected',
+              'You must select a mood to continue',
+              [{ text: 'OK', style: 'cancel', onPress: () => {} }]
+            );
           } else {
-            setJournal(selectedMood);
+            if (photoURI) {
+              if (photoURI.substring(0, 5) === 'https') {
+                //if photo has https, it has already been saved from last journal entry
+                setJournal(selectedMood);
+              } else {
+                //will call setJournal in savePhoto after getting downloadURL
+                savePhoto(selectedMood);
+              }
+            } else {
+              setJournal(selectedMood);
+            }
           }
         }}
       >
