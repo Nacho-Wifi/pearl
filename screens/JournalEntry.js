@@ -80,8 +80,6 @@ const JournalEntry = ({ route }) => {
   //to toggle between adding text entry and edit text entry
   useEffect(() => {
     // if a photo url or input text exists locally or in the database, set setTextEntry to true
-    // TODO:
-    console.log(' i am picture', savedPhoto);
     if (photoURI || inputText || savedPhoto || savedText) {
       setTextEntry(true);
     } else setTextEntry(false);
