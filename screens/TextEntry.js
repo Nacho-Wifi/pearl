@@ -28,6 +28,7 @@ const TextEntry = ({ route }) => {
     navigation.navigate('JournalEntry', {
       photoURI: '',
       inputText: '',
+      deletePost: true,
     });
   };
 

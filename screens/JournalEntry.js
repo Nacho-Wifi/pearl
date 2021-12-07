@@ -31,7 +31,8 @@ const JournalEntry = ({ route }) => {
   };
   const navigation = useNavigation();
   //this route.params gives us access to the props passed down by our Activities component using react navigation
-  const { activities, journalData, photoURI, inputText } = route.params;
+  const { activities, journalData, photoURI, inputText, deletePost } =
+    route.params;
 
   // State
   const [moods, setMoods] = useState([]);
@@ -40,6 +41,8 @@ const JournalEntry = ({ route }) => {
   const [userJournalData, setUserJournalData] = useState(null);
   const [selectedMood, setSelectedMood] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [savedPhoto, setSavedPhoto] = useState('');
+  const [savedText, setSavedText] = useState('');
 
   // Collections
   const moodsCollectionRef = collection(db, 'Moods');
@@ -60,19 +63,29 @@ const JournalEntry = ({ route }) => {
     if (journalData) {
       setUserJournalData(journalData);
       setSelectedMood(journalData.journalEntries.mood);
+      setSavedPhoto(journalData.journalEntries.photoURL);
+      setSavedText(journalData.journalEntries.textInput);
     }
   }, []);
+
+  useEffect(() => {
+    //if textEntry clicks on handleDelete, deletePost:true will be sent back to clear our savedPhoto and savedText state
+    if (deletePost) {
+      setSavedPhoto('');
+      setSavedText('');
+    }
+  }, [deletePost]);
 
   //this second useEffect is used to check if an optional TextEntry has already been filled
   //to toggle between adding text entry and edit text entry
   useEffect(() => {
     // if a photo url or input text exists locally or in the database, set setTextEntry to true
     // TODO:
-    console.log(' i am picture', photoURI);
-    if (photoURI || inputText) {
+    console.log(' i am picture', savedPhoto);
+    if (photoURI || inputText || savedPhoto || savedText) {
       setTextEntry(true);
     } else setTextEntry(false);
-  }, [photoURI, inputText]);
+  }, [photoURI, inputText, savedPhoto, savedText]);
 
   useEffect(() => {
     setUserActivities(activities);
@@ -81,12 +94,8 @@ const JournalEntry = ({ route }) => {
   const handleOptionalEntry = () => {
     navigation.navigate('TextEntry', {
       // if userJournalData is defined, we want to pass down userJournalData.journalEntries.photoURL
-      photoURI: userJournalData
-        ? userJournalData.journalEntries.photoURL
-        : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
-      inputText: userJournalData
-        ? userJournalData.journalEntries.textInput
-        : inputText,
+      photoURI: userJournalData ? savedPhoto : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
+      inputText: userJournalData ? savedText : inputText,
     });
   };
 
@@ -138,9 +147,9 @@ const JournalEntry = ({ route }) => {
       await setDoc(doc(db, 'Journals', userJournalData.journalId), {
         mood,
         activities: userActivities, // an array of objects of the activities
-        photoURL: downloadURL || userJournalData.journalEntries.photoURL,
+        photoURL: downloadURL || savedPhoto,
         createdAt: new Date().toDateString(),
-        textInput: inputText || userJournalData.journalEntries.textInput,
+        textInput: inputText || savedText,
         userId: auth.currentUser.email,
       });
     }
