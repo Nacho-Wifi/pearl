@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   helloText: {
-    marginTop: 40,
+    marginTop: 50,
     color: 'white',
     fontSize: 30,
     alignSelf: 'center',
