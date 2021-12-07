@@ -11,6 +11,7 @@ import {
   Image,
   Icon,
   SafeAreaView,
+  ImageBackground,
 } from 'react-native';
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
@@ -95,6 +96,7 @@ const HomeScreen = () => {
       <SafeAreaView style={styles.container}>
         <LottieView
           style={styles.lottieOcean}
+          resizeMode="cover"
           source={require('../assets/lottie/ocean.json')}
           autoPlay
         >
@@ -102,10 +104,10 @@ const HomeScreen = () => {
             source={require('../assets/icons/user.png')}
             style={{
               position: 'absolute',
-              left: 5,
-              top: 5,
-              height: 40,
-              width: 40,
+              left: 20,
+              top: 10,
+              height: 60,
+              width: 60,
             }}
           />
           <LottieView
@@ -116,9 +118,9 @@ const HomeScreen = () => {
           />
 
           {auth.currentUser.displayName === null ? (
-            <Text>How are you feeling today?</Text>
+            <Text style={styles.helloText}>How are you feeling today?</Text>
           ) : (
-            <Text>
+            <Text style={styles.helloText}>
               How are you feeling today, {auth.currentUser.displayName}?
             </Text>
           )}
@@ -161,13 +163,22 @@ const styles = StyleSheet.create({
     marginTop: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   buttonText: {
     color: 'white',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
+  },
+  helloText: {
+    marginTop: 40,
+    color: 'white',
+    fontSize: 30,
+    alignSelf: 'center',
   },
   lottiePearl: {
+    marginTop: 50,
+    marginLeft: 10,
     width: 300,
     height: 300,
   },
@@ -181,13 +192,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FBD1B7',
     width: '100%',
     justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   IconBehave: {
     padding: 14,
   },
   lottieOcean: {
-    width: 500,
-    height: 900,
+    width: '100%',
+    height: '100%',
     position: 'absolute',
   },
 });

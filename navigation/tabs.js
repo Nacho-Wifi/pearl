@@ -20,7 +20,7 @@ const Tabs = () => {
       tabBarOptions={{
         showIcon: true,
         labelStyle: { fontSize: 14 },
-        activeTintColor: 'blue',
+        activeTintColor: '#509993',
       }}
       screenOptions={{
         headerShown: false,
