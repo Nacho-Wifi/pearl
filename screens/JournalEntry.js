@@ -76,10 +76,9 @@ const JournalEntry = ({ route }) => {
     }
   }, [deletePost]);
 
-  //this second useEffect is used to check if an optional TextEntry has already been filled
+  //this second useEffect is used to check if an optional TextEntry and photoEntry has already been filled (either in localstate or db)
   //to toggle between adding text entry and edit text entry
   useEffect(() => {
-    // if a photo url or input text exists locally or in the database, set setTextEntry to true
     if (photoURI || inputText || savedPhoto || savedText) {
       setTextEntry(true);
     } else setTextEntry(false);
@@ -92,8 +91,8 @@ const JournalEntry = ({ route }) => {
   const handleOptionalEntry = () => {
     navigation.navigate('TextEntry', {
       // if userJournalData is defined, we want to pass down userJournalData.journalEntries.photoURL
-      photoURI: userJournalData ? savedPhoto : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
-      inputText: userJournalData ? savedText : inputText,
+      photoURI: !photoURI ? savedPhoto : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
+      inputText: !inputText ? savedText : inputText,
     });
   };
 
