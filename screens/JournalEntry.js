@@ -90,7 +90,7 @@ const JournalEntry = ({ route }) => {
 
   const handleOptionalEntry = () => {
     navigation.navigate('TextEntry', {
-      // if userJournalData is defined, we want to pass down userJournalData.journalEntries.photoURL
+      // if a photoURI doesn't exist (we haven't taken a photo yet), load photo from database if one exists
       photoURI: !photoURI ? savedPhoto : photoURI, // Allows user to view photo when toggling back and forth between JournalEntry and TextEntry
       inputText: !inputText ? savedText : inputText,
     });
