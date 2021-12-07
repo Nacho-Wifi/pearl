@@ -93,24 +93,24 @@ const HomeScreen = () => {
 
   if (!loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <LottieView
           style={styles.lottieOcean}
           resizeMode="cover"
           source={require('../assets/lottie/ocean.json')}
           autoPlay
         >
-          <Pressable onPress={handleSignOut}>
-            <Image
-              source={require('../assets/icons/logout.png')}
-              style={{
-                position: 'absolute',
-                left: 20,
-                marginTop: 20,
-                height: 40,
-                width: 40,
-              }}
-            />
+          <Pressable
+            onPress={handleSignOut}
+            style={{
+              position: 'absolute',
+              marginTop: 40,
+              marginLeft: 20,
+              height: 40,
+              width: 40,
+            }}
+          >
+            <Image source={require('../assets/icons/logout.png')} />
           </Pressable>
           <LottieView
             source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
@@ -141,7 +141,7 @@ const HomeScreen = () => {
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity> */}
         </LottieView>
-      </SafeAreaView>
+      </View>
     );
   } else {
     return <View></View>;
@@ -173,14 +173,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   helloText: {
-    marginTop: 50,
+    marginTop: 40,
     color: 'white',
     fontSize: 30,
     alignSelf: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: 5,
   },
   lottiePearl: {
     marginTop: 50,
-    marginLeft: 10,
+    alignSelf: 'center',
     width: 300,
     height: 300,
   },
