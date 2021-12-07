@@ -2,7 +2,6 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import History from '../screens/History';
-import DataViz from '../screens/DataVizPlaceholder';
 import Resources from '../screens/Resources';
 import UserProfile from '../screens/UserProfile';
 import { MainStackNavigator } from './stacks';
@@ -21,7 +20,7 @@ const Tabs = () => {
       tabBarOptions={{
         showIcon: true,
         labelStyle: { fontSize: 14 },
-        activeTintColor: 'blue',
+        activeTintColor: '#509993',
       }}
       screenOptions={{
         headerShown: false,
