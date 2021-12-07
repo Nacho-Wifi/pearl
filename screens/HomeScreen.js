@@ -10,10 +10,20 @@ import {
   Pressable,
   Image,
   Icon,
+  SafeAreaView,
+  ImageBackground,
 } from 'react-native';
 import { auth, db } from '../firebase';
 import LottieView from 'lottie-react-native';
-import { doc, collection, query, where, getDocs, getDoc, Firestore } from 'firebase/firestore';
+import {
+  doc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  Firestore,
+} from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { set } from 'react-native-reanimated';
 
@@ -83,40 +93,55 @@ const HomeScreen = () => {
 
   if (!loading) {
     return (
-      <View style={styles.container}>
-        <Image
-          source={require('../assets/icons/user.png')}
-          style={{
-            position: 'absolute',
-            left: 5,
-            top: 5,
-            height: 40,
-            width: 40,
-          }}
-        />
+      <SafeAreaView style={styles.container}>
         <LottieView
-          source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
+          style={styles.lottieOcean}
+          resizeMode="cover"
+          source={require('../assets/lottie/ocean.json')}
           autoPlay
-          loop
-          style={styles.lottiePearl}
-        />
+        >
+          <Pressable onPress={handleSignOut}>
+            <Image
+              source={require('../assets/icons/logout.png')}
+              style={{
+                position: 'absolute',
+                left: 20,
+                marginTop: 20,
+                height: 40,
+                width: 40,
+              }}
+            />
+          </Pressable>
+          <LottieView
+            source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
+            autoPlay
+            loop
+            style={styles.lottiePearl}
+          />
 
-        {auth.currentUser.displayName === null ? <Text>How are you feeling today?</Text> : <Text>How are you feeling today, {auth.currentUser.displayName}?</Text>}
-        <>
-          {!journalEntries ? (
-            <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
-              <Text style={styles.buttonText}>Enter Journal</Text>
-            </TouchableOpacity>
+          {auth.currentUser.displayName === null ? (
+            <Text style={styles.helloText}>How are you feeling today?</Text>
           ) : (
-            <TouchableOpacity style={styles.button} onPress={updateEntry}>
-              <Text style={styles.buttonText}>Edit Journal</Text>
-            </TouchableOpacity>
+            <Text style={styles.helloText}>
+              How are you feeling today, {auth.currentUser.displayName}?
+            </Text>
           )}
-        </>
-        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+          <>
+            {!journalEntries ? (
+              <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
+                <Text style={styles.buttonText}>Enter Journal</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.button} onPress={updateEntry}>
+                <Text style={styles.buttonText}>Edit Journal</Text>
+              </TouchableOpacity>
+            )}
+          </>
+          {/* <TouchableOpacity style={styles.button} onPress={handleSignOut}>
           <Text style={styles.buttonText}>Sign Out</Text>
-        </TouchableOpacity>
-      </View>
+        </TouchableOpacity> */}
+        </LottieView>
+      </SafeAreaView>
     );
   } else {
     return <View></View>;
@@ -130,7 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D3F6F3',
+    // backgroundColor: '#D3F6F3',
   },
   button: {
     backgroundColor: '#FBD1B7',
@@ -140,15 +165,24 @@ const styles = StyleSheet.create({
     marginTop: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   buttonText: {
     color: 'white',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
+  },
+  helloText: {
+    marginTop: 50,
+    color: 'white',
+    fontSize: 30,
+    alignSelf: 'center',
   },
   lottiePearl: {
-    width: 200,
-    height: 200,
+    marginTop: 50,
+    marginLeft: 10,
+    width: 300,
+    height: 300,
   },
   NavContainer: {
     position: 'absolute',
@@ -160,8 +194,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FBD1B7',
     width: '100%',
     justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   IconBehave: {
     padding: 14,
+  },
+  lottieOcean: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
 });

@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Linking,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import * as Location from 'expo-location';
 import { GOOGLE_PLACES_API } from '@env';
@@ -101,7 +102,7 @@ const Map = () => {
   if (errorMsg) {
     text = errorMsg;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={styles.header}>Resources</Text>
         <Text style={{ textAlign: 'center' }}>
           Allow location to find local resources:
@@ -122,15 +123,15 @@ const Map = () => {
         <Text style={styles.hotlineNumbers}>
           Crisis Text Line: Text HOME to 741741
         </Text>
-      </View>
+      </SafeAreaView>
     );
   } else if (location) {
     text = JSON.stringify(location);
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
           <Text style={styles.header}>Resources</Text>
-          <Text style={{ textAlign: 'center' }}>
+          <Text style={{ textAlign: 'center', fontSize: 20 }}>
             Search for soothing places near you:
           </Text>
           <MapView
@@ -181,7 +182,6 @@ const Map = () => {
               <Text>Meditation</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.hotlineHeader}></Text>
           <Text style={styles.hotlineNumbers}>
             National Suicide Prevention Lifeline:
           </Text>
@@ -195,7 +195,7 @@ const Map = () => {
             Crisis Text Line: Text HOME to 741741
           </Text>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   } else {
     return <Text>Loading ...</Text>;
@@ -224,17 +224,15 @@ const styles = StyleSheet.create({
   },
   map: {
     marginTop: 20,
-    width: '90%',
-    height: 300,
+    width: '100%',
+    height: 450,
     marginBottom: 0,
+    borderRadius: 60,
   },
   header: {
-    fontSize: 25,
+    fontSize: 40,
     padding: 5,
-    marginTop: 70,
-  },
-  hotlineHeader: {
-    marginTop: 10,
+    marginTop: 15,
   },
   hotlineNumbers: {
     margin: 10,

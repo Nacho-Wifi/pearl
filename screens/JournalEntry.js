@@ -29,6 +29,8 @@ import {
 import uuid from 'react-native-uuid';
 import LottieView from 'lottie-react-native';
 
+// import checkIfOk from '../trendCheck';
+
 const JournalEntry = ({ route }) => {
   const emojiMapping = {
     'U+1F622': '😢',
