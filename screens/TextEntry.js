@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { Link } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/core';
+import LottieView from 'lottie-react-native';
 
 const TextEntry = ({ route }) => {
   const [input, setInput] = useState('');
@@ -136,6 +137,13 @@ const TextEntry = ({ route }) => {
               />
               <Button title="Continue" onPress={handleContinue} />
             </View>
+            <LottieView
+              source={require('../assets/lottie/sun.json')}
+              autoPlay
+              loop
+              // resizeMode="cover"
+              style={styles.lottieBackground}
+            />
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
@@ -154,31 +162,38 @@ const styles = StyleSheet.create({
   },
   addBtnContainer: {
     alignItems: 'center',
+    marginTop: 40,
   },
   addBtn: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 350,
     borderRadius: 20,
     borderWidth: 2,
     borderColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 30,
+    backgroundColor: 'white',
   },
   input: {
-    height: 100,
-    margin: 12,
+    height: 120,
+    margin: 10,
     borderWidth: 2,
     padding: 10,
     borderRadius: 10,
+    backgroundColor: 'white',
   },
   displayImage: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 350,
     borderRadius: 20,
   },
   imgContainer: { alignItems: 'center' },
   btnContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  lottieBackground: {
+    position: 'relative',
   },
 });

@@ -272,8 +272,8 @@ const styles = StyleSheet.create({
   },
   lottieUploading: {
     position: 'absolute',
-    width: 500,
-    height: 1000,
+    width: 420,
+    height: 900,
     backgroundColor: 'white',
   },
   // buttonText: {
