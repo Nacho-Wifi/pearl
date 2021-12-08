@@ -143,8 +143,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   modalView: {
-    marginTop: 20,
-    marginBottom: 20,
+    margin: '2.5%',
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
@@ -194,7 +193,7 @@ const styles = StyleSheet.create({
   },
   modalHeaderMain: {
     padding: 15,
-    fontSize: 23,
+    fontSize: 20,
   },
   modalHeaderMainContainer: {
     borderColor: '#F9ECEC',
@@ -219,6 +218,7 @@ const styles = StyleSheet.create({
   displayImage: {
     width: 200,
     height: 200,
+    marginBottom: 5,
     borderRadius: 20,
   },
   imageContainer: {
