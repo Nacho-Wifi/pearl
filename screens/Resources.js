@@ -105,7 +105,7 @@ const Map = () => {
       <SafeAreaView style={styles.container}>
         <Text style={styles.header}>Resources</Text>
         <Text style={{ textAlign: 'center' }}>
-          Allow location to find local resources (default is NYC):
+          Allow location to find local resources:
         </Text>
         <MapView
           style={styles.map}
@@ -228,11 +228,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    marginTop: 20,
+    marginTop: '5%',
     width: '95%',
-    height: 450,
+    height: '100%',
     marginBottom: 0,
-    borderRadius: 60,
+    borderRadius: 40,
   },
   header: {
     fontSize: 40,
