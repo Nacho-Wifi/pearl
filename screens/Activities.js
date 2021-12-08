@@ -79,38 +79,42 @@ const Activities = ({ route }) => {
   return (
     // <SafeAreaView>
     <SafeAreaView>
-      <Text style={styles.header}>Activities</Text>
-      <Text style={styles.instructions}>
-        Select the activities you've done today:
-      </Text>
-      <SafeAreaView style={styles.container}>
-        {activities.map((activity) => {
-          return (
-            <TouchableOpacity
-              key={activity.id}
-              // Check if activity is in selectedActivities array - if it is make it darker
-              style={
-                selectedActivities.some((element) => element.id === activity.id)
-                  ? [styles.selectedButton, styles.selectedButtonText]
-                  : styles.button
-              }
-              onPress={() => {
-                handleActivitySelect(activity);
-              }}
-            >
-              <Text style={styles.buttonText}>
-                {activity.image} {/* {emojiMapping[activity.emojiUnicode]} */}
-              </Text>
-              <Text style={styles.buttonLittleText}>
-                {activity.activityName}{' '}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </SafeAreaView>
-      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-        <Text style={styles.nextButtonText}>Next</Text>
-      </TouchableOpacity>
+      <ScrollView>
+        <Text style={styles.header}>Activities</Text>
+        <Text style={styles.instructions}>
+          Select the activities you've done today:
+        </Text>
+        <SafeAreaView style={styles.container}>
+          {activities.map((activity) => {
+            return (
+              <TouchableOpacity
+                key={activity.id}
+                // Check if activity is in selectedActivities array - if it is make it darker
+                style={
+                  selectedActivities.some(
+                    (element) => element.id === activity.id
+                  )
+                    ? [styles.selectedButton, styles.selectedButtonText]
+                    : styles.button
+                }
+                onPress={() => {
+                  handleActivitySelect(activity);
+                }}
+              >
+                <Text style={styles.buttonText}>
+                  {activity.image} {/* {emojiMapping[activity.emojiUnicode]} */}
+                </Text>
+                <Text style={styles.buttonLittleText}>
+                  {activity.activityName}{' '}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </SafeAreaView>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.nextButtonText}>Next</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };

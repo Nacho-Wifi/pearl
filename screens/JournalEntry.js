@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginBottom: 60,
+    marginBottom: 40,
   },
   header: {
     fontSize: 50,
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   emoji: {
-    fontSize: 60,
+    fontSize: 40,
   },
   selectedButton: {
     backgroundColor: '#FBD1B7', // Temporary!
