@@ -105,14 +105,19 @@ const Map = () => {
       <SafeAreaView style={styles.container}>
         <Text style={styles.header}>Resources</Text>
         <Text style={{ textAlign: 'center' }}>
-          Allow location to find local resources:
+          Allow location to find local resources (default is NYC):
         </Text>
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           followsUserLocation={true}
-          initialRegion={mapRegion}
+          initialRegion={{
+            latitude: 40.7128,
+            longitude: 74.006,
+            latitudeDelta: 0.0421,
+            longitudeDelta: 0.0922,
+          }}
         ></MapView>
         <Text style={styles.hotlineNumbers}>
           National Suicide Prevention Lifeline:
