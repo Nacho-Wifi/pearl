@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 40,
     textAlign: 'center',
-    padding: 10,
+    padding: '1%',
     marginTop: 15,
   },
   instructions: {
