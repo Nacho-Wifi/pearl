@@ -201,7 +201,7 @@ const JournalEntry = ({ route }) => {
             style={styles.entryButton}
             onPress={handleOptionalEntry}
           >
-            <Image source={require('../assets/icons/editicon.png')} />
+            <Image source={require('../assets/icons/addEntry.png')} />
             <Text style={styles.entryButtonText}>Add Entry</Text>
           </TouchableOpacity>
         ) : (
