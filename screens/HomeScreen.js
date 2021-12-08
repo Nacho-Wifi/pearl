@@ -101,6 +101,7 @@ const HomeScreen = () => {
           source={require('../assets/lottie/ocean.json')}
           autoPlay
         >
+
           <Pressable onPress={handleSignOut}>
             <Image
               source={require('../assets/icons/logout.png')}
@@ -113,6 +114,7 @@ const HomeScreen = () => {
               }}
             />
           </Pressable>
+
           <LottieView
             source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
             autoPlay
@@ -159,13 +161,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#D3F6F3',
   },
   button: {
     backgroundColor: '#FBD1B7',
     width: '60%',
     padding: 15,
     borderRadius: 10,
+    // marginBottom: 40,
     marginTop: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -177,20 +179,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   helloText: {
-    marginTop: 40,
+    marginTop: 0,
     color: 'white',
     fontSize: 30,
     alignSelf: 'center',
     alignContent: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    padding: 5,
+    padding: 16,
   },
   lottiePearl: {
-    marginTop: 50,
+    marginTop: 16,
     alignSelf: 'center',
-    width: 300,
-    height: 300,
+    width: 250,
+    height: 250,
   },
   NavContainer: {
     position: 'absolute',
