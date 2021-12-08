@@ -29,7 +29,7 @@ import LoadingIcon from './components/LoadingIcon';
 
 const { width, height } = Dimensions.get('screen');
 
-const ActivityTracker = ({ entries }) => {
+const ActivityTracker = ({ entries, mappedEntries, dateDescription, day }) => {
   //const [entries, setEntries] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -58,11 +58,36 @@ const ActivityTracker = ({ entries }) => {
   useEffect(() => {
     setEntriesLength(entries.length);
     setLoading(false);
-    console.log('entries inside activityTracker', entries.length)
+    //console.log('entries inside activityTracker', entries.length)
 
   }, [entries.length])
 
   const activityHash = {};
+
+  entries.sort((a, b) => {
+    return new Date(b.createdAt) -new Date(a.createdAt)
+  })
+
+
+
+  day ? day.toDateString() : "Tue Nov 23 2000"
+  //console.log('day.getDate()', day.toDateString())
+
+
+  entries.forEach((entry) => {
+
+    console.log('created at:', entry.createdAt)
+
+    console.log('day:', day)
+
+
+  })
+
+  let timeline = entries.filter(entry => entry.createdAt >= day)
+
+  timeline.forEach(t => console.log('t', t.createdAt))
+  //entries.forEach(e => console.log('e', e.createdAt))
+
   entries
     .map((entry) => entry.activities)
     .flat()
