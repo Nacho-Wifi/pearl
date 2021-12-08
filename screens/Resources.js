@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
   map: {
     marginTop: 20,
-    width: '100%',
+    width: '95%',
     height: 450,
     marginBottom: 0,
     borderRadius: 60,
