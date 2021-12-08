@@ -29,7 +29,6 @@ import {
 import uuid from 'react-native-uuid';
 import LottieView from 'lottie-react-native';
 import { SafeAreaView } from 'react-navigation';
-
 // import checkIfOk from '../trendCheck';
 
 const JournalEntry = ({ route }) => {
@@ -54,7 +53,7 @@ const JournalEntry = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [savedPhoto, setSavedPhoto] = useState('');
   const [savedText, setSavedText] = useState('');
-  const [savingJournal, setSavingJournal] = useState(false);
+  const [savingJournal, setSavingJournal] = useState(true);
 
   // Collections
   const moodsCollectionRef = collection(db, 'Moods');
@@ -240,13 +239,14 @@ const JournalEntry = ({ route }) => {
           <Image source={require('../assets/icons/floppydisk.png')} />
           <Text style={styles.entryButtonText}>Save Entry</Text>
         </TouchableOpacity>
-        {savingJournal && (
-          <LottieView
-            style={styles.lottieUploading}
-            source={require('../assets/lottie/uploading.json')}
-            autoPlay
-          />
-        )}
+        {/* {savingJournal && (
+          // <LottieView
+          //   style={styles.lottieUploading}
+          //   source={require('../assets/lottie/uploading.json')}
+          //   resizeMode="cover"
+          //   autoPlay
+          // />
+        )} */}
       </View>
     </SafeAreaView>
   );
@@ -331,12 +331,12 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     borderRadius: 10,
   },
-  lottieUploading: {
-    position: 'absolute',
-    width: 420,
-    height: 900,
-    backgroundColor: 'white',
-  },
+  // lottieUploading: {
+  //   position: 'absolute',
+  //   alignItems: 'center',
+  //   height: 500,
+  //   backgroundColor: 'white',
+  // },
   // buttonText: {
   //   color: 'white',
   //   fontWeight: '700',
