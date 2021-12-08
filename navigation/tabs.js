@@ -71,7 +71,7 @@ const Tabs = () => {
         name="History"
         component={History}
         options={{
-          tabBarLabel: 'My Journals',
+          tabBarLabel: 'History',
           tabBarIcon: ({ focused, color, size }) => (
             <Image
               source={

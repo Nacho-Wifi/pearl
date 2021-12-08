@@ -38,7 +38,7 @@ const About = () => {
             >
               <Image source={require('../assets/icons/back-button.png')}
                 style={{
-                  tintColor: 'white',
+                  tintColor: '#FBD1B7',
                   position: 'absolute',
                   alignSelf: 'center',
                   height: 24,
@@ -54,7 +54,7 @@ const About = () => {
       >
         <Image source={require('../assets/icons/info.png')}
           style={{
-            tintColor: 'white',
+            tintColor: '#FBD1B7',
             position: 'absolute',
             alignSelf: 'center',
             height: 24,
@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    // marginTop: 60,
   },
   modalView: {
     // margin: 20,
-    width: '75%',
+    width: '90%',
     backgroundColor: "white",
     borderRadius: 10,
     padding: 35,
@@ -92,40 +92,27 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 10,
     padding: 10,
-    // elevation: 2 // idk what this does
   },
   buttonOpen: {
-    backgroundColor: "#FBD1B7",
+    // backgroundColor: "#FBD1B7",
     borderRadius: 100,
     padding: 12,
   },
   buttonClose: {
-    backgroundColor: "#FBD1B7",
+    backgroundColor: "black",
     borderRadius: 100,
     paddingHorizontal: 16,
   },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
   modalText: {
-    fontSize: 12,
+    fontSize: 16,
     marginBottom: 15,
     textAlign: "center"
   },
   modalTextHeader: {
-    fontSize: 12,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 15,
     textAlign: "center"
-  },
-  input: {
-    color: "black",
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
   },
 });
 
