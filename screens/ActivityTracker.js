@@ -25,31 +25,43 @@ import {
 } from 'victory-native';
 import LottieView from 'lottie-react-native';
 
+import LoadingIcon from './components/LoadingIcon';
+
 const { width, height } = Dimensions.get('screen');
 
-const ActivityTracker = () => {
-  const [entries, setEntries] = useState([]);
+const ActivityTracker = ({ entries }) => {
+  //const [entries, setEntries] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+  const [entriesLength, setEntriesLength] = useState(0);
   // retrieve all journal entries where userId matches that of logged in user
-  useEffect(() => {
-    const getUserEntries = () => {
-      const q = query(
-        collection(db, 'Journals'),
-        where('userId', '==', auth.currentUser.email)
-      );
+  // useEffect(() => {
+  //   const getUserEntries = () => {
+  //     const q = query(
+  //       collection(db, 'Journals'),
+  //       where('userId', '==', auth.currentUser.email)
+  //     );
 
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const journalEntry = [];
-        querySnapshot.forEach((doc) => {
-          journalEntry.push(doc.data());
-        });
-        setEntries(journalEntry);
-      });
-    };
-    getUserEntries();
-  }, []);
+  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //       const journalEntry = [];
+  //       querySnapshot.forEach((doc) => {
+  //         journalEntry.push(doc.data());
+  //       });
+  //       setEntries(journalEntry);
+  //     });
+  //   };
+  //   getUserEntries();
+  // }, []);
 
   // iterate through ALL activities for that user, on all days, make pie chart (if activities exist)
+
+  useEffect(() => {
+    setEntriesLength(entries.length);
+    setLoading(false);
+    console.log('entries inside activityTracker', entries.length)
+
+  }, [entries.length])
+
   const activityHash = {};
   entries
     .map((entry) => entry.activities)
@@ -98,7 +110,7 @@ const ActivityTracker = () => {
 
 
 
-
+if (!entriesLength) return <LoadingIcon />
 
   return !activityTracker.length ? (
     <View style={styles.container}>

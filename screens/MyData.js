@@ -13,7 +13,7 @@ const MyData = () => {
 
   return (
     <View style={[styles.container, { flexDirection: 'column' }]}>
-      <ActivityTracker />
+      {/* <ActivityTracker /> */}
       <MyData2 />
     </View>
   );

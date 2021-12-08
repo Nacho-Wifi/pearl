@@ -62,7 +62,7 @@ const MyData = () => {
 
   return  (
 
-    <View>
+    <View style={[styles.container, { flexDirection: 'column'}]}>
       <ActivityTracker entries={entries}/>
       <MoodActivity2 entries={entries}/>
     </View>
@@ -77,3 +77,11 @@ const MyData = () => {
 
 export default MyData;
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 30,
+    // backgroundColor: '#8fc5d3'
+    backgroundColor: '#b0d7e1'
+  },
+});
