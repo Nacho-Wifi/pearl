@@ -159,55 +159,50 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
         theme={VictoryTheme.material}
         data={pie}
         labels = {({datum}) => datum.activity}
-        events={[
-          {
-            target: 'data',
-            eventHandlers: {
-              onPressIn: () => {
-                return [
-                  {
-                    target: 'data',
-                    mutation: ({ style }) => {
-                      return style.fill === '#ff0dbf'
-                        ? null
-                        : { style: { fill: '#ff0dbf' }, };
-                    },
-                  },
-                  {
-                    target: 'labels',
-                    mutation: ({text}) => {
+        // events={[
+        //   {
+        //     target: 'data',
+        //     eventHandlers: {
+        //       onPressIn: () => {
+        //         return [
+        //           {
+        //             target: 'data',
+        //             mutation: ({ style }) => {
+        //               return style.fill === '#ff0dbf'
+        //                 ? null
+        //                 : { style: { fill: '#ff0dbf' }, };
+        //             },
+        //           },
+        //           {
+        //             target: 'labels',
+        //             mutation: ({text}) => {
 
 
-                        const description= `${activityLookup[text]} (${activityHash[text]})`;
+        //                 const description= `${activityLookup[text]} (${activityHash[text]})`;
 
-                        console.log(description)
-                      //return alert(description)
-                        return text === description ? null : {text: description}
+        //                 console.log(description)
+        //               //return alert(description)
+        //                 return text === description ? null : {text: description}
 
-                       //   return text === 'clicked' ? null : { text: 'clicked' };
-
-
-
-                      }
-                    },
-
-
-                ];
-              },
-            },
-          },
-        ]}
+        //                //   return text === 'clicked' ? null : { text: 'clicked' };
+        //               }
+        //             },
+        //         ];
+        //       },
+        //     },
+        //   },
+        // ]}
 
         // labelPosition={({ index }) => index
         // ? "centroid"
         // : "startAngle"}
-        // style={{
-        //   labels: {
-        //     fontSize: 24,
-        //     // position: "fixed"
-        //     //align: "center",
-        //   },
-        // }}
+        style={{
+          labels: {
+            fontSize: 24,
+            // position: "fixed"
+            //align: "center",
+          },
+        }}
         //innerRadius={35}
         colorScale={[
           '#FFB319',
@@ -236,7 +231,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     //paddingBottom: 30,
-    fontSize: 20,
+    //fontSize: 30,
   },
   textStyling: {
     display: 'flex',
@@ -244,7 +239,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     textAlign: 'center',
     fontFamily: 'Avenir',
-    //fontSize: 16
+    //fontSize: 20
   },
   lottiePie: {
     width: 150,

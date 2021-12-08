@@ -88,6 +88,7 @@ const MyData = () => {
 
   return (
     <View style={[styles.container, { flexDirection: "column" }]}>
+      <Text style={styles.title}>Your Activities & Moods</Text>
       <ActivityTracker
         entries={entries}
         mappedEntries={mappedEntries}
@@ -95,6 +96,7 @@ const MyData = () => {
         day={day}
         oneMonthAgo={oneMonthAgo}
       />
+      {/* <Text style={styles.title}>Your Moods</Text> */}
       <MoodChart
         entries={entries}
         mappedEntries={mappedEntries}
@@ -133,8 +135,9 @@ export default MyData;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#b0d7e1",
+    // backgroundColor: "#d1eaf2",
     alignContent: "center",
+    paddingTop: 30
     //justifyContent: 'center'
   },
   buttonContainer: {
@@ -160,4 +163,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c599b",
     textAlign: "center",
   },
+  title: {
+    textAlign: 'center',
+    fontSize: 24,
+    paddingTop: 20,
+    paddingBottom: 20,
+    color: "#3c599b"
+  }
 });
