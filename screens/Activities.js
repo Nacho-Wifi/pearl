@@ -35,8 +35,8 @@ const Activities = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const activitiesCollectionRef = collection(db, 'Activities');
   const [modalVisible, setModalVisible] = useState(false);
-  console.log('SELECTED ACTIVITIES: ', selectedActivities)
-  console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
+  // console.log('SELECTED ACTIVITIES: ', selectedActivities)
+  // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
 
   // Gets all activities data
   useEffect(() => {
@@ -102,7 +102,7 @@ const Activities = ({ route }) => {
       <Text style={styles.instructions}>
         Select the activities you've done today:
       </Text>
-      <ScrollView>
+      <ScrollView style={{ height: '60%' }}>
         <SafeAreaView style={styles.container}>
           {activities.map((activity) => {
             return (
@@ -129,17 +129,21 @@ const Activities = ({ route }) => {
           })}
         </SafeAreaView>
       </ScrollView>
-      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-        <Text style={styles.nextButtonText}>Next</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.nextButton}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.nextButtonText}>Add Activity</Text>
-      </TouchableOpacity>
+      <View style={styles.nextAndAddButtonContainer}>
+        <TouchableOpacity
+          style={styles.nextButton}
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        >
+          <Image source={require('../assets/icons/addEntry.png')} style={{ width: 35, height: 35 }}></Image>
+          {/* <Text style={styles.nextButtonText}>+</Text> */}
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.nextButtonText}>Next</Text>
+        </TouchableOpacity>
+      </View>
       {modalVisible && (
         <AddActivity
           setModalVisible={setModalVisible}
@@ -165,11 +169,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   container: {
+    // borderWidth: 3,
+    overflow: 'hidden',
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: '60%',
+    height: '100%',
   },
   // buttonContainer: {
   //   padding: 100,
@@ -202,6 +208,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   nextButton: {
+    marginTop: '3%',
     backgroundColor: '#FBD1B7',
     // width: '25%',
     // height: 100,
@@ -212,16 +219,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     alignSelf: 'center',
-    width: 120,
+    width: 100,
     // marginTop: 100,
     // position: 'relative',
     // marginTop: 100,
     // marginRight: 100,
   },
+  nextAndAddButtonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
   nextButtonText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: 20,
+    fontSize: 25,
   },
   selectedButton: {
     backgroundColor: '#D3F6F3',
