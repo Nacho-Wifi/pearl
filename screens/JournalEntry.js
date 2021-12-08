@@ -201,6 +201,7 @@ const JournalEntry = ({ route }) => {
             onPress={handleOptionalEntry}
           >
             <Image source={require('../assets/icons/editicon.png')} />
+            <Text style={styles.entryButtonText}>Add Entry</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
@@ -208,6 +209,7 @@ const JournalEntry = ({ route }) => {
             onPress={handleOptionalEntry}
           >
             <Image source={require('../assets/icons/editicon.png')} />
+            <Text style={styles.entryButtonText}>Edit Entry</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
@@ -236,6 +238,7 @@ const JournalEntry = ({ route }) => {
           }}
         >
           <Image source={require('../assets/icons/floppydisk.png')} />
+          <Text style={styles.entryButtonText}>Save Entry</Text>
         </TouchableOpacity>
         {savingJournal && (
           <LottieView
@@ -261,16 +264,20 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   header: {
-    fontSize: 40,
+    fontSize: 50,
     textAlign: 'center',
     padding: 10,
     marginTop: 50,
   },
   instructions: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 25,
     marginTop: 10,
     marginBottom: 40,
+    padding: 5,
+  },
+  entryButtonText: {
+    fontSize: 15,
   },
   saveAndEditContainer: {
     display: 'flex',
@@ -311,7 +318,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   emoji: {
-    fontSize: 50,
+    fontSize: 60,
   },
   selectedButton: {
     backgroundColor: '#FBD1B7', // Temporary!
