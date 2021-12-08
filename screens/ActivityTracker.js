@@ -30,7 +30,7 @@ import LoadingIcon from './components/LoadingIcon';
 
 const { width, height } = Dimensions.get('screen');
 
-const ActivityTracker = ({ entries, mappedEntries, dateDescription, day }) => {
+const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMonthAgo}) => {
   //const [entries, setEntries] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -72,10 +72,11 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day }) => {
 
 
   let chosenDay=''
-  day ? chosenDay = day.toDateString() : chosenDay = "Tue Nov 23 2000"
+  day ? chosenDay = day.toDateString() : chosenDay = oneMonthAgo.toDateString();
   //console.log('day.getDate()', day.toDateString())
 
 
+  console.log('oneMonthAgo', oneMonthAgo)
   entries.forEach((entry) => {
 
     console.log('created at:', entry.createdAt)
@@ -86,7 +87,7 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day }) => {
 
   })
 
-  let timeline = entries.filter(entry => entry.createdAt >= chosenDay)
+  let timeline = entries.filter(entry => entry.createdAt.toString() >= chosenDay)
 
   timeline.forEach(t => console.log('t', t.createdAt))
   //entries.forEach(e => console.log('e', e.createdAt))

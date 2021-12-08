@@ -110,6 +110,7 @@ const MyData = () => {
         mappedEntries={mappedEntries}
         dateDescription={dateDescription}
         day={day}
+        oneMonthAgo={oneMonthAgo}
 
       />
       <MoodActivity2
