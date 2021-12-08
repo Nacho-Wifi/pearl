@@ -13,6 +13,7 @@ import { auth, db } from '../firebase';
 import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
 import { color } from 'react-native-reanimated';
 import LoadingIcon from './components/LoadingIcon';
+import AddActivity from './AddActivity';
 
 const Activities = ({ route }) => {
   const emojiMapping = {
@@ -32,8 +33,8 @@ const Activities = ({ route }) => {
   const [activities, setActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const activitiesCollectionRef = collection(db, 'Activities');
+  const [modalVisible, setModalVisible] = useState(false);
   // console.log('SELECTED ACTIVITIES: ', selectedActivities)
   // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
 
@@ -60,6 +61,7 @@ const Activities = ({ route }) => {
       journalData,
     });
   };
+
   const handleActivitySelect = (activity) => {
     //we want to make sure we only add the activity once to the journal entry even if user clicks on it a million times
     if (!selectedActivities.some((element) => element.id === activity.id)) {
@@ -79,11 +81,11 @@ const Activities = ({ route }) => {
   return (
     // <SafeAreaView>
     <SafeAreaView>
+      <Text style={styles.header}>Activities</Text>
+      <Text style={styles.instructions}>
+        Select the activities you've done today:
+      </Text>
       <ScrollView>
-        <Text style={styles.header}>Activities</Text>
-        <Text style={styles.instructions}>
-          Select the activities you've done today:
-        </Text>
         <SafeAreaView style={styles.container}>
           {activities.map((activity) => {
             return (
@@ -109,10 +111,24 @@ const Activities = ({ route }) => {
             );
           })}
         </SafeAreaView>
-        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-          <Text style={styles.nextButtonText}>Next</Text>
-        </TouchableOpacity>
       </ScrollView>
+      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <Text style={styles.nextButtonText}>Next</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={() => {
+          setModalVisible(true);
+        }}
+      >
+        <Text style={styles.nextButtonText}>Add Activity</Text>
+      </TouchableOpacity>
+      {modalVisible && (
+        <AddActivity
+          setModalVisible={setModalVisible}
+          modalVisible={modalVisible}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -173,7 +189,7 @@ const styles = StyleSheet.create({
     // width: '25%',
     // height: 100,
     padding: '1%',
-    margin: 30,
+    margin: '1%',
     alignItems: 'center',
     borderColor: '#FBD1B7',
     borderRadius: 10,
