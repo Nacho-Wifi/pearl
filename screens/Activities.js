@@ -77,13 +77,14 @@ const Activities = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-        {/* <Text style={{ justifyContent: 'center' }}> Activities:</Text> */}
+    // <SafeAreaView>
+    <SafeAreaView>
+      <Text style={styles.header}>Activities</Text>
+      <Text style={styles.instructions}>
+        Select the activities you've done today:
+      </Text>
+      <SafeAreaView style={styles.container}>
         {activities.map((activity) => {
-          // console.log('ACTIVITIES IN SELECTED ACTIVITIES: ', selectedActivities)
-          // console.log('MAPPED ACTIVITIES', activity)
-          // console.log('selected activites contain activity? ', selectedActivities.find(el => el.id === activity.id))
           return (
             <TouchableOpacity
               key={activity.id}
@@ -98,17 +99,18 @@ const Activities = ({ route }) => {
               }}
             >
               <Text style={styles.buttonText}>
-                {' '}
-                {emojiMapping[activity.emojiUnicode]}
+                {activity.image} {/* {emojiMapping[activity.emojiUnicode]} */}
               </Text>
-              <Text style={styles.buttonText}>{activity.activityName} </Text>
+              <Text style={styles.buttonLittleText}>
+                {activity.activityName}{' '}
+              </Text>
             </TouchableOpacity>
           );
         })}
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      </SafeAreaView>
+      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <Text style={styles.nextButtonText}>Next</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -116,15 +118,37 @@ const Activities = ({ route }) => {
 export default Activities;
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    justifyContent: 'center',
+  header: {
+    fontSize: 40,
+    textAlign: 'center',
+    padding: 10,
+    marginTop: 15,
   },
+  instructions: {
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  // buttonContainer: {
+  //   padding: 100,
+  //   // flex: 1,
+  //   // flexWrap: 'wrap',
+  //   // flexDirection: 'row',
+  //   // justifyContent: 'center',
+  // },
   button: {
+    flexBasis: '25%',
     backgroundColor: 'white',
-    width: '50%',
+    // width: '25%',
+    // height: 100,
     padding: 15,
-    margin: 16,
+    margin: 8,
     alignItems: 'center',
     borderColor: 'white',
     borderRadius: 10,
@@ -133,14 +157,41 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontWeight: '200',
-    fontSize: 16,
+    fontSize: 25,
     textAlign: 'center',
+  },
+  buttonLittleText: {
+    color: 'black',
+    fontSize: 10,
+    textAlign: 'center',
+  },
+  nextButton: {
+    backgroundColor: '#FBD1B7',
+    // width: '25%',
+    // height: 100,
+    padding: 15,
+    margin: 30,
+    alignItems: 'center',
+    borderColor: '#FBD1B7',
+    borderRadius: 10,
+    borderWidth: 2,
+    alignSelf: 'center',
+    width: 120,
+    // marginTop: 100,
+    // position: 'relative',
+    // marginTop: 100,
+    // marginRight: 100,
+  },
+  nextButtonText: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: 20,
   },
   selectedButton: {
     backgroundColor: 'white',
-    width: '50%',
-    margin: 16,
+    width: '25%',
     padding: 15,
+    margin: 8,
     alignItems: 'center',
     borderColor: '#BDD8F1',
     borderWidth: 2,
