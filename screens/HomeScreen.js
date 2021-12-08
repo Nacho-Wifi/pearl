@@ -107,9 +107,9 @@ const HomeScreen = () => {
               style={{
                 // position: 'absolute',
                 left: 20,
-                marginTop: 20,
-                height: 40,
-                width: 40,
+                marginTop: 35,
+                height: 30,
+                width: 30,
               }}
             />
           </Pressable>
