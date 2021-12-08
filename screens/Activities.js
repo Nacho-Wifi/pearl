@@ -101,9 +101,7 @@ const Activities = ({ route }) => {
                   handleActivitySelect(activity);
                 }}
               >
-                <Text style={styles.buttonText}>
-                  {activity.image} {/* {emojiMapping[activity.emojiUnicode]} */}
-                </Text>
+                <Text style={styles.buttonText}>{activity.image}</Text>
                 <Text style={styles.buttonLittleText}>
                   {activity.activityName}{' '}
                 </Text>
@@ -138,6 +136,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    height: '60%',
   },
   // buttonContainer: {
   //   padding: 100,
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     // width: '25%',
     // height: 100,
-    padding: 15,
+    padding: '1%',
     margin: 8,
     alignItems: 'center',
     borderColor: 'white',
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FBD1B7',
     // width: '25%',
     // height: 100,
-    padding: 15,
+    padding: '1%',
     margin: 30,
     alignItems: 'center',
     borderColor: '#FBD1B7',
@@ -194,7 +193,7 @@ const styles = StyleSheet.create({
   selectedButton: {
     backgroundColor: '#D3F6F3',
     width: '25%',
-    padding: 15,
+    padding: '1%',
     margin: 8,
     alignItems: 'center',
     borderColor: '#D3F6F3',
