@@ -24,7 +24,7 @@ const AddActivity = ({ setModalVisible, modalVisible }) => {
   const handleAddActivity = async (activityName) => {
     await addDoc(activitiesCollectionRef, {
       activityName,
-      imageUrl: icon || '🏄',
+      image: icon || '🏄',
       userId: auth.currentUser.email,
     });
     setModalVisible(false);

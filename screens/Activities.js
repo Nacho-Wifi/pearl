@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
-import { doc, addDoc, getDocs, collection, setDoc } from 'firebase/firestore';
+import { doc, addDoc, getDocs, collection, setDoc, query, where, onSnapshot } from 'firebase/firestore';
 import { color } from 'react-native-reanimated';
 import LoadingIcon from './components/LoadingIcon';
 import AddActivity from './AddActivity';
@@ -35,23 +35,40 @@ const Activities = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const activitiesCollectionRef = collection(db, 'Activities');
   const [modalVisible, setModalVisible] = useState(false);
-  // console.log('SELECTED ACTIVITIES: ', selectedActivities)
-  // console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
+  console.log('SELECTED ACTIVITIES: ', selectedActivities)
+  console.log('ACTIVITIES PASSED DOWN AS PROPS: ', journalData.journalEntries.activities)
 
   // Gets all activities data
   useEffect(() => {
+    const activitiesQuery = query(
+      activitiesCollectionRef,
+      where('userId', 'in', [auth.currentUser.email, '']),
+    );
     //every time we make a request return this promise, data to be resolved ...
-    const getActivities = async () => {
-      const data = await getDocs(activitiesCollectionRef);
-      setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
-      // if this is true, craete activities id state then check if the id == activity.id?
-      // would only work if user has an entry already
-      if (journalData)
-        setSelectedActivities(journalData.journalEntries.activities);
-      setIsLoading(false);
-    };
+    const getActivities = () => {
+      // const data = await getDocs(activitiesCollectionRef);
+      // setActivities(data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))); // makes sure our data doesnt come back in a format that is weird af, loops thru documents in collection , sets equal to array of doc data adn the id of each document ...
+      onSnapshot(activitiesQuery, (querySnapshot) => {
+        const dbActivities = [];
+        querySnapshot.forEach((doc) => {
+          dbActivities.push({ ...doc.data(), id: doc.id });
+        });
+        setActivities(dbActivities)
+        // console.log(activities)
+      });
+    }
+    // if this is true, craete activities id state then check if the id == activity.id?
+    // would only work if user has an entry already
     getActivities();
+
+    setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (journalData) {
+      setSelectedActivities(journalData.journalEntries.activities);
+    }
+  }, [])
 
   const handleNext = () => {
     // activities are being added onto state array here - if we want to remove one we need to remove it from state
