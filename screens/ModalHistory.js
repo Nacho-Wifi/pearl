@@ -109,7 +109,7 @@ const ModalHistory = ({ setModalVisible, modalVisible, entry }) => {
                 Mood: {emojiMapping[entry.mood.imageUrl]}
               </Text>
               {/* Activities */}
-              <Text style={styles.modalHeaderActivities}>Activities: </Text>
+              <Text style={styles.modalHeaderActivities}>Activities</Text>
               {entry.activities.map((activity) => {
                 return (
                   <Text key={activity.id} style={styles.modalActivities}>
@@ -158,9 +158,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  modalActivities: {
-    position: 'relative',
-  },
+
   button: {
     borderRadius: 20,
     padding: 10,
@@ -179,19 +177,24 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    fontSize: 15,
+    fontSize: 18,
   },
   modalHeader: {
     marginBottom: 15,
-    fontSize: 18,
+    fontSize: 20,
   },
   modalHeaderActivities: {
     // marginBottom: 10,
-    fontSize: 18,
+    fontSize: 20,
+    textDecorationLine: 'underline',
+  },
+  modalActivities: {
+    position: 'relative',
+    fontSize: 17,
   },
   modalHeaderMain: {
     padding: 15,
-    fontSize: 20,
+    fontSize: 23,
   },
   modalHeaderMainContainer: {
     borderColor: '#F9ECEC',

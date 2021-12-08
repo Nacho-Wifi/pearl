@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   TextInput,
+  Text,
   View,
   Image,
   SafeAreaView,
@@ -109,7 +110,13 @@ const TextEntry = ({ route }) => {
             ) : (
               <>
                 <View style={styles.btnContainer}>
-                  <Button title="Retake Photo" onPress={alertRetake} />
+                  {/* <Button title="Retake Photo" onPress={alertRetake} /> */}
+                  <TouchableOpacity onPress={alertRetake}>
+                    <Image
+                      source={require('../assets/icons/retakePhoto.png')}
+                    />
+                    <Text>Retake</Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.imgContainer}>
                   <Image
@@ -131,17 +138,25 @@ const TextEntry = ({ route }) => {
 
             <View style={styles.btnContainer}>
               {/* only display alert for delete if there is something to delete */}
-              <Button
-                title="Delete"
+
+              <TouchableOpacity
                 onPress={photoURI || inputText ? alertDelete : handleDelete}
-              />
-              <Button title="Continue" onPress={handleContinue} />
+              >
+                <Image source={require('../assets/icons/delete.png')} />
+                <Text> Delete</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleContinue}
+                style={{ marginTop: 5 }}
+              >
+                <Image source={require('../assets/icons/continue.png')} />
+                <Text>Continue</Text>
+              </TouchableOpacity>
             </View>
             <LottieView
               source={require('../assets/lottie/sun.json')}
               autoPlay
               loop
-              // resizeMode="cover"
               style={styles.lottieBackground}
             />
           </View>
@@ -177,11 +192,12 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 120,
-    margin: 10,
+    margin: 5,
     borderWidth: 2,
     padding: 10,
     borderRadius: 10,
     backgroundColor: 'white',
+    fontSize: 17,
   },
   displayImage: {
     width: 300,
