@@ -1,5 +1,29 @@
 // import { collection, where, query, getDocs } from 'firebase/firestore';
 // import { auth, db } from './firebase';
+// import * as mobilenet from 'tensorflow-models/mobilenet';
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-react-native';
+
+async function learnConcern() {
+  tf.ready();
+  const model = tf.sequential();
+  model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+
+  model.compile({
+    loss: 'meanSquaredError',
+    optimizer: 'sgd',
+  });
+
+  const moods = tf.tensor2d([1, 1, 1, 1, 4, 4, 4, 4], [8, 1]);
+  const concernLevel = tf.tensor2d([1, 1, 1, 1, 0, 0, 0, 0], [8, 1]);
+
+  await model.fit(moods, concernLevel, { epochs: 250 });
+
+  let concerned = await model.predict(tf.tensor2d([4], [1, 1]));
+  console.log(concerned.data);
+  return concerned;
+}
+learnConcern();
 
 // import * as brain from 'brain.js';
 
