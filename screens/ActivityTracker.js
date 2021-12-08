@@ -170,45 +170,27 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
                     mutation: ({ style }) => {
                       return style.fill === '#ff0dbf'
                         ? null
-                        : { style: { fill: '#ff0dbf' } };
+                        : { style: { fill: '#ff0dbf' }, };
                     },
                   },
                   {
                     target: 'labels',
-
-                    // mutation: ({ text }) => {
-                    //   console.log('text.datum', text)
-                    //   //console.log(pie)
-                    //   return text === 'clicked' ? null : { text: 'clicked' };
-                    // mutation: (evt) => alert((`${evt.x}, ${evt.y}`))
                     mutation: ({text}) => {
 
-                        console.log('text:', text)
+
                         const description= `${activityLookup[text]} (${activityHash[text]})`;
 
-                        //const description = activityHash[text]
+                        console.log(description)
+                      //return alert(description)
+                        return text === description ? null : {text: description}
 
-                        console.log('description:', description)
-                        // return text === description ? null : {text: description}
-
-                      return description === text ? null : {description: text, text: description}
-
-                        //console.log(text)
+                       //   return text === 'clicked' ? null : { text: 'clicked' };
 
 
-                      // return [
-                      //   {
 
-                      //     eventKey: "all",
-                      //     mutation: (props) => {
-                      //       console.log('props', props)
-                      //       return props.index === frequency ? null: {style: {fill: "orange"}}
-                      //     }
-                      //   }
-                      // ]
-                    }
+                      }
                     },
-                  // },
+
 
                 ];
               },
