@@ -3,7 +3,7 @@ import { CurrentRenderContext, useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { StyleSheet, View, Dimensions, Text } from 'react-native';
-import { compareAsc, format } from 'date-fns'
+import { compareAsc, format, isThisISOWeek } from 'date-fns'
 import {
   doc,
   addDoc,
@@ -30,37 +30,15 @@ import LoadingIcon from './components/LoadingIcon';
 
 const { width, height } = Dimensions.get('screen');
 
-const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMonthAgo}) => {
-  //const [entries, setEntries] = useState([]);
+const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
 
   const [loading, setLoading] = useState(true);
   const [entriesLength, setEntriesLength] = useState(0);
-  // retrieve all journal entries where userId matches that of logged in user
-  // useEffect(() => {
-  //   const getUserEntries = () => {
-  //     const q = query(
-  //       collection(db, 'Journals'),
-  //       where('userId', '==', auth.currentUser.email)
-  //     );
 
-  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //       const journalEntry = [];
-  //       querySnapshot.forEach((doc) => {
-  //         journalEntry.push(doc.data());
-  //       });
-  //       setEntries(journalEntry);
-  //     });
-  //   };
-  //   getUserEntries();
-  // }, []);
-
-  // iterate through ALL activities for that user, on all days, make pie chart (if activities exist)
 
   useEffect(() => {
     setEntriesLength(entries.length);
     setLoading(false);
-    //console.log('entries inside activityTracker', entries.length)
-
   }, [entries.length])
 
   const activityHash = {};
@@ -115,15 +93,13 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMont
   activityTracker.sort((current, next) => {
     return next.frequency -current.frequency;
   })
-  //console.log('activityTracker', activityTracker)
+
 
   let pie = [];
 
   if (activityTracker.length > 9) {
     pie = activityTracker.slice(0, 9);
-    //console.log('pie:', pie)
     let sum = activityTracker.slice(9, activityTracker.length).reduce((current, next) => {
-      //console.log('current:', current, 'next:', next.frequency)
       return current + next.frequency;
     }, 0)
 
@@ -134,12 +110,9 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMont
   }
 
   //console.log('pie.length', pie.length)
-  //console.log('pie', pie)
+  console.log('pie', pie)
 
 
-
-
-// if (!entriesLength) return <LoadingIcon />
 
   return !activityTracker.length ? (
     <View style={styles.container}>
@@ -156,10 +129,6 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMont
     <View style={styles.container}>
 
       <VictoryPie
-
-
-
-
         animate
         width={350}
         theme={VictoryTheme.material}
@@ -168,9 +137,6 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMont
 
         // labelComponent={<VictoryTooltip />}
         // renderInPortal={true}
-
-
-
 
         events={[
           {
@@ -188,11 +154,29 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMont
                   },
                   {
                     target: 'labels',
-                    mutation: (props) => ({ datum: props.y})
+
                     // mutation: ({ text }) => {
+                    //   console.log('text', text)
+                    //   console.log(pie)
                     //   return text === 'clicked' ? null : { text: 'clicked' };
-                    // },
-                  },
+                    // mutation: (evt) => alert((`${evt.x}, ${evt.y}`))
+                    mutation: (evt) => {
+
+                        console.log('evt', evt.datum.frequency)
+
+                      return [
+                        {
+
+                          eventKey: "all",
+                          mutation: (props) => {
+                            console.log('props', props)
+                            return props.index === frequency ? null: {style: {fill: "orange"}}
+                          }
+                        }
+                      ]
+                    }
+                    },
+                  // },
 
                 ];
               },
@@ -223,7 +207,7 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day, oneMont
           'pink',
           'tomato',
         ]}
-        x="activity"
+        //x="activity"
         y="frequency"
       />
 
