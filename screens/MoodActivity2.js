@@ -103,7 +103,7 @@ const MoodActivity2 = ({entries}) => {
   const oneMonthAgo = month();
   //console.log('dateDescription:', dateDescription);
 
-  if(!entriesLength ) return <LoadingIcon/>
+  // if(!entriesLength ) return <LoadingIcon/>
 
   return (
 

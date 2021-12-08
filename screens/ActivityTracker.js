@@ -110,7 +110,7 @@ const ActivityTracker = ({ entries }) => {
 
 
 
-if (!entriesLength) return <LoadingIcon />
+// if (!entriesLength) return <LoadingIcon />
 
   return !activityTracker.length ? (
     <View style={styles.container}>
