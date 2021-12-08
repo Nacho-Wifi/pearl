@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+//import MyData2 from './MyData2'
+
+import LoadingIcon from './components/LoadingIcon';
+
 import {
   StyleSheet,
   View,
@@ -33,73 +38,54 @@ import {
 } from 'victory-native';
 import LottieView from 'lottie-react-native';
 
+
 const { width, height } = Dimensions.get('screen');
 
-const MoodChart = () => {
-  const [entries, setEntries] = useState([]);
-  const [day, setDay] = useState(oneWeekAgo);
+const MoodActivity2 = ({entries, mappedEntries, dateDescription, day}) => {
+
+
+  //const navigation = useNavigation();
+
+  //const [moods, setMoods] = useState([]);
+
+  const [entriesLength, setEntriesLength] = useState(0)
+  const [loading, setLoading] = useState(true)
+
+
+
+  //console.log('entries', entries)
 
   useEffect(() => {
-    const getUserEntries = () => {
-      const q = query(
-        collection(db, 'Journals'),
-        where('userId', '==', auth.currentUser.email)
-      );
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const journalEntry = [];
-        querySnapshot.forEach((doc) => {
-          journalEntry.push(doc.data());
-        });
-        setEntries(journalEntry);
-      });
-    };
-    getUserEntries();
-  }, []);
 
-  const changeTimeline = (time) => {
-    if (time === 'week') setDay(oneWeekAgo);
-    else if (time === 'month') setDay(oneMonthAgo);
-  };
+    //setLoading(true);
+    setEntriesLength(entries.length)
+    setLoading(false)
 
-  const mappedEntries = entries.map((entry) => {
-    return {
-      date: new Date(entry.createdAt) || '',
-      scale: entry.mood.scale || 0,
-      mood: entry.mood.name || '',
-      activities: entry.activities || [],
-    };
-  });
+    console.log('entries inside moodactivity', entries.length)
+  }, [entries.length])
 
-  let dateDescription = {};
 
-  const week = () => {
-    let date = new Date();
-    date.setDate(date.getDate() - 7);
-    dateDescription = { weekday: 'short' };
-    return date;
-  };
-  const oneWeekAgo = week();
+  console.log('entries.length outside useEffect', entries.length)
+  console.log('entriesLength outside useEffect', entriesLength)
 
-  const month = () => {
-    let date = new Date();
-    date.setDate(date.getDate() - 30);
-    dateDescription = { month: 'short' };
-    return date;
-  };
 
-  const oneMonthAgo = month();
-  console.log('dateDescription:', dateDescription);
 
-  return entries.length <= 1 ? (
+  //console.log('dateDescription:', dateDescription);
+
+  // if(!entriesLength ) return <LoadingIcon/>
+
+  return (
+
+    entriesLength <= 1 ?
     <View style={styles.container}>
       <LottieView
         style={styles.lottieHistogram}
         source={require('../assets/lottie/histogram.json')}
         autoPlay
       />
-      <Text style={styles.textStyling}>Select a mood, today and tomorrow!</Text>
+      <Text style={styles.textStyling}>Your mood chart will appear here after two days of journaling!</Text>
     </View>
-  ) : (
+   :
     <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
@@ -124,7 +110,7 @@ const MoodChart = () => {
         scale={{ x: 'time' }}
         minDomain={{ x: day }}
         maxDomain={{ y: 5.2 }}
-        height={300}
+        height={400}
       >
         <VictoryAxis
           tickFormat={(date) =>
@@ -142,7 +128,7 @@ const MoodChart = () => {
         />
 
         <VictoryArea
-          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 2 } }}
+          style={{ data: { fill: '#6590c7', stroke: 'pink', strokeWidth: 2 } }}
           data={mappedEntries}
           x="date"
           y="scale"
@@ -152,34 +138,18 @@ const MoodChart = () => {
         />
       </VictoryChart>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.leftButton}
-          onPress={() => {
-            changeTimeline('week');
-          }}
-        >
-          <Text style={{ color: 'white' }}>VIEW WEEK</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.rightButton}
-          onPress={() => {
-            changeTimeline('month');
-          }}
-        >
-          <Text style={{ color: 'white' }}>VIEW MONTH</Text>
-        </TouchableOpacity>
-      </View>
+
     </View>
   );
 };
-export default MoodChart;
+export default MoodActivity2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: 40
   },
   textStyling: {
     display: 'flex',
@@ -193,25 +163,5 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    fontFamily: 'Avenir',
-    fontSize: 14,
-  },
-  rightButton: {
-    borderTopRightRadius: 15,
-    borderBottomRightRadius: 15,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    backgroundColor: 'grey',
-    textAlign: 'center',
-  },
-  leftButton: {
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    backgroundColor: 'darkgrey',
-    textAlign: 'center',
-  },
+
 });

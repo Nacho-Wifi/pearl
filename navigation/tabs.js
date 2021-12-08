@@ -5,7 +5,6 @@ import History from '../screens/History';
 import Resources from '../screens/Resources';
 import UserProfile from '../screens/UserProfile';
 import { MainStackNavigator } from './stacks';
-import MoodChart from '../screens/MoodChart';
 import { Image } from 'react-native';
 import ActivityTracker from '../screens/ActivityTracker';
 import MyData from '../screens/MyData';

@@ -31,8 +31,6 @@ const MainStackNavigator = () => {
         options={{ title: 'My Mood' }}
       />
       <Stack.Screen name="TextEntry" component={TextEntry} />
-      {/* <Stack.Screen name="MoodChart" component={MoodChart} />
-      <Stack.Screen name="ActivityTracker" component={ActivityTracker} /> */}
     </Stack.Navigator>
   );
 };
