@@ -104,7 +104,7 @@ const HomeScreen = () => {
             <Image
               source={require('../assets/icons/logout.png')}
               style={{
-                position: 'absolute',
+                // position: 'absolute',
                 left: 20,
                 marginTop: 20,
                 height: 40,
