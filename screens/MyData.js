@@ -141,6 +141,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     fontFamily: "Avenir",
     fontSize: 14,
+    justifyContent: "center",
+    paddingBottom: 30
   },
   rightButton: {
     borderTopRightRadius: 15,
