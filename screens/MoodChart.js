@@ -151,7 +151,7 @@ const MoodChart = () => {
         scale={{ x: 'time' }}
         minDomain={{ x: day }}
         maxDomain={{ y: 5.2 }}
-        height={300}
+        height={400}
       >
         <VictoryAxis
           tickFormat={(date) =>
@@ -169,7 +169,7 @@ const MoodChart = () => {
         />
 
         <VictoryArea
-          style={{ data: { fill: '#B8DFD8', stroke: 'pink', strokeWidth: 2 } }}
+          style={{ data: { fill: '#6590c7', stroke: 'pink', strokeWidth: 2 } }}
           data={mappedEntries}
           x="date"
           y="scale"
@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: 40
   },
   textStyling: {
     display: 'flex',
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    backgroundColor: 'grey',
+    backgroundColor: '#9a91bd',
     textAlign: 'center',
   },
   leftButton: {
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     paddingVertical: 5,
     paddingHorizontal: 15,
-    backgroundColor: 'darkgrey',
+    backgroundColor: '#3c599b',
     textAlign: 'center',
   },
 });

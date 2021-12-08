@@ -119,8 +119,8 @@ const ActivityTracker = () => {
 
 
 
-
-        width={300}
+        animate
+        width={350}
         theme={VictoryTheme.material}
         data={pie}
         labels = {({datum}) => datum.activity}
@@ -175,11 +175,11 @@ const ActivityTracker = () => {
           '#CAB8F8',
           '#97BFB4',
           '#B8DFD8',
-          'tomato',
           '#B5DEFF',
           '#ca6702',
           '#D0E562',
           'pink',
+          'tomato',
         ]}
         x="activity"
         y="frequency"
