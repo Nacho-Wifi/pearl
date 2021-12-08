@@ -2,8 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { CurrentRenderContext, useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { StyleSheet, View, Dimensions, Text } from 'react-native';
-import { compareAsc, format, isThisISOWeek } from 'date-fns'
+import { compareAsc, format, isThisISOWeek } from 'date-fns';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  Alert,
+  Modal,
+  Pressable
+} from 'react-native';
+
 import {
   doc,
   addDoc,
@@ -34,7 +43,7 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
 
   const [loading, setLoading] = useState(true);
   const [entriesLength, setEntriesLength] = useState(0);
-
+  const [modalVisible, setModalVisible] =useState(false);
 
   useEffect(() => {
     setEntriesLength(entries.length);
@@ -42,6 +51,7 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
   }, [entries.length])
 
   const activityHash = {};
+  const activityLookup = {};
 
   entries.sort((a, b) => {
     return new Date(b.createdAt) -new Date(a.createdAt)
@@ -54,13 +64,14 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
   //console.log('day.getDate()', day.toDateString())
 
 
-  console.log('oneMonthAgo', oneMonthAgo)
+  //console.log('oneMonthAgo', oneMonthAgo)
   entries.forEach((entry) => {
 
-    console.log('created at:', entry.createdAt)
+    //console.log('created at:', entry.createdAt)
 
     //console.log('day:', day.toDateString())
-    console.log('chosenDay', chosenDay)
+    //console.log('chosenDay', chosenDay)
+    //console.log('entry:', entry.activities)
 
 
   })
@@ -68,7 +79,10 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
   let timeline = entries.filter(entry => entry.createdAt.toString() >= chosenDay)
 
   timeline.forEach(t => console.log('t', t.createdAt))
+
+  //console.log('timeline', timeline)
   //entries.forEach(e => console.log('e', e.createdAt))
+
 
   timeline
     .map((entry) => entry.activities)
@@ -80,6 +94,16 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
             activityHash[activity.image] + 1 || 1);
     });
 
+    timeline
+    .map((entry) => entry.activities)
+    .flat()
+    .forEach((activity) => {
+      activity === undefined
+        ? null
+        : activityLookup[activity.image] = activity.activityName;
+    })
+
+    console.log('activityLookup', activityLookup)
   // pull out emoticons and frequency of activity associated with that emoticon
   const activityTracker = [];
   for (let [key, val] of Object.entries(activityHash)) {
@@ -105,14 +129,15 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
 
     //console.log(sum);
     pie.push({activity: '🐚', frequency: sum})
+    activityHash['🐚']= sum;
   } else {
     pie = activityTracker.slice();
   }
 
+    activityLookup['🐚'] = 'Other'
+
   //console.log('pie.length', pie.length)
-  console.log('pie', pie)
-
-
+  //console.log('pie', pie)
 
   return !activityTracker.length ? (
     <View style={styles.container}>
@@ -134,10 +159,6 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
         theme={VictoryTheme.material}
         data={pie}
         labels = {({datum}) => datum.activity}
-
-        // labelComponent={<VictoryTooltip />}
-        // renderInPortal={true}
-
         events={[
           {
             target: 'data',
@@ -156,24 +177,35 @@ const ActivityTracker = ({ entries, day, oneMonthAgo}) => {
                     target: 'labels',
 
                     // mutation: ({ text }) => {
-                    //   console.log('text', text)
-                    //   console.log(pie)
+                    //   console.log('text.datum', text)
+                    //   //console.log(pie)
                     //   return text === 'clicked' ? null : { text: 'clicked' };
                     // mutation: (evt) => alert((`${evt.x}, ${evt.y}`))
-                    mutation: (evt) => {
+                    mutation: ({text}) => {
 
-                        console.log('evt', evt.datum.frequency)
+                        console.log('text:', text)
+                        const description= `${activityLookup[text]} (${activityHash[text]})`;
 
-                      return [
-                        {
+                        //const description = activityHash[text]
 
-                          eventKey: "all",
-                          mutation: (props) => {
-                            console.log('props', props)
-                            return props.index === frequency ? null: {style: {fill: "orange"}}
-                          }
-                        }
-                      ]
+                        console.log('description:', description)
+                        // return text === description ? null : {text: description}
+
+                      return description === text ? null : {description: text, text: description}
+
+                        //console.log(text)
+
+
+                      // return [
+                      //   {
+
+                      //     eventKey: "all",
+                      //     mutation: (props) => {
+                      //       console.log('props', props)
+                      //       return props.index === frequency ? null: {style: {fill: "orange"}}
+                      //     }
+                      //   }
+                      // ]
                     }
                     },
                   // },
