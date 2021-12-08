@@ -26,6 +26,7 @@ import {
 } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { set } from 'react-native-reanimated';
+import About from './About'
 
 const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
@@ -126,6 +127,7 @@ const HomeScreen = () => {
               How are you feeling today, {auth.currentUser.displayName}?
             </Text>
           )}
+
           <>
             {!journalEntries ? (
               <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
@@ -136,7 +138,9 @@ const HomeScreen = () => {
                 <Text style={styles.buttonText}>Edit Journal</Text>
               </TouchableOpacity>
             )}
+            <About />
           </>
+
           {/* <TouchableOpacity style={styles.button} onPress={handleSignOut}>
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity> */}
