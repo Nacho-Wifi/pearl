@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Modal,
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
@@ -53,7 +54,7 @@ const JournalEntry = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [savedPhoto, setSavedPhoto] = useState('');
   const [savedText, setSavedText] = useState('');
-  const [savingJournal, setSavingJournal] = useState(true);
+  const [savingJournal, setSavingJournal] = useState(false);
 
   // Collections
   const moodsCollectionRef = collection(db, 'Moods');
@@ -161,6 +162,7 @@ const JournalEntry = ({ route }) => {
         userId: auth.currentUser.email,
       });
     }
+    setSavingJournal(false);
     navigation.replace('HomeScreen');
   };
 
@@ -199,7 +201,7 @@ const JournalEntry = ({ route }) => {
             style={styles.entryButton}
             onPress={handleOptionalEntry}
           >
-            <Image source={require('../assets/icons/editicon.png')} />
+            <Image source={require('../assets/icons/addEntry.png')} />
             <Text style={styles.entryButtonText}>Add Entry</Text>
           </TouchableOpacity>
         ) : (
@@ -239,14 +241,14 @@ const JournalEntry = ({ route }) => {
           <Image source={require('../assets/icons/floppydisk.png')} />
           <Text style={styles.entryButtonText}>Save Entry</Text>
         </TouchableOpacity>
-        {/* {savingJournal && (
-          // <LottieView
-          //   style={styles.lottieUploading}
-          //   source={require('../assets/lottie/uploading.json')}
-          //   resizeMode="cover"
-          //   autoPlay
-          // />
-        )} */}
+        {savingJournal && (
+          <Modal animationType="slide" visible={savingJournal}>
+            <LottieView
+              source={require('../assets/lottie/uploading.json')}
+              autoPlay
+            />
+          </Modal>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -331,12 +333,23 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     borderRadius: 10,
   },
-  // lottieUploading: {
-  //   position: 'absolute',
-  //   alignItems: 'center',
-  //   height: 500,
-  //   backgroundColor: 'white',
-  // },
+  lottieUploading: {
+    // position: 'absolute',
+    // alignSelf: 'center',
+    // justifyContent: 'center',
+    // height: '100%',
+    // backgroundColor: 'white',
+    // borderWidth: 5,
+  },
+  lottieContainer: {
+    // position: 'absolute',
+    // alignSelf: 'flex-start',
+    // justifyContent: 'flex-start',
+    // height: '70%',
+    // width: '70%',
+    // backgroundColor: 'white',
+    // borderWidth: 5,
+  },
   // buttonText: {
   //   color: 'white',
   //   fontWeight: '700',

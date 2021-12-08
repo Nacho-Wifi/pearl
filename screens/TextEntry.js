@@ -99,13 +99,6 @@ const TextEntry = ({ route }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <TextInput
-                  multiline={true}
-                  style={styles.input}
-                  onChangeText={(words) => setInput(words)}
-                  value={input}
-                  placeholder="Tell me more..."
-                />
               </>
             ) : (
               <>
@@ -124,18 +117,17 @@ const TextEntry = ({ route }) => {
                     style={styles.displayImage}
                   />
                 </View>
-                <View style={styles.inner}>
-                  <TextInput
-                    multiline={true}
-                    style={styles.input}
-                    onChangeText={(words) => setInput(words)}
-                    value={input}
-                    placeholder="Tell me more..."
-                  />
-                </View>
               </>
             )}
-
+            <View style={styles.inputContainer}>
+              <TextInput
+                multiline={true}
+                style={styles.input}
+                onChangeText={(words) => setInput(words)}
+                value={input}
+                placeholder="Tell me more..."
+              />
+            </View>
             <View style={styles.btnContainer}>
               {/* only display alert for delete if there is something to delete */}
 
@@ -173,15 +165,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inner: {
-    padding: 24,
+    padding: 20,
   },
   addBtnContainer: {
-    alignItems: 'center',
-    marginTop: 40,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height: '45%',
+    width: '70%',
   },
   addBtn: {
-    width: 300,
-    height: 350,
+    width: '100%',
+    height: '100%',
     borderRadius: 20,
     borderWidth: 2,
     borderColor: 'gray',
@@ -191,7 +185,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   input: {
-    height: 120,
+    position: 'relative',
+    height: '100%',
     margin: 5,
     borderWidth: 2,
     padding: 10,
@@ -199,12 +194,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     fontSize: 17,
   },
+  inputContainer: {
+    height: '20%',
+    margin: '2%',
+  },
   displayImage: {
-    width: 300,
-    height: 350,
+    width: '100%',
+    height: '100%',
     borderRadius: 20,
   },
-  imgContainer: { alignItems: 'center' },
+  imgContainer: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height: '40%',
+    width: '70%',
+  },
   btnContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
