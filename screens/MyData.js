@@ -32,8 +32,6 @@ const MyData = () => {
   const [day, setDay] = useState(oneWeekAgo);
   const [entriesLength, setEntriesLength] = useState(null);
 
-  //const navigation = useNavigation();
-
   useEffect(() => {
     const getUserEntries = () => {
       //setLoading(true);
@@ -96,7 +94,6 @@ const MyData = () => {
         day={day}
         oneMonthAgo={oneMonthAgo}
       />
-      {/* <Text style={styles.title}>Your Moods</Text> */}
       <MoodChart
         entries={entries}
         mappedEntries={mappedEntries}
@@ -135,39 +132,40 @@ export default MyData;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#d1eaf2",
     alignContent: "center",
-    paddingTop: 30
-    //justifyContent: 'center'
+    paddingTop: "10%",
   },
   buttonContainer: {
     flexDirection: "row",
     fontFamily: "Avenir",
     fontSize: 14,
     justifyContent: "center",
-    paddingBottom: 30
+    paddingBottom: "5%",
+    paddingTop: "7%",
   },
   rightButton: {
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: "2%",
+    paddingRight: "3%",
+    paddingLeft: "2%",
     backgroundColor: "#9a91bd",
     textAlign: "center",
   },
   leftButton: {
     borderTopLeftRadius: 15,
     borderBottomLeftRadius: 15,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
+    paddingVertical: "2%",
+    paddingRight: "2%",
+    paddingLeft: "3%",
     backgroundColor: "#3c599b",
     textAlign: "center",
   },
   title: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 24,
-    paddingTop: 20,
-    paddingBottom: 20,
-    color: "#3c599b"
-  }
+    paddingTop: "5%",
+    paddingBottom: "10%",
+    color: "#3c599b",
+  },
 });
