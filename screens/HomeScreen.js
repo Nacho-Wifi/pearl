@@ -26,6 +26,7 @@ import {
 } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { set } from 'react-native-reanimated';
+import About from './About'
 
 const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
@@ -93,13 +94,14 @@ const HomeScreen = () => {
 
   if (!loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <LottieView
           style={styles.lottieOcean}
           resizeMode="cover"
           source={require('../assets/lottie/ocean.json')}
           autoPlay
         >
+<<<<<<< HEAD
           <Pressable onPress={handleSignOut}>
             <Image
               source={require('../assets/icons/logout.png')}
@@ -111,6 +113,19 @@ const HomeScreen = () => {
                 width: 40,
               }}
             />
+=======
+          <Pressable
+            onPress={handleSignOut}
+            style={{
+              position: 'absolute',
+              marginTop: 40,
+              marginLeft: 20,
+              height: 40,
+              width: 40,
+            }}
+          >
+            <Image source={require('../assets/icons/logout.png')} />
+>>>>>>> 0cc0ab5a16cf28eab08c4070e096ab95a9e9dc53
           </Pressable>
           <LottieView
             source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}
@@ -126,6 +141,7 @@ const HomeScreen = () => {
               How are you feeling today, {auth.currentUser.displayName}?
             </Text>
           )}
+
           <>
             {!journalEntries ? (
               <TouchableOpacity style={styles.button} onPress={makeNewEntry}>
@@ -136,12 +152,14 @@ const HomeScreen = () => {
                 <Text style={styles.buttonText}>Edit Journal</Text>
               </TouchableOpacity>
             )}
+            <About />
           </>
+
           {/* <TouchableOpacity style={styles.button} onPress={handleSignOut}>
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity> */}
         </LottieView>
-      </SafeAreaView>
+      </View>
     );
   } else {
     return <View></View>;
@@ -173,14 +191,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   helloText: {
-    marginTop: 50,
+    marginTop: 40,
     color: 'white',
     fontSize: 30,
     alignSelf: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: 5,
   },
   lottiePearl: {
     marginTop: 50,
-    marginLeft: 10,
+    alignSelf: 'center',
     width: 300,
     height: 300,
   },
