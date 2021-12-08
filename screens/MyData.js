@@ -3,7 +3,9 @@ import { StyleSheet, View } from 'react-native';
 
 import MoodChart from './MoodChart';
 import ActivityTracker from './ActivityTracker';
+import MoodActivity2 from './MoodActivity2'
 import { color } from 'react-native-reanimated';
+import MyData2 from './MyData2'
 
 const MyData = () => {
 
@@ -12,7 +14,7 @@ const MyData = () => {
   return (
     <View style={[styles.container, { flexDirection: 'column' }]}>
       <ActivityTracker />
-      <MoodChart />
+      <MyData2 />
     </View>
   );
 };

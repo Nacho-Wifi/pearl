@@ -82,7 +82,7 @@ const ActivityTracker = () => {
     pie = activityTracker.slice(0, 9);
     //console.log('pie:', pie)
     let sum = activityTracker.slice(9, activityTracker.length).reduce((current, next) => {
-      console.log('current:', current, 'next:', next.frequency)
+      //console.log('current:', current, 'next:', next.frequency)
       return current + next.frequency;
     }, 0)
 
@@ -92,8 +92,8 @@ const ActivityTracker = () => {
     pie = activityTracker.slice();
   }
 
-  console.log('pie.length', pie.length)
-  console.log('pie', pie)
+  //console.log('pie.length', pie.length)
+  //console.log('pie', pie)
 
 
 
@@ -152,6 +152,7 @@ const ActivityTracker = () => {
                     //   return text === 'clicked' ? null : { text: 'clicked' };
                     // },
                   },
+
                 ];
               },
             },
