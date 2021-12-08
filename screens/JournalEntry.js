@@ -28,6 +28,7 @@ import {
 } from 'firebase/storage';
 import uuid from 'react-native-uuid';
 import LottieView from 'lottie-react-native';
+import { SafeAreaView } from 'react-navigation';
 
 // import checkIfOk from '../trendCheck';
 
@@ -169,69 +170,82 @@ const JournalEntry = ({ route }) => {
   }
 
   return (
-    <View style={styles.container}>
-      {moods.map((mood) => {
-        return (
-          <TouchableOpacity
-            key={mood.id}
-            style={
-              selectedMood.id === mood.id
-                ? styles.selectedButton
-                : styles.button
-            }
-            onPress={() => {
-              setSelectedMood(mood);
-            }}
-          >
-            <Text>{emojiMapping[mood.imageUrl]}</Text>
-          </TouchableOpacity>
-        );
-      })}
-
-      {!textEntry ? (
-        <TouchableOpacity style={styles.button} onPress={handleOptionalEntry}>
-          <Text>Add Text Entry</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.button} onPress={handleOptionalEntry}>
-          <Text>Edit Text Entry</Text>
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          if (!Object.keys(selectedMood).length) {
-            Alert.alert(
-              'No mood selected',
-              'You must select a mood to continue',
-              [{ text: 'OK', style: 'cancel', onPress: () => {} }]
-            );
-          } else {
-            if (photoURI) {
-              if (photoURI.substring(0, 5) === 'https') {
-                //if photo has https, it has already been saved from last journal entry
-                setJournal(selectedMood);
-              } else {
-                //will call setJournal in savePhoto after getting downloadURL
-                setSavingJournal(true);
-                savePhoto(selectedMood);
+    <SafeAreaView>
+      <Text style={styles.header}>Mood</Text>
+      <Text style={styles.instructions}>
+        Select the mood that most closely matches how you're feeling today:
+      </Text>
+      <View style={styles.container}>
+        {moods.map((mood) => {
+          return (
+            <TouchableOpacity
+              key={mood.id}
+              style={
+                selectedMood.id === mood.id
+                  ? styles.selectedButton
+                  : styles.button
               }
+              onPress={() => {
+                setSelectedMood(mood);
+              }}
+            >
+              <Text style={styles.emoji}>{emojiMapping[mood.imageUrl]}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+      <View style={styles.saveAndEditContainer}>
+        {!textEntry ? (
+          <TouchableOpacity
+            style={styles.entryButton}
+            onPress={handleOptionalEntry}
+          >
+            <Image source={require('../assets/icons/editicon.png')} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.entryButton}
+            onPress={handleOptionalEntry}
+          >
+            <Image source={require('../assets/icons/editicon.png')} />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => {
+            if (!Object.keys(selectedMood).length) {
+              Alert.alert(
+                'No mood selected',
+                'You must select a mood to continue',
+                [{ text: 'OK', style: 'cancel', onPress: () => {} }]
+              );
             } else {
-              setJournal(selectedMood);
+              if (photoURI) {
+                if (photoURI.substring(0, 5) === 'https') {
+                  //if photo has https, it has already been saved from last journal entry
+                  setJournal(selectedMood);
+                } else {
+                  //will call setJournal in savePhoto after getting downloadURL
+                  setSavingJournal(true);
+                  savePhoto(selectedMood);
+                }
+              } else {
+                setJournal(selectedMood);
+              }
             }
-          }
-        }}
-      >
-        <Text>Save Journal</Text>
-      </TouchableOpacity>
-      {savingJournal && (
-        <LottieView
-          style={styles.lottieUploading}
-          source={require('../assets/lottie/uploading.json')}
-          autoPlay
-        />
-      )}
-    </View>
+          }}
+        >
+          <Image source={require('../assets/icons/floppydisk.png')} />
+        </TouchableOpacity>
+        {savingJournal && (
+          <LottieView
+            style={styles.lottieUploading}
+            source={require('../assets/lottie/uploading.json')}
+            autoPlay
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -239,10 +253,33 @@ export default JournalEntry;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginBottom: 60,
   },
+  header: {
+    fontSize: 40,
+    textAlign: 'center',
+    padding: 10,
+    marginTop: 50,
+  },
+  instructions: {
+    textAlign: 'center',
+    fontSize: 20,
+    marginTop: 10,
+    marginBottom: 40,
+  },
+  saveAndEditContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  // saveButton: {
+  //   alignItems: 'left',
+  // },
   // button: {
   //   backgroundColor: '#BDD8F1',
   //   width: '24%',
@@ -253,18 +290,35 @@ const styles = StyleSheet.create({
   //   alignItems: 'center',
   // },
   button: {
-    backgroundColor: '#BDD8F1',
-    width: '60%',
-    padding: 15,
-    margin: 16,
+    flexBasis: '20%',
+    // width: '60%',
+    // padding: 15,
+    // margin: 16,
     alignItems: 'center',
     borderRadius: 10,
   },
+  entryButton: {
+    // flexBasis: '20%',
+    // width: '60%',
+    // padding: 15,
+    // margin: 16,
+    alignItems: 'flex-end',
+    padding: 10,
+    borderRadius: 10,
+  },
+  saveButton: {
+    alignItems: 'flex-start',
+    padding: 10,
+  },
+  emoji: {
+    fontSize: 50,
+  },
   selectedButton: {
-    backgroundColor: '#7bb6ed', // Temporary!
-    width: '60%',
-    margin: 16,
-    padding: 15,
+    backgroundColor: '#FBD1B7', // Temporary!
+    // width: '60%',
+    // margin: 16,
+    flexBasis: '20%',
+    // padding: 15,
     alignItems: 'center',
     // borderColor: '#BDD8F1',
     // borderWidth: 2,
