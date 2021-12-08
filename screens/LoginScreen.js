@@ -28,12 +28,15 @@ const LoginScreen = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View>
+      <View style={styles.logoContainer}>
         <LottieView
           style={styles.lottieMindful}
           source={require('../assets/lottie/mindfulness.json')}
           autoPlay
         />
+      </View>
+      <View>
+        <Text>P E A R L</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -84,12 +87,30 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '80%',
   },
+  logoContainer: {
+    borderWidth: 0.5,
+    borderRadius: 100,
+    borderColor: '#F9ECEC',
+    shadowColor: '#F9ECEC',
+    shadowOpacity: 1,
+    elevation: 6,
+    shadowRadius: 12,
+    shadowOffset: { width: 1, height: 6 },
+  },
   input: {
     backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0.5,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   buttonContainer: {
     width: '60%',

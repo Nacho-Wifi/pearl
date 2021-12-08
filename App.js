@@ -11,6 +11,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignUp from './screens/SignUp';
 import { registerRootComponent } from 'expo';
 import Tabs from './navigation/tabs';
+import LoadingIcon from './screens/components/LoadingIcon';
 
 //auth
 import { auth } from './firebase';
@@ -48,7 +49,7 @@ export default function App() {
   if (!loaded) {
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text>Loading...</Text>
+        <LoadingIcon />
       </View>
     );
   }

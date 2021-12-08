@@ -26,7 +26,7 @@ import {
 } from 'firebase/firestore';
 import { StatusBar } from 'expo-status-bar';
 import { set } from 'react-native-reanimated';
-import About from './About'
+import About from './About';
 
 const HomeScreen = () => {
   const [journalEntries, setEntries] = useState();
@@ -101,17 +101,17 @@ const HomeScreen = () => {
           source={require('../assets/lottie/ocean.json')}
           autoPlay
         >
-          <Pressable
-            onPress={handleSignOut}
-            style={{
-              position: 'absolute',
-              marginTop: 40,
-              marginLeft: 20,
-              height: 40,
-              width: 40,
-            }}
-          >
-            <Image source={require('../assets/icons/logout.png')} />
+          <Pressable onPress={handleSignOut}>
+            <Image
+              source={require('../assets/icons/logout.png')}
+              style={{
+                // position: 'absolute',
+                left: 20,
+                marginTop: 35,
+                height: 30,
+                width: 30,
+              }}
+            />
           </Pressable>
           <LottieView
             source={require('../assets/lottie/21254-clamshell-opening-with-pearl/data.json')}

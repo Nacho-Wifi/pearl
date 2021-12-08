@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { auth, db } from '../firebase';
-import { createUserWithEmailAndPassword, updateProfile, getAuth } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getAuth,
+} from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import {
   StyleSheet,
@@ -26,7 +30,7 @@ const SignUp = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         updateProfile(auth.currentUser, {
-          displayName: firstName
+          displayName: firstName,
         });
         console.log('Registered: ', user);
         const data = {
@@ -46,6 +50,9 @@ const SignUp = () => {
           source={require('../assets/lottie/mindfulness.json')}
           autoPlay
         />
+      </View>
+      <View>
+        <Text>P E A R L</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -78,9 +85,9 @@ const SignUp = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => handleSignUp(email, password, firstName, lastName)}
-          style={[styles.button, styles.buttonOutline]}
+          style={styles.button}
         >
-          <Text style={styles.buttonOutlineText}>Register</Text>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
         <Text>
           Already have an account? Log in{' '}
@@ -114,6 +121,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0.5,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   buttonContainer: {
     width: '60%',
@@ -122,7 +137,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: '#FBD1B7',
     width: '100%',
     padding: 15,
     borderRadius: 10,
@@ -133,13 +148,8 @@ const styles = StyleSheet.create({
     borderColor: '#FBD1B7',
     borderWidth: 2,
   },
-  // buttonText: {
-  //   color: 'white',
-  //   fontWeight: '700',
-  //   fontSize: 16,
-  // },
-  buttonOutlineText: {
-    color: '#FBD1B7',
+  buttonText: {
+    color: 'white',
     fontWeight: '700',
     fontSize: 16,
     textAlign: 'center',
