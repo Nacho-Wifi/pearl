@@ -24,9 +24,10 @@ const AddActivity = ({ setModalVisible, modalVisible }) => {
   const handleAddActivity = async (activityName) => {
     await addDoc(activitiesCollectionRef, {
       activityName,
-      imageUrl: '🏄',
+      imageUrl: icon || '🏄',
       userId: auth.currentUser.email,
     });
+    setModalVisible(false);
   };
   return (
     <View style={styles.centeredView}>
@@ -66,10 +67,12 @@ const AddActivity = ({ setModalVisible, modalVisible }) => {
               <Text style={styles.textStyle}>Add</Text>
             </Pressable>
 
-            {!!icon && (
+            {icon ? (
               <Text style={styles.icontextStyle}>
                 Your selected Icon is : {icon}
               </Text>
+            ) : (
+              <Text style={styles.icontextStyle}>Please Select an Emoji</Text>
             )}
 
             <EmojiSelector
