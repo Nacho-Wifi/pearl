@@ -3,6 +3,7 @@ import { CurrentRenderContext, useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { StyleSheet, View, Dimensions, Text } from 'react-native';
+import { compareAsc, format } from 'date-fns'
 import {
   doc,
   addDoc,
@@ -70,7 +71,8 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day }) => {
 
 
 
-  day ? day.toDateString() : "Tue Nov 23 2000"
+  let chosenDay=''
+  day ? chosenDay = day.toDateString() : chosenDay = "Tue Nov 23 2000"
   //console.log('day.getDate()', day.toDateString())
 
 
@@ -78,17 +80,18 @@ const ActivityTracker = ({ entries, mappedEntries, dateDescription, day }) => {
 
     console.log('created at:', entry.createdAt)
 
-    console.log('day:', day)
+    //console.log('day:', day.toDateString())
+    console.log('chosenDay', chosenDay)
 
 
   })
 
-  let timeline = entries.filter(entry => entry.createdAt >= day)
+  let timeline = entries.filter(entry => entry.createdAt >= chosenDay)
 
   timeline.forEach(t => console.log('t', t.createdAt))
   //entries.forEach(e => console.log('e', e.createdAt))
 
-  entries
+  timeline
     .map((entry) => entry.activities)
     .flat()
     .forEach((activity) => {
