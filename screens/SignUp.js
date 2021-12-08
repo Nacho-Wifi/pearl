@@ -51,6 +51,9 @@ const SignUp = () => {
           autoPlay
         />
       </View>
+      <View>
+        <Text>P E A R L</Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"

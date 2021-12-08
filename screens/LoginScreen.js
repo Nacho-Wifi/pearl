@@ -35,7 +35,7 @@ const LoginScreen = () => {
           autoPlay
         />
       </View>
-      <View styles={styles.logoFont}>
+      <View>
         <Text>P E A R L</Text>
       </View>
       <View style={styles.inputContainer}>
@@ -96,9 +96,6 @@ const styles = StyleSheet.create({
     elevation: 6,
     shadowRadius: 12,
     shadowOffset: { width: 1, height: 6 },
-  },
-  logoFont: {
-    fontSize: 50,
   },
   input: {
     backgroundColor: 'white',
