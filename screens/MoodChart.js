@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { auth, db } from '../firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
-//import MyData2 from './MyData2'
-
 import LoadingIcon from './components/LoadingIcon';
 
 import {
@@ -40,30 +37,14 @@ import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get('screen');
 
-const MoodActivity2 = ({ entries, mappedEntries, dateDescription, day }) => {
-  //const navigation = useNavigation();
-
-  //const [moods, setMoods] = useState([]);
-
+const MoodChart = ({ entries, mappedEntries, dateDescription, day }) => {
   const [entriesLength, setEntriesLength] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  //console.log('entries', entries)
-
   useEffect(() => {
-    //setLoading(true);
     setEntriesLength(entries.length);
     setLoading(false);
-
-    console.log('entries inside moodactivity', entries.length);
   }, [entries.length]);
-
-  console.log('entries.length outside useEffect', entries.length);
-  console.log('entriesLength outside useEffect', entriesLength);
-
-  //console.log('dateDescription:', dateDescription);
-
-  // if(!entriesLength ) return <LoadingIcon/>
 
   return entriesLength <= 1 ? (
     <View style={styles.container}>
@@ -87,7 +68,6 @@ const MoodActivity2 = ({ entries, mappedEntries, dateDescription, day }) => {
             labelComponent={
               <VictoryTooltip
                 style={{ fontSize: 30 }}
-                // cornerRadius={16}
                 pointerLength={0}
                 constrainToVisibleArea
                 flyoutStyle={{
@@ -101,7 +81,7 @@ const MoodActivity2 = ({ entries, mappedEntries, dateDescription, day }) => {
         scale={{ x: 'time' }}
         minDomain={{ x: day }}
         maxDomain={{ y: 5.2 }}
-        height={400}
+        height={250}
       >
         <VictoryAxis
           tickFormat={(date) =>
@@ -131,14 +111,15 @@ const MoodActivity2 = ({ entries, mappedEntries, dateDescription, day }) => {
     </View>
   );
 };
-export default MoodActivity2;
+export default MoodChart;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 40,
+    paddingBottom: '6%',
+    paddingTop: '10%',
   },
   textStyling: {
     display: 'flex',
@@ -149,7 +130,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   lottieHistogram: {
-    width: 150,
-    height: 150,
+    width: '70%',
   },
 });

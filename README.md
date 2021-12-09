@@ -21,4 +21,3 @@ TODO: About
     expo start
     ```
 
-
