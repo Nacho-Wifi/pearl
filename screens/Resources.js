@@ -21,6 +21,7 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import { GOOGLE_PLACES_API } from '@env';
+import checkIfOk from './components/ConcernTracker';
 
 const makeCall = (num) => {
   Linking.openURL(`tel:${num}`);
@@ -112,7 +113,12 @@ const Map = () => {
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           followsUserLocation={true}
-          initialRegion={mapRegion}
+          initialRegion={{
+            latitude: 40.7128,
+            longitude: 74.006,
+            latitudeDelta: 0.0421,
+            longitudeDelta: 0.0922,
+          }}
         ></MapView>
         <Text style={styles.hotlineNumbers}>
           National Suicide Prevention Lifeline:
@@ -223,11 +229,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    marginTop: 20,
+    marginTop: '5%',
     width: '95%',
-    height: 450,
+    height: '100%',
     marginBottom: 0,
-    borderRadius: 60,
+    borderRadius: 40,
   },
   header: {
     fontSize: 40,
