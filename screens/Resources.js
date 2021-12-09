@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import { GOOGLE_PLACES_API } from '@env';
-import Test from '../screens/components/ConcernTracker';
+import checkIfOk from './components/ConcernTracker';
 
 const makeCall = (num) => {
   Linking.openURL(`tel:${num}`);
@@ -104,7 +104,6 @@ const Map = () => {
     text = errorMsg;
     return (
       <SafeAreaView style={styles.container}>
-        {/* <Test /> */}
         <Text style={styles.header}>Resources</Text>
         <Text style={{ textAlign: 'center' }}>
           Allow location to find local resources:
@@ -137,7 +136,6 @@ const Map = () => {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-          {/* <Test /> */}
           <Text style={styles.header}>Resources</Text>
           <Text style={{ textAlign: 'center', fontSize: 20 }}>
             Search for soothing places near you:
