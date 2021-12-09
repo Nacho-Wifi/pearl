@@ -30,7 +30,7 @@ import {
 import uuid from 'react-native-uuid';
 import LottieView from 'lottie-react-native';
 import { SafeAreaView } from 'react-navigation';
-// import checkIfOk from '../trendCheck';
+import checkIfOk from './components/ConcernTracker';
 
 const JournalEntry = ({ route }) => {
   const emojiMapping = {
@@ -162,6 +162,7 @@ const JournalEntry = ({ route }) => {
         userId: auth.currentUser.email,
       });
     }
+    checkIfOk();
     setSavingJournal(false);
     navigation.replace('HomeScreen');
   };

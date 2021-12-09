@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/core";
-import { auth, db } from "../firebase";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import LoadingIcon from "./components/LoadingIcon";
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/core';
+import { auth, db } from '../firebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import LoadingIcon from './components/LoadingIcon';
 
 import {
   StyleSheet,
@@ -13,7 +13,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Button,
-} from "react-native";
+} from 'react-native';
 import {
   doc,
   addDoc,
@@ -23,7 +23,7 @@ import {
   where,
   query,
   onSnapshot,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 import {
   VictoryChart,
   VictoryTheme,
@@ -32,10 +32,10 @@ import {
   VictoryAxis,
   VictoryVoronoiContainer,
   VictoryTooltip,
-} from "victory-native";
-import LottieView from "lottie-react-native";
+} from 'victory-native';
+import LottieView from 'lottie-react-native';
 
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get('screen');
 
 const MoodChart = ({ entries, mappedEntries, dateDescription, day }) => {
   const [entriesLength, setEntriesLength] = useState(0);
@@ -50,7 +50,7 @@ const MoodChart = ({ entries, mappedEntries, dateDescription, day }) => {
     <View style={styles.container}>
       <LottieView
         style={styles.lottieHistogram}
-        source={require("../assets/lottie/histogram.json")}
+        source={require('../assets/lottie/histogram.json')}
         autoPlay
       />
       <Text style={styles.textStyling}>
@@ -71,35 +71,35 @@ const MoodChart = ({ entries, mappedEntries, dateDescription, day }) => {
                 pointerLength={0}
                 constrainToVisibleArea
                 flyoutStyle={{
-                  fill: "none",
-                  stroke: "none",
+                  fill: 'none',
+                  stroke: 'none',
                 }}
               />
             }
           />
         }
-        scale={{ x: "time" }}
+        scale={{ x: 'time' }}
         minDomain={{ x: day }}
         maxDomain={{ y: 5.2 }}
         height={250}
       >
         <VictoryAxis
           tickFormat={(date) =>
-            date.toLocaleString("en-us", { day: "numeric" }) +
-            "\n" +
-            date.toLocaleString("en-us", dateDescription)
+            date.toLocaleString('en-us', { day: 'numeric' }) +
+            '\n' +
+            date.toLocaleString('en-us', dateDescription)
           }
           fixLabelOverlap={true}
         />
         <VictoryAxis
           dependentAxis
           domain={[0, 5]}
-          tickValues={["😢", "😔", "😐", "😌", "😁"]}
+          tickValues={['😢', '😔', '😐', '😌', '😁']}
           tickFormat={(t) => t}
         />
 
         <VictoryArea
-          style={{ data: { fill: "#6590c7", stroke: "pink", strokeWidth: 2 } }}
+          style={{ data: { fill: '#6590c7', stroke: 'pink', strokeWidth: 2 } }}
           data={mappedEntries}
           x="date"
           y="scale"
@@ -116,20 +116,20 @@ export default MoodChart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: "6%",
-    paddingTop: "10%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: '6%',
+    paddingTop: '10%',
   },
   textStyling: {
-    display: "flex",
-    color: "#b5179e",
-    alignContent: "center",
-    textAlign: "center",
-    fontFamily: "Avenir",
+    display: 'flex',
+    color: '#b5179e',
+    alignContent: 'center',
+    textAlign: 'center',
+    fontFamily: 'Avenir',
     fontSize: 16,
   },
   lottieHistogram: {
-    width: "70%",
+    width: '70%',
   },
 });
