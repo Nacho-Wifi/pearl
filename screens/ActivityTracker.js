@@ -39,6 +39,7 @@ import LoadingIcon from "./components/LoadingIcon";
 const { width, height } = Dimensions.get("screen");
 
 const ActivityTracker = ({ entries, day, oneMonthAgo }) => {
+
   const [loading, setLoading] = useState(true);
   const [entriesLength, setEntriesLength] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,7 +62,7 @@ const ActivityTracker = ({ entries, day, oneMonthAgo }) => {
     : (chosenDay = oneMonthAgo.toDateString());
 
   let timeline = entries.filter(
-    (entry) => entry.createdAt.toString() >= chosenDay
+    (entry) => new Date(entry.createdAt).getTime() >= new Date(chosenDay).getTime()
   );
 
   timeline
@@ -96,21 +97,21 @@ const ActivityTracker = ({ entries, day, oneMonthAgo }) => {
   });
 
   let pie = [];
-  if (activityTracker.length > 9) {
-    pie = activityTracker.slice(0, 9);
-    let sum = activityTracker
-      .slice(9, activityTracker.length)
-      .reduce((current, next) => {
-        return current + next.frequency;
-      }, 0);
+  if (activityTracker.length > 10) {
+    pie = activityTracker.slice(0, 10);
+    // let sum = activityTracker
+    //   .slice(9, activityTracker.length)
+    //   .reduce((current, next) => {
+    //     return current + next.frequency;
+    //   }, 0);
 
-    pie.push({ activity: "🐚", frequency: sum });
-    activityHash["🐚"] = sum;
+    // pie.push({ activity: "🐚", frequency: sum });
+    // activityHash["🐚"] = sum;
   } else {
     pie = activityTracker.slice();
   }
 
-  activityLookup["🐚"] = "Other";
+  // activityLookup["🐚"] = "Other";
 
   return !activityTracker.length ? (
     <View style={styles.container}>

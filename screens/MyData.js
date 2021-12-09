@@ -111,6 +111,8 @@ const MyData = () => {
           >
             <Text style={{ color: "white" }}>VIEW WEEK</Text>
           </TouchableOpacity>
+
+
           <TouchableOpacity
             style={styles.rightButton}
             onPress={() => {
