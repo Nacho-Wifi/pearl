@@ -89,10 +89,8 @@ export async function learnConcern(numArr) {
 
   await model.fit(moods, concernLevel, { epochs: 500 });
 
-  // let concerned = model.predict(tf.tensor2d([numArr], [1, 7]));
   let concerned = model.predict(tf.tensor2d([numArr], [1, 7]));
   let binaryConcerned = await concerned.data();
-  console.log('ARE WE HERE ????', binaryConcerned);
   if (binaryConcerned[0] > 0.3) {
     Alert.alert(
       "We noticed you haven't been feeling well recently - want help? Check out our resources page for support near you."

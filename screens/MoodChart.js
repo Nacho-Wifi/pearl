@@ -38,54 +38,45 @@ import {
 } from 'victory-native';
 import LottieView from 'lottie-react-native';
 
-
 const { width, height } = Dimensions.get('screen');
 
-const MoodActivity2 = ({entries, mappedEntries, dateDescription, day}) => {
-
-
+const MoodActivity2 = ({ entries, mappedEntries, dateDescription, day }) => {
   //const navigation = useNavigation();
 
   //const [moods, setMoods] = useState([]);
 
-  const [entriesLength, setEntriesLength] = useState(0)
-  const [loading, setLoading] = useState(true)
-
-
+  const [entriesLength, setEntriesLength] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   //console.log('entries', entries)
 
   useEffect(() => {
-
     //setLoading(true);
-    setEntriesLength(entries.length)
-    setLoading(false)
+    setEntriesLength(entries.length);
+    setLoading(false);
 
-    console.log('entries inside moodactivity', entries.length)
-  }, [entries.length])
+    console.log('entries inside moodactivity', entries.length);
+  }, [entries.length]);
 
-
-  console.log('entries.length outside useEffect', entries.length)
-  console.log('entriesLength outside useEffect', entriesLength)
-
-
+  console.log('entries.length outside useEffect', entries.length);
+  console.log('entriesLength outside useEffect', entriesLength);
 
   //console.log('dateDescription:', dateDescription);
 
   // if(!entriesLength ) return <LoadingIcon/>
 
-  return (
-
-    entriesLength <= 1 ?
+  return entriesLength <= 1 ? (
     <View style={styles.container}>
       <LottieView
         style={styles.lottieHistogram}
         source={require('../assets/lottie/histogram.json')}
         autoPlay
       />
-      <Text style={styles.textStyling}>Your mood chart will appear here after two days of journaling!</Text>
+      <Text style={styles.textStyling}>
+        Your mood chart will appear here after two days of journaling!
+      </Text>
     </View>
-   :
+  ) : (
     <View style={styles.container}>
       <VictoryChart
         theme={VictoryTheme.material}
@@ -137,8 +128,6 @@ const MoodActivity2 = ({entries, mappedEntries, dateDescription, day}) => {
           labelComponent={<VictoryTooltip />}
         />
       </VictoryChart>
-
-
     </View>
   );
 };
@@ -149,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 40
+    paddingBottom: 40,
   },
   textStyling: {
     display: 'flex',
@@ -163,5 +152,4 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
-
 });
