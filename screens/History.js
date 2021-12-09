@@ -58,7 +58,7 @@ const History = () => {
         }}
         // Do not show days of other months in month page. Default = false
         hideExtraDays={true}
-        minDate={userCreation}
+        minDate={new Date(userCreation).toDateString()}
         maxDate={new Date()}
         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
         onPressArrowLeft={(subtractMonth) => subtractMonth()}
