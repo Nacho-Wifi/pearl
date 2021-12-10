@@ -17,6 +17,7 @@ Well, Pearl makes journaling easy; just push a few buttons to enter your activit
 <p align="center"><img src ='./assets/Screenshot2.png'/></p>
 
 <br/>
+
 ## Docs
 
 Notion Documentation:
